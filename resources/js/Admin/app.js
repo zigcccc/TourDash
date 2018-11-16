@@ -19,7 +19,17 @@ import {
 	faRedoAlt,
 	faSearch,
 	faSignOutAlt,
-	faEnvelope
+	faEnvelope,
+	faEllipsisV,
+	faPencilAlt,
+	faFile,
+	faHome,
+	faCalendarAlt,
+	faThumbtack,
+	faHeart,
+	faStar,
+	faTrashAlt,
+	faStarHalfAlt
 } from "@fortawesome/free-solid-svg-icons";
 import { ThemeProvider } from "styled-components";
 
@@ -39,7 +49,17 @@ library.add(
 	faChevronUp,
 	faSearch,
 	faSignOutAlt,
-	faEnvelope
+	faEnvelope,
+	faEllipsisV,
+	faPencilAlt,
+	faFile,
+	faHome,
+	faCalendarAlt,
+	faThumbtack,
+	faHeart,
+	faStar,
+	faTrashAlt,
+	faStarHalfAlt
 );
 
 const theme = {
