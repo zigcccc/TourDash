@@ -8,7 +8,7 @@ const PageWrapperContainer = styled.div`
 		margin-top: 20px;
 		color: ${props => props.theme.darkPrimary};
 		font-weight: 900;
-		font-size: 75px;
+		font-size: 54px;
 		line-height: 1;
 	}
 `;
