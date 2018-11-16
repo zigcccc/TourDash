@@ -1,3 +1,4 @@
 import capitalize from "./capitalize";
+import truncate from "./truncate";
 
-export { capitalize };
+export { capitalize, truncate };
