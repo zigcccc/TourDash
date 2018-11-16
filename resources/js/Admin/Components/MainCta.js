@@ -1,7 +1,8 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import styled, { withTheme } from "styled-components";
+import styled from "styled-components";
+import PropTypes from "prop-types";
 
 const MainCtaLink = styled(Link)`
 	background-color: ${props => props.theme.mainColor};
@@ -12,13 +13,14 @@ const MainCtaLink = styled(Link)`
 	padding: 10px 15px;
 	min-width: 250px;
 	border-radius: 5px;
-	font-size: 24px;
+	font-size: ${props => props["data-size"].toString() + "px"};
 	margin: 10px auto;
 	box-shadow: ${props => props.theme.lightShadow};
 	transition: ${props => props.theme.easeTransition};
 	:hover {
 		background-color: ${props => props.theme.mainColorHover};
 		transform: translate(0, -3px);
+		color: ${props => props.theme.whiteShade1};
 		cursor: pointer;
 		box-shadow: ${props => props.theme.hoverShadow};
 	}
@@ -38,7 +40,7 @@ const MainCtaButton = styled.button`
 	padding: 10px 15px;
 	min-width: 250px;
 	border-radius: 5px;
-	font-size: 24px;
+	font-size: ${props => props["data-size"].toString() + "px"};
 	display: block;
 	margin: 30px auto;
 	box-shadow: ${props => props.theme.lightShadow};
@@ -58,7 +60,11 @@ const MainCta = props => {
 	switch (typeof props.handleClick) {
 		case "function":
 			return (
-				<MainCtaButton onClick={props.handleClick}>
+				<MainCtaButton
+					className={props.className}
+					data-size={props.fontSize}
+					onClick={props.handleClick}
+				>
 					{props.isLoading ? (
 						<FontAwesomeIcon icon="circle-notch" spin size="large" />
 					) : (
@@ -68,7 +74,11 @@ const MainCta = props => {
 			);
 		case "undefined":
 			return (
-				<MainCtaLink to={props.to}>
+				<MainCtaLink
+					className={props.className}
+					data-size={props.fontSize}
+					to={props.to}
+				>
 					{props.isLoading ? (
 						<FontAwesomeIcon icon="circle-notch" spin size="large" />
 					) : (
@@ -77,8 +87,22 @@ const MainCta = props => {
 				</MainCtaLink>
 			);
 		default:
+			new Error('Neither "handleClick" or "to" prop is provided...');
 			return <div>error</div>;
 	}
 };
 
-export default withTheme(MainCta);
+MainCta.propTypes = {
+	fontSize: PropTypes.number.isRequired,
+	handleClick: PropTypes.func,
+	to: PropTypes.string,
+	isLoading: PropTypes.bool,
+	text: PropTypes.string
+};
+
+MainCta.defaultProps = {
+	fontSize: 24,
+	isLoading: false
+};
+
+export default MainCta;
