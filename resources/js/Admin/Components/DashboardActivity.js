@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Card from "../Components/Card";
 import isEmpty from "lodash/isEmpty";
@@ -115,6 +116,9 @@ const ActivityListItemBody = styled.div`
 	p {
 		margin-top: 10px;
 		font-size: 14px;
+		&.little-margin {
+			margin-top: 5px;
+		}
 	}
 	h4 {
 		font-weight: 700;
@@ -301,7 +305,7 @@ class DashboardActivity extends Component {
 									<FontAwesomeIcon icon="trash-alt" />
 								</DeleteActivityContainer>
 							</ActivityListItemHeader>
-							<ActivityListItemBody data-no-margin={activity.type === "review"}>
+							<ActivityListItemBody>
 								{activity.type === "review" ? (
 									<StarsContainer>
 										{new Array(Math.floor(activity.content.rating) + 1)
@@ -333,7 +337,13 @@ class DashboardActivity extends Component {
 									<h4>Subject: {activity.content.subject}</h4>
 								) : null}
 								{!isEmpty(activity.content) ? (
-									<p>{truncate(activity.content.message, 140)}</p>
+									<p
+										className={classNames({
+											"little-margin": activity.type === "contact"
+										})}
+									>
+										{truncate(activity.content.message, 140)}
+									</p>
 								) : null}
 								{activity.type === "review" ? (
 									<React.Fragment>
