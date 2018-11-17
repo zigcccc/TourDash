@@ -27,7 +27,7 @@ const ActivityColumn = styled(BloomerColumn)``;
 const AnalyticsColumn = styled(BloomerColumn)``;
 
 const ColumnTitle = styled.h2`
-	font-size: 48px;
+	font-size: 42px;
 	font-weight: 900;
 	color: ${props => props.theme.darkPrimary};
 `;
