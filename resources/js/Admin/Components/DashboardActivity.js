@@ -287,16 +287,16 @@ class DashboardActivity extends Component {
 										<span>{activity.author.name}</span> has{" "}
 										{this.state.headingMap[activity.type]}
 									</h4>
-									{activity.type === "review" ? (
+									{activity.type === "review" && (
 										<p>
 											Review for accommodation: <span>{activity.refersTo}</span>
 										</p>
-									) : null}
-									{activity.type === "favorite" ? (
+									)}
+									{activity.type === "favorite" && (
 										<p>
 											Accommodation: <span>{activity.refersTo}</span>
 										</p>
-									) : null}
+									)}
 								</ActivityListItemAuthorInfo>
 								<ActivityListItemMeta>{activity.date}</ActivityListItemMeta>
 								<DeleteActivityContainer
@@ -307,7 +307,7 @@ class DashboardActivity extends Component {
 								</DeleteActivityContainer>
 							</ActivityListItemHeader>
 							<ActivityListItemBody>
-								{activity.type === "review" ? (
+								{activity.type === "review" && (
 									<StarsContainer>
 										{times(Math.floor(activity.content.rating)).map((v, i) => {
 											return <FontAwesomeIcon key={i} icon="star" />;
@@ -329,11 +329,11 @@ class DashboardActivity extends Component {
 											}
 										)}
 									</StarsContainer>
-								) : null}
-								{activity.type === "contact" ? (
+								)}
+								{activity.type === "contact" && (
 									<h4>Subject: {activity.content.subject}</h4>
-								) : null}
-								{!isEmpty(activity.content) ? (
+								)}
+								{!isEmpty(activity.content) && (
 									<p
 										className={classNames({
 											"little-margin": activity.type === "contact"
@@ -341,8 +341,8 @@ class DashboardActivity extends Component {
 									>
 										{truncate(activity.content.message, 140)}
 									</p>
-								) : null}
-								{activity.type === "review" ? (
+								)}
+								{activity.type === "review" && (
 									<React.Fragment>
 										<ActivityCta
 											fontSize={12}
@@ -355,8 +355,8 @@ class DashboardActivity extends Component {
 											text="denny"
 										/>
 									</React.Fragment>
-								) : null}
-								{activity.type === "contact" ? (
+								)}
+								{activity.type === "contact" && (
 									<React.Fragment>
 										<ActivityCta
 											fontSize={12}
@@ -369,7 +369,7 @@ class DashboardActivity extends Component {
 											text="delete"
 										/>
 									</React.Fragment>
-								) : null}
+								)}
 							</ActivityListItemBody>
 						</ActivityListItemContainer>
 					);
