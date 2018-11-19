@@ -4,6 +4,7 @@ import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Card from "../Components/Card";
 import isEmpty from "lodash/isEmpty";
+import times from "lodash/times";
 import { truncate } from "../Utils/";
 import InvertedCta from "../Components/InvertedCta";
 import FlatCta from "../Components/FlatCta";
@@ -308,21 +309,16 @@ class DashboardActivity extends Component {
 							<ActivityListItemBody>
 								{activity.type === "review" ? (
 									<StarsContainer>
-										{new Array(Math.floor(activity.content.rating) + 1)
-											.join("0")
-											.split("")
-											.map((v, i) => {
-												return <FontAwesomeIcon key={i} icon="star" />;
-											})}
+										{times(Math.floor(activity.content.rating)).map((v, i) => {
+											return <FontAwesomeIcon key={i} icon="star" />;
+										})}
 										{activity.content.rating -
 											Math.floor(activity.content.rating) !==
 										0 ? (
 											<FontAwesomeIcon icon="star-half-alt" />
 										) : null}
-										{new Array(5 - Math.ceil(activity.content.rating) + 1)
-											.join("0")
-											.split("")
-											.map((v, i) => {
+										{times(5 - Math.ceil(activity.content.rating)).map(
+											(v, i) => {
 												return (
 													<FontAwesomeIcon
 														key={i}
@@ -330,7 +326,8 @@ class DashboardActivity extends Component {
 														className="disabled"
 													/>
 												);
-											})}
+											}
+										)}
 									</StarsContainer>
 								) : null}
 								{activity.type === "contact" ? (
