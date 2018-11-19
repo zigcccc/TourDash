@@ -7,7 +7,7 @@ import Sidebar from "./Components/Sidebar";
 import Actionbar from "./Components/Actionbar";
 
 const MainArea = styled.div`
-	margin-left: 250px;
+	margin-left: ${props => props.theme.sidebarWidth}px;
 	margin-top: 75px;
 	background-color: ${props => props.theme.whiteShade1};
 	min-height: calc(100vh - 75px);

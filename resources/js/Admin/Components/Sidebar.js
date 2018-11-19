@@ -15,7 +15,8 @@ const SidebarContainer = styled.div`
 	bottom: 0;
   left: 0;
   right 0;
-  max-width: ${props => (props.collapsed ? "50px" : "250px")};
+  max-width: ${props =>
+		props.collapsed ? "50px" : `${props.theme.sidebarWidth}px`};
   transition: 200ms ease-in-out max-width;
   display: flex;
   flex-direction: column;
@@ -63,10 +64,10 @@ const SignOut = styled.a`
 	position: fixed;
 	bottom: 0;
 	left: 0;
-	width: 250px;
+	width: ${props => props.theme.sidebarWidth}px;
 	padding: 20px;
 	text-align: center;
-	font-size: 16px;
+	font-size: 14px;
 	font-weight: 200;
 	color: ${props => props.theme.whiteShade1};
 	transition: ${props => props.theme.easeTransition};

@@ -9,7 +9,7 @@ const ActionbarContainer = styled.div`
 	position: fixed;
 	z-index: 100;
 	top: 0;
-	left: 250px;
+	left: ${props => props.theme.sidebarWidth}px;
 	right: 0;
 	padding: 20px;
 	background-color: ${props => props.theme.whiteShade2};
