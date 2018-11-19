@@ -3,12 +3,17 @@ import { withRouter, Link as RouterLink } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { PageWrapper } from "../Components/Layout";
-import { Columns as BloomerColumns, Column as BloomerColumn } from "bloomer";
+import {
+	Columns as BloomerColumns,
+	Column as BloomerColumn,
+	Tile
+} from "bloomer";
 import Card from "../Components/Card";
 import CardDropdown from "../Components/CardDropdown";
 import { Spacer } from "../Components/Helpers";
 import DashboardListItem from "../Components/DashboardListItem";
 import DashboardActivity from "../Components/DashboardActivity";
+import DashboardAnalytics from "../Components/DashboardAnalytics";
 
 const DashboardOverviewColumns = styled(BloomerColumns)`
 	margin-top: 30px;
@@ -25,6 +30,23 @@ const DashboardDetailsColumns = styled(BloomerColumns)`
 const ActivityColumn = styled(BloomerColumn)``;
 
 const AnalyticsColumn = styled(BloomerColumn)``;
+
+const AnalyticsTile = styled(Tile)`
+	&.is-ancestor {
+		margin-left: 0;
+		margin-right: 0;
+		margin-top: 20px;
+	}
+	.tile.is-parent {
+		padding: 0 8px 0;
+		:first-of-type {
+			padding-left: 0;
+		}
+		:last-of-type {
+			padding-right: 0;
+		}
+	}
+`;
 
 const ColumnTitle = styled.h2`
 	font-size: 42px;
@@ -233,6 +255,44 @@ class Dashboard extends Component {
 					</ActivityColumn>
 					<AnalyticsColumn isSize="1/2">
 						<ColumnTitle>Analytics</ColumnTitle>
+						<AnalyticsTile isAncestor>
+							<Tile isParent isVertical isSize="1/2">
+								<Tile
+									isChild
+									render={props => (
+										<DashboardAnalytics type="pageviews" {...props} />
+									)}
+								/>
+								<Tile
+									isChild
+									render={props => (
+										<DashboardAnalytics
+											hasMarginTop={true}
+											type="devices"
+											{...props}
+										/>
+									)}
+								/>
+							</Tile>
+							<Tile isParent isVertical isSize="1/2">
+								<Tile
+									isChild
+									render={props => (
+										<DashboardAnalytics type="visitors" {...props} />
+									)}
+								/>
+								<Tile
+									isChild
+									render={props => (
+										<DashboardAnalytics
+											hasMarginTop={true}
+											type="countries"
+											{...props}
+										/>
+									)}
+								/>
+							</Tile>
+						</AnalyticsTile>
 					</AnalyticsColumn>
 				</DashboardDetailsColumns>
 			</PageWrapper>
