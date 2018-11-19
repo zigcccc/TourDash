@@ -86,7 +86,9 @@ const theme = {
 	easeTransition: "all 300ms cubic-bezier(0.785, 0.135, 0.15, 0.86)",
 	// shadows
 	lightShadow: "0 2px 4px 0 rgba(0,0,0,0.23), 0 3px 6px 0 rgba(0,0,0,0.16)",
-	hoverShadow: "0 4px 8px 0 rgba(0,0,0,0.23), 0 5px 10px 0 rgba(0,0,0,0.16)"
+	hoverShadow: "0 4px 8px 0 rgba(0,0,0,0.23), 0 5px 10px 0 rgba(0,0,0,0.16)",
+	// Settings
+	sidebarWidth: 240
 };
 
 const history = createBrowserHistory();
