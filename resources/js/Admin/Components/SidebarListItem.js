@@ -23,6 +23,7 @@ const ListItemHeading = styled.div`
 	}
 	h4 {
 		font-weight: 900;
+		font-size: 14px;
 	}
 `;
 
