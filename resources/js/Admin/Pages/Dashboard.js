@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { withRouter, Link as RouterLink } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import moment from "moment";
 import { PageWrapper } from "../Components/Layout";
 import {
 	Columns as BloomerColumns,
@@ -14,6 +15,7 @@ import { Spacer } from "../Components/Helpers";
 import DashboardListItem from "../Components/DashboardListItem";
 import DashboardActivity from "../Components/DashboardActivity";
 import DashboardAnalytics from "../Components/DashboardAnalytics";
+import InvertedCtaBase from "../Components/InvertedCta";
 
 const DashboardOverviewColumns = styled(BloomerColumns)`
 	margin-top: 30px;
@@ -73,9 +75,22 @@ const Link = styled(RouterLink)`
 	}
 `;
 
+const InvertedCta = styled(InvertedCtaBase)`
+	text-transform: uppercase;
+`;
+
 class Dashboard extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			today: moment()
+				.locale("sl")
+				.format("Do MM."),
+			oneWeekFromNow: moment()
+				.add(7, "days")
+				.locale("sl")
+				.format("Do MM.")
+		};
 		this.pagesPane = React.createRef();
 		this.accommodationsPane = React.createRef();
 		this.postsPane = React.createRef();
@@ -90,6 +105,10 @@ class Dashboard extends Component {
 		const { history } = this.props;
 		e.preventDefault();
 		history.push(page + "/");
+	}
+
+	_goToAnalytics() {
+		console.log("Going to analytics...");
 	}
 
 	render() {
@@ -260,7 +279,16 @@ class Dashboard extends Component {
 								<Tile
 									isChild
 									render={props => (
-										<DashboardAnalytics type="pageviews" {...props} />
+										<DashboardAnalytics
+											type="pageviews"
+											title="Page views"
+											subtitle="2.309"
+											date={{
+												from: this.state.today,
+												to: this.state.oneWeekFromNow
+											}}
+											{...props}
+										/>
 									)}
 								/>
 								<Tile
@@ -269,6 +297,12 @@ class Dashboard extends Component {
 										<DashboardAnalytics
 											hasMarginTop={true}
 											type="devices"
+											title="Devices"
+											subtitle="dekstop vs mobile"
+											date={{
+												from: this.state.today,
+												to: this.state.oneWeekFromNow
+											}}
 											{...props}
 										/>
 									)}
@@ -278,7 +312,16 @@ class Dashboard extends Component {
 								<Tile
 									isChild
 									render={props => (
-										<DashboardAnalytics type="visitors" {...props} />
+										<DashboardAnalytics
+											type="visitors"
+											title="Visitors"
+											subtitle="returning vs new"
+											date={{
+												from: this.state.today,
+												to: this.state.oneWeekFromNow
+											}}
+											{...props}
+										/>
 									)}
 								/>
 								<Tile
@@ -287,12 +330,23 @@ class Dashboard extends Component {
 										<DashboardAnalytics
 											hasMarginTop={true}
 											type="countries"
+											title="Page views"
+											subtitle="by countries"
+											date={{
+												from: this.state.today,
+												to: this.state.oneWeekFromNow
+											}}
 											{...props}
 										/>
 									)}
 								/>
 							</Tile>
 						</AnalyticsTile>
+						<InvertedCta
+							handleClick={this._goToAnalytics.bind(this)}
+							text="VISIT ANALYTICS"
+							fontSize={14}
+						/>
 					</AnalyticsColumn>
 				</DashboardDetailsColumns>
 			</PageWrapper>

@@ -19,7 +19,6 @@ const DropdownTrigger = styled.div`
 	justify-content: center;
 	align-items: center;
 	align-items: center;
-	transition: ${props => props.theme.easeTransition};
 	font-size: 18px;
 	&.is-active {
 		background-color: ${props => props.theme.whiteShade3};
@@ -43,7 +42,6 @@ const DropdownContent = styled.div`
 	color: ${props => props.theme.darkHeavy};
 	box-shadow: ${props => props.theme.lightShadow};
 	border-radius: 5px;
-	transition: 200ms linear all;
 	max-height: 0;
 	overflow: hidden;
 	&.is-active {
