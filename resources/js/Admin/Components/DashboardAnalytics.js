@@ -25,13 +25,6 @@ const CardDate = styled.div`
 	padding: 3px 8px;
 `;
 
-// const chartMap = {
-// 	pageviews: "line",
-// 	devices: "donut",
-// 	visitors: "radialBar",
-// 	countries: "bar"
-// };
-
 class DashboardAnalytics extends Component {
 	constructor(props) {
 		super(props);
