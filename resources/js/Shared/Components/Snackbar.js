@@ -1,6 +1,6 @@
 import React from "react";
 import styled, { withTheme } from "styled-components";
-import { capitalize } from "../Utils";
+import { capitalize } from "../../Admin/Utils";
 
 const Snackbar = props => (
 	<SnackBarContainer

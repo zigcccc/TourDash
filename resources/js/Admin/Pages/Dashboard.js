@@ -15,7 +15,7 @@ import { Spacer } from "../Components/Helpers";
 import DashboardListItem from "../Components/DashboardListItem";
 import DashboardActivity from "../Components/DashboardActivity";
 import DashboardAnalytics from "../Components/DashboardAnalytics";
-import InvertedCtaBase from "../Components/InvertedCta";
+import InvertedCtaBase from "../../Shared/Components/InvertedCta";
 
 const DashboardOverviewColumns = styled(BloomerColumns)`
 	margin-top: 30px;

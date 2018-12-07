@@ -66,7 +66,7 @@ const MainCta = props => {
 					onClick={props.handleClick}
 				>
 					{props.isLoading ? (
-						<FontAwesomeIcon icon="circle-notch" spin size="large" />
+						<FontAwesomeIcon icon="circle-notch" spin size="1x" />
 					) : (
 						props.text
 					)}
@@ -80,7 +80,7 @@ const MainCta = props => {
 					to={props.to}
 				>
 					{props.isLoading ? (
-						<FontAwesomeIcon icon="circle-notch" spin size="large" />
+						<FontAwesomeIcon icon="circle-notch" spin size="1x" />
 					) : (
 						props.text
 					)}

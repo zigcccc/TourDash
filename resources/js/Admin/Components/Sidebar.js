@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import Logo from "./Logo";
+import Logo from "../../Shared/Components/Logo";
 import SidebarListItem from "./SidebarListItem";
 
 const SidebarContainer = styled.div`

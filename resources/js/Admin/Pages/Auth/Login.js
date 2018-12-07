@@ -9,11 +9,11 @@ import {
 	authNavbarHeight
 } from "./index";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import MainHeading from "../../Components/Typography/MainHeading";
-import Logo from "../../Components/Logo";
-import Snackbar from "../../Components/Snackbar";
-import AuthInputField from "../../Components/AuthInputField";
-import MainCta from "../../Components/MainCta";
+import MainHeading from "../../../Shared/Components/Typography/MainHeading";
+import Logo from "../../../Shared/Components/Logo";
+import Snackbar from "../../../Shared/Components/Snackbar";
+import AuthInputField from "../../../Auth/Components/AuthInputField";
+import MainCta from "../../../Shared/Components/MainCta";
 
 class Login extends Component {
 	constructor(props) {

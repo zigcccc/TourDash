@@ -94,7 +94,6 @@ class Auth extends Component {
 	}
 
 	render() {
-		console.log(this.props);
 		switch (this.props.match.path) {
 			case "/login":
 				return <Login />;
@@ -103,12 +102,6 @@ class Auth extends Component {
 			default:
 				return <div>Error</div>;
 		}
-		return (
-			<div>
-				<h1>Auth</h1>
-				<button onClick={this._signUserIn.bind(this)}>Sign in</button>
-			</div>
-		);
 	}
 }
 

@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import classNames from "classnames";
 import PropTypes from "prop-types";
-import MainCta from "../Components/MainCta";
+import MainCta from "../../Shared/Components/MainCta";
 
 const CardContainer = styled.div`
 	flex: 1;

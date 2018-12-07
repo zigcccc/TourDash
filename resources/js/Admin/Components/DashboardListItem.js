@@ -9,7 +9,7 @@ const DashboardListItemContainer = styled(RouterLink)`
 	border-radius: 200px;
 	background-color: ${props => props.theme.whiteShade2};
 	margin: 5px 0;
-	padding: 3px 5px;
+	padding: 3px 4px;
 	display: flex;
 	align-items: center;
 	color: ${props => props.theme.darkPrimary};
@@ -19,7 +19,7 @@ const DashboardListItemContainer = styled(RouterLink)`
 	h4 {
 		font-size: 14px;
 		font-weight: 900;
-		width: 100px;
+		width: 150px;
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
