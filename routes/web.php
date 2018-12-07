@@ -11,32 +11,22 @@
 |
 */
 
-Route::get('login', function() {
-    return view('admin');
-});
+Route::get('login', ['as' => 'login', 'uses' =>function() {
+    return view('auth');
+}]);
 
-Route::get('register', function() {
-    return view('admin');
-});
+Route::get('register', ['as' => 'register', 'uses' => function() {
+    return view('auth');
+}]);
 
 // Check if the route === admin
 Route::get('admin', function() {
     return view('admin');
-});
+})->middleware('auth');
 // Check if the route is a child of /admin
 Route::get('admin/{wildcard}', function($wildcard) {
     return view('admin');
-})->where('wildcard', '.+');
-
-
-// Check if the route === amp
-Route::get('amp', function() {
-    return view('amp', ['data' => '']);
-});
-// Check if the route is a child of /mobile
-Route::get('amp/{wildcard}', function($wildcard) {
-    return view('amp', ['data' => $wildcard]);
-})->where('wildcard', '.+');
+})->where('wildcard', '.+')->middleware('auth');
 
 
 // Check if the route is index
