@@ -53009,7 +53009,6 @@ var Auth = function (_Component) {
 	}, {
 		key: "render",
 		value: function render() {
-			console.log(this.props);
 			switch (this.props.match.path) {
 				case "/login":
 					return __WEBPACK_IMPORTED_MODULE_0_react___default.a.createElement(__WEBPACK_IMPORTED_MODULE_2__Login__["a" /* default */], null);
@@ -53473,42 +53472,36 @@ var Login = function (_Component) {
 	}, {
 		key: "handleSubmit",
 		value: function handleSubmit() {
+			var _this2 = this;
+
 			this.setState({ loading: true });
-			if (this.state.username.value.length < 4) {
-				var usernameValue = this.state.username.value;
-				this.setState({
-					error: "Please enter correct username...",
-					username: { value: usernameValue, hasError: true },
-					loading: false
-				});
-				return;
-			}
-			if (this.state.username.value !== "zkrasovec@gmail.com") {
-				var _usernameValue = this.state.username.value;
-				this.setState({
-					error: "User " + _usernameValue + " doesn't exist, try registering instead...",
-					username: { value: _usernameValue, hasError: true },
-					loading: false
-				});
-				return;
-			}
-			if (this.state.password.value !== "pass123") {
-				var passwordValue = this.state.password.value;
-				this.setState({
-					error: "The password is not correct...",
-					password: {
-						value: passwordValue,
-						hasError: true
-					},
-					loading: false
-				});
-				return;
-			}
 			// Auth ok, log user in...
-			setTimeout(function () {
-				localStorage.setItem("td_token", true);
-				window.location.reload();
-			}, 500);
+			axios.post("/api/login", {
+				email: this.state.username.value,
+				password: this.state.password.value
+			}).then(function (data) {
+				localStorage.setItem("td_token", data.data.success.token);
+				window.location.href = "/admin";
+			}).catch(function (err) {
+				if (err.response.data.error === "Vnesli ste napačno geslo.") {
+					_this2.setState({
+						error: err.response.data.error,
+						password: { value: _this2.state.password.value, hasError: true },
+						loading: false
+					});
+				} else if (err.response.data.error === "Vnesli ste napačno geslo.") {
+					_this2.setState({
+						error: err.response.data.error,
+						username: { value: _this2.state.username.value, hasError: true },
+						loading: false
+					});
+				} else {
+					_this2.setState({
+						loading: false,
+						error: err.response.data.error
+					});
+				}
+			});
 		}
 	}, {
 		key: "render",
@@ -53649,6 +53642,8 @@ var Register = function (_Component) {
 	}, {
 		key: "handleSubmit",
 		value: function handleSubmit() {
+			var _this2 = this;
+
 			this.setState({ loading: true });
 			if (this.state.username.value.length < 12 || this.state.username.value.indexOf("@") < 0) {
 				var usernameValue = this.state.username.value;
@@ -53684,10 +53679,17 @@ var Register = function (_Component) {
 				return;
 			}
 			// Auth ok, log user in...
-			setTimeout(function () {
-				localStorage.setItem("td_token", true);
-				window.location.reload();
-			}, 500);
+			axios.post("/api/register", {
+				email: this.state.username.value,
+				password: this.state.password.value,
+				password_repeat: this.state.repeatPassword.value
+			}).then(function (data) {
+				localStorage.setItem("td_token", data.data.success.token);
+				window.location.href = "/admin";
+			}).catch(function (err) {
+				console.log("Error has occured...", err);
+				_this2.setState({ loading: false });
+			});
 		}
 	}, {
 		key: "render",

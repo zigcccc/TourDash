@@ -34,41 +34,36 @@ class Login extends Component {
 
 	handleSubmit() {
 		this.setState({ loading: true });
-		if (this.state.username.value.length < 4) {
-			let usernameValue = this.state.username.value;
-			this.setState({
-				error: "Please enter correct username...",
-				username: { value: usernameValue, hasError: true },
-				loading: false
-			});
-			return;
-		}
-		if (this.state.username.value !== "zkrasovec@gmail.com") {
-			let usernameValue = this.state.username.value;
-			this.setState({
-				error: `User ${usernameValue} doesn't exist, try registering instead...`,
-				username: { value: usernameValue, hasError: true },
-				loading: false
-			});
-			return;
-		}
-		if (this.state.password.value !== "pass123") {
-			let passwordValue = this.state.password.value;
-			this.setState({
-				error: "The password is not correct...",
-				password: {
-					value: passwordValue,
-					hasError: true
-				},
-				loading: false
-			});
-			return;
-		}
 		// Auth ok, log user in...
-		setTimeout(() => {
-			localStorage.setItem("td_token", true);
-			window.location.reload();
-		}, 500);
+		axios
+			.post("/api/login", {
+				email: this.state.username.value,
+				password: this.state.password.value
+			})
+			.then(data => {
+				localStorage.setItem("td_token", data.data.success.token);
+				window.location.href = "/admin";
+			})
+			.catch(err => {
+				if (err.response.data.error === "Vnesli ste napačno geslo.") {
+					this.setState({
+						error: err.response.data.error,
+						password: { value: this.state.password.value, hasError: true },
+						loading: false
+					});
+				} else if (err.response.data.error === "Vnesli ste napačno geslo.") {
+					this.setState({
+						error: err.response.data.error,
+						username: { value: this.state.username.value, hasError: true },
+						loading: false
+					});
+				} else {
+					this.setState({
+						loading: false,
+						error: err.response.data.error
+					});
+				}
+			});
 	}
 
 	render() {

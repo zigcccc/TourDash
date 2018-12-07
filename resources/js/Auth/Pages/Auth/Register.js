@@ -72,10 +72,20 @@ class Register extends Component {
 			return;
 		}
 		// Auth ok, log user in...
-		setTimeout(() => {
-			localStorage.setItem("td_token", true);
-			window.location.reload();
-		}, 500);
+		axios
+			.post("/api/register", {
+				email: this.state.username.value,
+				password: this.state.password.value,
+				password_repeat: this.state.repeatPassword.value
+			})
+			.then(data => {
+				localStorage.setItem("td_token", data.data.success.token);
+				window.location.href = "/admin";
+			})
+			.catch(err => {
+				console.log("Error has occured...", err);
+				this.setState({ loading: false });
+			});
 	}
 
 	render() {

@@ -94,7 +94,6 @@ class Auth extends Component {
 	}
 
 	render() {
-		console.log(this.props);
 		switch (this.props.match.path) {
 			case "/login":
 				return <Login />;
