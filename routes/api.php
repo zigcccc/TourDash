@@ -13,30 +13,12 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+Route::post('register', 'API\PassportController@register');
+Route::post('login', 'API\PassportController@login');
 
-Route::middleware('auth:api')->get('/rooms', function (Request $request) {
-    $rooms = [
-        [
-            'uid' => 1,
-            'type' => 'single',
-            'trending' => false,
-            'bestSeller' => false
-        ],
-        [
-            'uid' => 2,
-            'type' => 'double',
-            'trending' => false,
-            'bestSeller' => true
-        ],
-        [
-            'uid' => 3,
-            'type' => 'family',
-            'trending' => true,
-            'bestSeller' => false
-        ]
-    ];
-    return json_encode($rooms);
+Route::group(['middleware' => 'auth:api'], function() {
+    Route::get('users', 'API\UserController@getUsers');
+    Route::get('user/{id}', 'API\UserController@getUser');
+    Route::put('user/{id}', 'API\UserController@updateUser');
+    Route::get('get-details', 'API\PassportController@getUserDetails');
 });
