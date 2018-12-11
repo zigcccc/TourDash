@@ -78,4 +78,23 @@ class UserController extends Controller
             ], 400);
         }
     }
+
+    // Delete user
+    public function deleteUser($id)
+    {
+        if (!is_numeric($id)) {
+            return response()->json(['error' => 'User id must be an integer.'], 422);
+        }
+        try {
+            User::where('id', $id)->delete();
+            return response()->json([
+                'message' => 'Uporabnik uspešno izbrisan.'
+            ], 200);
+        } catch (QueryException $e) {
+            return response()->json([
+                'error' => 'Pri brisanju uporabnika je prišlo do napake',
+                'error_details' => $e->getMessage()
+            ], 400);
+        }
+    }
 }

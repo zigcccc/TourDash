@@ -20,5 +20,6 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::get('users', 'API\UserController@getUsers');
     Route::get('user/{id}', 'API\UserController@getUser');
     Route::put('user/{id}', 'API\UserController@updateUser');
+    Route::delete('user/{id}', 'API\UserController@deleteUser');
     Route::get('get-details', 'API\PassportController@getUserDetails');
 });

@@ -34,7 +34,6 @@ class Login extends Component {
 
 	handleSubmit() {
 		this.setState({ loading: true });
-		// Auth ok, log user in...
 		axios
 			.post("/api/login", {
 				email: this.state.username.value,
