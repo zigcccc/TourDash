@@ -13,13 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::post('register', 'API\PassportController@register');
-Route::post('login', 'API\PassportController@login');
-
 Route::group(['middleware' => 'auth:api'], function() {
     Route::get('users', 'API\UserController@getUsers');
     Route::get('user/{id}', 'API\UserController@getUser');
     Route::put('user/{id}', 'API\UserController@updateUser');
     Route::delete('user/{id}', 'API\UserController@deleteUser');
     Route::get('get-details', 'API\PassportController@getUserDetails');
+    Route::get('logout', 'API\PassportController@logout');
 });

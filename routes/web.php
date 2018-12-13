@@ -20,20 +20,25 @@ Route::get('register', ['as' => 'register', 'uses' => function() {
 }]);
 
 // Check if the route === admin
-Route::get('admin', function() {
-    return view('admin');
-})->middleware('auth');
 // Check if the route is a child of /admin
-Route::get('admin/{wildcard}', function($wildcard) {
-    return view('admin');
-})->where('wildcard', '.+')->middleware('auth');
+Route::group(['middleware' => 'auth'], function() {
+    Route::get('admin', ['as' => 'admin', 'uses' =>  function() {
+        return view('admin');
+    }]);
+
+    Route::get('admin/{wildcard}', function($wildcard) {
+        return view('admin');
+    })->where('wildcard', '.+');
+});
 
 
 // Check if the route is index
-Route::get('/', function () {
+Route::get('/', ['as' => 'home', 'uses' =>  function () {
     return view('index');
-});
+}]);
 // Check if route is a child of index
 Route::get('/{wildcard}', function ($wildcard) {
     return view('index');
 })->where('wildcard', '.+');
+
+Auth::routes();
