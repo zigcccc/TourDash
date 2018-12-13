@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Http\Request;
+use App\Role;
 
 class RegisterController extends Controller
 {
@@ -71,6 +72,7 @@ class RegisterController extends Controller
 
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
+        $user->roles()->attach(Role::where('name', 'user')->first());
         $success['token'] = $user->createToken('TourDash')->accessToken;
         $success['email'] = $user->email;
         Auth::login($user);

@@ -11,7 +11,7 @@
 |
 */
 
-Route::get('login', ['as' => 'login', 'uses' =>function() {
+Route::get('login', ['as' => 'login', 'uses' => function() {
     return view('auth');
 }]);
 
@@ -21,7 +21,7 @@ Route::get('register', ['as' => 'register', 'uses' => function() {
 
 // Check if the route === admin
 // Check if the route is a child of /admin
-Route::group(['middleware' => 'auth'], function() {
+Route::group(['middleware' => 'admin'], function() {
     Route::get('admin', ['as' => 'admin', 'uses' =>  function() {
         return view('admin');
     }]);

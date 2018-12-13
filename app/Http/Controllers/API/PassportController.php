@@ -73,7 +73,7 @@ class PassportController extends Controller
                 'id' => $user->id,
                 'name' => $user->name,
                 'email' => $user->email,
-                'role' => $user->role
+                'role' => $user->roles()->first()->name
             ];
             return response()->json(['user' => $data], $this->successStatus);
         } catch (AuthenticationException $e) {

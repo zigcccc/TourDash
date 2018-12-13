@@ -51,7 +51,7 @@ class LoginController extends Controller
         if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
             $user = Auth::user();
             $success['token'] = $user->createToken('TourDash')->accessToken;
-            if ($user->role === $this->adminRole || $user->role === $this->superadminRole) {
+            if ($user->hasAnyRole([$this->adminRole, $this->superadminRole])) {
                 return response()->json(['path' => '/admin', 'statusCode' => 200], 200);
             } else {
                 return response()->json(['path' => '/', 'statusCode' => 200], 200);
