@@ -3,7 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Foundation\Auth\AuthenticatesUsers;
+use App\User;
+use Illuminate\Support\Facades\Auth;
+use Validator;
+use Debugbar;
 
 class LoginController extends Controller
 {
@@ -25,7 +30,8 @@ class LoginController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin';
+    protected $adminRole = 'admin';
+    protected $superadminRole = 'superadmin';
 
     /**
      * Create a new controller instance.
@@ -35,5 +41,28 @@ class LoginController extends Controller
     public function __construct()
     {
         $this->middleware('guest')->except('logout');
+    }
+
+    public $successStatus = 200;
+
+    // Handle user login
+    public function login()
+    {
+        if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
+            $user = Auth::user();
+            $success['token'] = $user->createToken('TourDash')->accessToken;
+            if ($user->role === $this->adminRole || $user->role === $this->superadminRole) {
+                return response()->json(['path' => '/admin', 'statusCode' => 200], 200);
+            } else {
+                return response()->json(['path' => '/', 'statusCode' => 200], 200);
+            }
+        } else {
+            $user = User::where('email', request('email'))->first();
+            if ($user) {
+                return response()->json(['error' => 'Vnesli ste napačno geslo.'], 401);
+            } else {
+                return response()->json(['error' => 'Uporabnik ne obstaja.'], 401);
+            }
+        }
     }
 }

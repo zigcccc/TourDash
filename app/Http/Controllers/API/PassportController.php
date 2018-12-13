@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\API;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use App\Http\Controllers\Controller;
 use App\User;
 use Illuminate\Support\Facades\Auth;
 use Validator;
+use Debugabar;
 
 class PassportController extends Controller
 {
@@ -48,6 +50,8 @@ class PassportController extends Controller
     {
         if (Auth::attempt(['email' => request('email'), 'password' => request('password')])) {
             $user = Auth::user();
+            // Auth::login($user);
+            // Session::save();
             $success['token'] = $user->createToken('TourDash')->accessToken;
             return response()->json(['success' => $success], $this->successStatus);
         } else {
@@ -63,7 +67,18 @@ class PassportController extends Controller
     // Get user details
     public function getUserDetails()
     {
-        $user = Auth::user();
-        return response()->json(['success' => $user], $this->successStatus);
+        try {
+            $user = Auth::user();
+            $data = [
+                'id' => $user->id,
+                'name' => $user->name,
+                'email' => $user->email,
+                'role' => $user->role
+            ];
+            return response()->json(['user' => $data], $this->successStatus);
+        } catch (AuthenticationException $e) {
+            Debugbar::info($e->getMessage());
+            return response()->json(['user' => null], 404);
+        }
     }
 }

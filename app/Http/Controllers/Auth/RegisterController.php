@@ -6,7 +6,9 @@ use App\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 
 class RegisterController extends Controller
 {
@@ -28,7 +30,8 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/admin';
+    protected $adminRole = 'admin';
+    protected $superadminRole = 'superadmin';
 
     /**
      * Create a new controller instance.
@@ -40,31 +43,37 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
-    }
+    // Handle user registration
+    public function register(Request $request)
+    {   
+        $input = $request->except('id');
+        $validatorMessages = [
+            'email.required' => 'Polje e-mail je obvezno.',
+            'email.unique' => 'Uporabnik s tem e-poštnim naslovom že obstaja.',
+            'email.email' => 'Vnešeno e-poštni naslov ni pravilen.',
+            'password.required' => 'Polje geslo je obvezno in mora vsebovati vsaj 6 znakov.',
+            'password.min' => 'Geslo mora vsebovati vsaj 6 znakov.',
+            'password_repeat.required' => 'Polje ponovitev gesla je obvezno.',
+            'password_repeat.same' => 'Vnešeni gesli se ne ujemata.',
+            'name.required' => 'Polje ime in priimek je obvezno'
+        ];
+        $validator = Validator::make($input, [
+            'name' => 'required',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|min:6',
+            'password_repeat' => 'required|same:password'
+        ], $validatorMessages);
+        
+        // Check validation
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 303);
+        }
 
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-        ]);
+        $input['password'] = bcrypt($input['password']);
+        $user = User::create($input);
+        $success['token'] = $user->createToken('TourDash')->accessToken;
+        $success['email'] = $user->email;
+        Auth::login($user);
+        return response()->json(['success' => $success, 'path' => '/'], 200);
     }
 }
