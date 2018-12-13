@@ -1,10 +1,15 @@
 import React from "react";
 import styled, { withTheme } from "styled-components";
+import classNames from "classnames";
+import PropTypes from "prop-types";
 import { Field as BloomerField, Control, Input, Icon } from "bloomer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Field = styled(BloomerField)`
 	min-width: 650px;
+	&.is-small {
+		min-width: unset;
+	}
 	&.has-errors {
 		input {
 			border-color: ${props => props.theme.colorError} !important;
@@ -44,7 +49,12 @@ const Field = styled(BloomerField)`
 `;
 
 const AuthInputField = props => (
-	<Field className={props.hasError ? "has-errors" : ""}>
+	<Field
+		className={classNames({
+			"has-errors": props.hasError,
+			"is-small": props.isSmall
+		})}
+	>
 		<Control hasIcons="right">
 			<Input
 				type={props.hiddenCharacters ? "password" : "text"}
@@ -58,5 +68,13 @@ const AuthInputField = props => (
 		</Control>
 	</Field>
 );
+
+AuthInputField.propTypes = {
+	hasError: PropTypes.bool,
+	hiddenCharacters: PropTypes.bool,
+	placeholder: PropTypes.string.isRequired,
+	value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+	isSmall: PropTypes.bool
+};
 
 export default withTheme(AuthInputField);

@@ -13,8 +13,12 @@
         <title>@yield('title') | Tourdash</title>
         <meta name="csrf-token" content="{{ csrf_token() }}">
         <!-- Fonts -->
+        <link rel="dns-prefetch" href="https://fonts.gstatic.com">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900">
         @yield('css')
+        @if (Auth::check())
+            <script>window.access_token = "{{ Auth::user()->createToken('TourDash')->accessToken }}";</script>
+        @endif
     </head>
     <body>
         @yield('root-component')

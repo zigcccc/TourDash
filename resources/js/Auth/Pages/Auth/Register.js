@@ -9,6 +9,7 @@ import {
 	authNavbarHeight
 } from "./index";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { Columns, Column } from "bloomer";
 import MainHeading from "../../../Shared/Components/Typography/MainHeading";
 import Logo from "../../../Shared/Components/Logo";
 import Snackbar from "../../../Shared/Components/Snackbar";
@@ -19,9 +20,10 @@ class Register extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			username: { value: "", hasError: false },
+			name: { value: "", hasError: false },
+			email: { value: "", hasError: false },
 			password: { value: "", hasError: false },
-			repeatPassword: { value: "", hasError: false },
+			password_repeat: { value: "", hasError: false },
 			error: "",
 			loading: false
 		};
@@ -35,56 +37,31 @@ class Register extends Component {
 
 	handleSubmit() {
 		this.setState({ loading: true });
-		if (
-			this.state.username.value.length < 12 ||
-			this.state.username.value.indexOf("@") < 0
-		) {
-			let usernameValue = this.state.username.value;
-			this.setState({
-				error: "Please enter correct email...",
-				username: { value: usernameValue, hasError: true },
-				loading: false
-			});
-			return;
-		}
-		if (this.state.password.value.length < 6) {
-			let passwordValue = this.state.password.value;
-			this.setState({
-				error: "Password has to be at least 6 characters long...",
-				password: {
-					value: passwordValue,
-					hasError: true
-				},
-				loading: false
-			});
-			return;
-		}
-		if (this.state.password.value !== this.state.repeatPassword.value) {
-			let repeatPasswordValue = this.state.repeatPassword.value;
-			this.setState({
-				error: "Passwords do not match...",
-				repeatPassword: {
-					hasError: true,
-					value: repeatPasswordValue
-				},
-				loading: false
-			});
-			return;
-		}
-		// Auth ok, log user in...
+		let formData = {
+			name: this.state.name.value,
+			email: this.state.email.value,
+			password: this.state.password.value,
+			password_repeat: this.state.password_repeat.value
+		};
+
 		axios
-			.post("/api/register", {
-				email: this.state.username.value,
-				password: this.state.password.value,
-				password_repeat: this.state.repeatPassword.value
-			})
-			.then(data => {
-				localStorage.setItem("td_token", data.data.success.token);
-				window.location.href = "/admin";
+			.post("/register", formData)
+			.then(res => {
+				window.location.href = res.data.path;
 			})
 			.catch(err => {
-				console.log("Error has occured...", err);
-				this.setState({ loading: false });
+				if (err.response.data.error) {
+					const errorElement = Object.keys(err.response.data.error)[0];
+					this.setState({
+						...this.state,
+						[errorElement]: {
+							...this.state[errorElement].value,
+							hasError: true
+						},
+						error: err.response.data.error[errorElement][0],
+						loading: false
+					});
+				}
 			});
 	}
 
@@ -93,9 +70,10 @@ class Register extends Component {
 			<AuthContainer>
 				<Snackbar
 					isOpen={
-						this.state.username.hasError ||
+						this.state.name.hasError ||
+						this.state.email.hasError ||
 						this.state.password.hasError ||
-						this.state.repeatPassword.hasError
+						this.state.password_repeat.hasError
 					}
 					purpose="error"
 					position="bottom"
@@ -111,13 +89,28 @@ class Register extends Component {
 				<AuthFormContainer>
 					<MainHeading>Register</MainHeading>
 					<AuthForm>
-						<AuthInputField
-							hasError={this.state.username.hasError}
-							placeholder="E-mail"
-							handleChange={this.handleChange.bind(this, "username")}
-							value={this.state.username.value}
-							icon="user"
-						/>
+						<Columns style={{ marginBottom: 0 }}>
+							<Column>
+								<AuthInputField
+									isSmall
+									hasError={this.state.name.hasError}
+									placeholder="Full Name"
+									handleChange={this.handleChange.bind(this, "name")}
+									value={this.state.name.value}
+									icon="user"
+								/>
+							</Column>
+							<Column>
+								<AuthInputField
+									isSmall
+									hasError={this.state.email.hasError}
+									placeholder="E-mail"
+									handleChange={this.handleChange.bind(this, "email")}
+									value={this.state.email.value}
+									icon="envelope"
+								/>
+							</Column>
+						</Columns>
 						<AuthInputField
 							hasError={this.state.password.hasError}
 							placeholder="Password"
@@ -127,11 +120,11 @@ class Register extends Component {
 							icon="unlock"
 						/>
 						<AuthInputField
-							hasError={this.state.repeatPassword.hasError}
+							hasError={this.state.password_repeat.hasError}
 							placeholder="Repeat Password"
 							hiddenCharacters={true}
-							handleChange={this.handleChange.bind(this, "repeatPassword")}
-							value={this.state.repeatPassword.value}
+							handleChange={this.handleChange.bind(this, "password_repeat")}
+							value={this.state.password_repeat.value}
 							icon="redo-alt"
 						/>
 						<MainCta

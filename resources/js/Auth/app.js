@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import theme from "../Shared/Theme";
 import Router from "./router";
+import { CookiesProvider } from "react-cookie";
 import createBrowserHistory from "history/createBrowserHistory";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -17,7 +18,8 @@ import {
 	faCircleNotch,
 	faLongArrowAltRight,
 	faLongArrowAltLeft,
-	faRedoAlt
+	faRedoAlt,
+	faEnvelope
 } from "@fortawesome/free-solid-svg-icons";
 import { ThemeProvider } from "styled-components";
 
@@ -34,7 +36,8 @@ library.add(
 	faLongArrowAltLeft,
 	faRedoAlt,
 	faChevronDown,
-	faChevronUp
+	faChevronUp,
+	faEnvelope
 );
 
 const history = createBrowserHistory();
@@ -43,7 +46,9 @@ export default class App extends Component {
 	render() {
 		return (
 			<ThemeProvider theme={theme}>
-				<Router history={history} />
+				<CookiesProvider>
+					<Router history={history} {...this.props} />
+				</CookiesProvider>
 			</ThemeProvider>
 		);
 	}

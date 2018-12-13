@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import theme from "../Shared/Theme";
-import AuthRouter from "./AuthRouter";
+import AppRouter from "./AppRouter";
 import createBrowserHistory from "history/createBrowserHistory";
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {
@@ -71,7 +71,7 @@ export default class App extends Component {
 	render() {
 		return (
 			<ThemeProvider theme={theme}>
-				<AuthRouter history={history} />
+				<AppRouter history={history} />
 			</ThemeProvider>
 		);
 	}

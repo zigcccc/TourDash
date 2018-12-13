@@ -13,6 +13,7 @@ import MainHeading from "../../../Shared/Components/Typography/MainHeading";
 import Logo from "../../../Shared/Components/Logo";
 import Snackbar from "../../../Shared/Components/Snackbar";
 import AuthInputField from "../../Components/AuthInputField";
+import AuthCheckSwitch from "../../Components/AuthCheckSwitch";
 import MainCta from "../../../Shared/Components/MainCta";
 
 class Login extends Component {
@@ -21,6 +22,7 @@ class Login extends Component {
 		this.state = {
 			username: { value: "", hasError: false },
 			password: { value: "", hasError: false },
+			remember: false,
 			error: "",
 			loading: false
 		};
@@ -32,25 +34,33 @@ class Login extends Component {
 		});
 	}
 
+	_handleRemeberSwitch() {
+		this.setState({
+			remember: !this.state.remember
+		});
+	}
+
 	handleSubmit() {
 		this.setState({ loading: true });
+		let formData = {
+			email: this.state.username.value,
+			password: this.state.password.value,
+			remember: this.state.remember
+		};
 		axios
-			.post("/api/login", {
-				email: this.state.username.value,
-				password: this.state.password.value
-			})
-			.then(data => {
-				localStorage.setItem("td_token", data.data.success.token);
-				window.location.href = "/admin";
+			.post("/login", formData)
+			.then(res => {
+				window.location.href = res.data.path;
 			})
 			.catch(err => {
+				console.log(err.response.data.error);
 				if (err.response.data.error === "Vnesli ste napačno geslo.") {
 					this.setState({
 						error: err.response.data.error,
 						password: { value: this.state.password.value, hasError: true },
 						loading: false
 					});
-				} else if (err.response.data.error === "Vnesli ste napačno geslo.") {
+				} else if (err.response.data.error === "Uporabnik ne obstaja.") {
 					this.setState({
 						error: err.response.data.error,
 						username: { value: this.state.username.value, hasError: true },
@@ -98,6 +108,12 @@ class Login extends Component {
 							handleChange={this.handleChange.bind(this, "password")}
 							value={this.state.password.value}
 							icon="unlock"
+						/>
+						<AuthCheckSwitch
+							name="remember"
+							label="Remember me?"
+							checked={this.state.remember}
+							handleChange={this._handleRemeberSwitch.bind(this)}
 						/>
 						<MainCta
 							isLoading={this.state.loading}
