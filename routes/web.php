@@ -19,9 +19,11 @@ Route::get('register', ['as' => 'register', 'uses' => function() {
     return view('auth');
 }]);
 
+Auth::routes(['verify' => true]);
+
 // Check if the route === admin
 // Check if the route is a child of /admin
-Route::group(['middleware' => 'admin'], function() {
+Route::group(['middleware' => ['admin', 'verified']], function() {
     Route::get('admin', ['as' => 'admin', 'uses' =>  function() {
         return view('admin');
     }]);
@@ -40,5 +42,3 @@ Route::get('/', ['as' => 'home', 'uses' =>  function () {
 Route::get('/{wildcard}', function ($wildcard) {
     return view('index');
 })->where('wildcard', '.+');
-
-Auth::routes();

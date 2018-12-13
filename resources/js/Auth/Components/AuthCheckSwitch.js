@@ -32,7 +32,6 @@ const Switch = styled.input`
 		height: 26px;
 		background-color: transparent;
 		border-radius: 50%;
-		box-shadow: 2px 4px 6px rgba(0, 0, 0, 0.2);
 	}
 	&:checked {
 		border-color: ${props => props.theme.mainColor};

@@ -1,26 +1,25 @@
-@extends('layouts.auth')
+@extends('layouts.weblayout')
 
-@section('title', 'Verify your email address')
+@section('title', 'Login or register')
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">{{ __('Verify Your Email Address') }}</div>
+@section('css')
+    <link rel="stylesheet" href="{{ mix('css/auth.css') }}">
+    <style>
+        * {
+            font-family: BlinkMacSystemFont, -apple-system, "Segoe UI", 'Roboto', Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif
+        }
+    </style>
+@endsection
 
-                <div class="card-body">
-                    @if (session('resent'))
-                        <div class="alert alert-success" role="alert">
-                            {{ __('A fresh verification link has been sent to your email address.') }}
-                        </div>
-                    @endif
+@section('root-component')
+    <div id="auth" data-route="verify"></div>
+@endsection
 
-                    {{ __('Before proceeding, please check your email for a verification link.') }}
-                    {{ __('If you did not receive the email') }}, <a href="{{ route('verification.resend') }}">{{ __('click here to request another') }}</a>.
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+@section('javascript')
+    @if (session('resent'))
+        <script>
+            window.resent = true;
+        </script>
+    @endif
+    <script src="{{ mix('js/auth.js') }}"></script>
 @endsection

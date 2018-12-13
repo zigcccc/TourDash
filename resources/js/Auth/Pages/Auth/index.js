@@ -2,7 +2,9 @@ import React, { Component } from "react";
 import styled, { withTheme } from "styled-components";
 import Login from "./Login";
 import Register from "./Register";
+import Verify from "./Verify";
 import { withRouter, Link } from "react-router-dom";
+import ForgotPassword from "./ForgotPassword";
 
 export const authNavbarHeight = 75;
 
@@ -74,31 +76,22 @@ export const AuthLink = styled(Link)`
 	}
 `;
 
+export const FormText = styled.p`
+	padding: 0 1em;
+	margin-bottom: 2em;
+`;
+
 class Auth extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			isAuth: false
-		};
-	}
-
-	componentDidMount() {
-		// const userToken = localStorage.getItem("td_token");
-		// if (userToken) {
-		// 	this.props.history.push("/admin");
-		// }
-	}
-	_signUserIn() {
-		localStorage.setItem("td_token", true);
-		window.location.reload();
-	}
-
 	render() {
 		switch (this.props.match.path) {
 			case "/login":
 				return <Login />;
 			case "/register":
 				return <Register />;
+			case "/email/verify":
+				return <Verify />;
+			case "/password/reset":
+				return <ForgotPassword />;
 			default:
 				return <div>Error</div>;
 		}

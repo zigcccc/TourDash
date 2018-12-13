@@ -122,7 +122,7 @@ class Login extends Component {
 						/>
 					</AuthForm>
 					<AuthHelperLinks maxWidth="50">
-						<AuthLink to="/reset-password/">Forgot password?</AuthLink>
+						<AuthLink to="/password/reset/">Forgot password?</AuthLink>
 						<AuthLink isbold="true" hasicon="right" to="/register/">
 							Create account <FontAwesomeIcon icon="long-arrow-alt-right" />
 						</AuthLink>
