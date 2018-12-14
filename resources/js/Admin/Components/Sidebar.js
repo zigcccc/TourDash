@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import ReactPlaceholder from "react-placeholder";
 import Logo from "../../Shared/Components/Logo";
 import SidebarListItem from "./SidebarListItem";
 
@@ -45,6 +46,19 @@ const ListLink = styled(Link)`
   }
 `;
 
+const ListLinkPlaceholder = styled.div`
+	border-radius: 200px;
+	padding: 10px;
+	text-transform: uppercase;
+	background-color: rgba(0, 0, 0, 0.2);
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	font-weight: 900;
+	margin: 10px 0;
+	min-height: 25px;
+`;
+
 const SidebarGroup = styled.div`
 	padding-top: 20px;
 	position: relative;
@@ -83,6 +97,28 @@ const SignOut = styled.a`
 		}
 	}
 `;
+
+const SidebarPlaceholder = () => (
+	<SidebarContainer>
+		<Link to="/" style={{ padding: "0 30px" }}>
+			<Logo.Light />
+		</Link>
+		<SidebarGroup>
+			<ListLinkPlaceholder />
+			<ListLinkPlaceholder />
+			<ListLinkPlaceholder />
+			<ListLinkPlaceholder />
+		</SidebarGroup>
+		<SidebarGroup last>
+			<ListLinkPlaceholder />
+			<ListLinkPlaceholder />
+			<ListLinkPlaceholder />
+			<ListLinkPlaceholder />
+		</SidebarGroup>
+	</SidebarContainer>
+);
+
+export { SidebarPlaceholder };
 
 class Sidebar extends Component {
 	constructor(props) {

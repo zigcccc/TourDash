@@ -16,6 +16,7 @@ import DashboardListItem from "../Components/DashboardListItem";
 import DashboardActivity from "../Components/DashboardActivity";
 import DashboardAnalytics from "../Components/DashboardAnalytics";
 import InvertedCtaBase from "../../Shared/Components/InvertedCta";
+import { SectionTitle } from "../Components/Typography";
 
 const DashboardOverviewColumns = styled(BloomerColumns)`
 	margin-top: 30px;
@@ -48,12 +49,6 @@ const AnalyticsTile = styled(Tile)`
 			padding-right: 0;
 		}
 	}
-`;
-
-const ColumnTitle = styled.h2`
-	font-size: 42px;
-	font-weight: 900;
-	color: ${props => props.theme.darkPrimary};
 `;
 
 const Link = styled(RouterLink)`
@@ -269,11 +264,11 @@ class Dashboard extends Component {
 				</DashboardOverviewColumns>
 				<DashboardDetailsColumns>
 					<ActivityColumn isSize="1/2">
-						<ColumnTitle>Activity</ColumnTitle>
+						<SectionTitle text="Activity" />
 						<DashboardActivity />
 					</ActivityColumn>
 					<AnalyticsColumn isSize="1/2">
-						<ColumnTitle>Analytics</ColumnTitle>
+						<SectionTitle text="Analytics" />
 						<AnalyticsTile isAncestor>
 							<Tile isParent isVertical isSize="1/2">
 								<Tile

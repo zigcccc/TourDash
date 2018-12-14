@@ -1,8 +1,13 @@
-import React, { Component } from "react";
-import styled, { withTheme } from "styled-components";
+import React, { Component, Fragment } from "react";
+import styled from "styled-components";
+import PropTypes from "prop-types";
+import ReactPlaceholder from "react-placeholder";
+import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Spacer, OutsideHandler } from "./Helpers";
+import Snackbar from "../../Shared/Components/Snackbar";
+import { validResponse } from "../../Shared/Utils/";
 
 const DropdownContainer = styled.div`
 	position: relative;
@@ -20,6 +25,12 @@ const AvatarContainer = styled.div`
 		width: 100%;
 		height: 100%;
 	}
+`;
+
+const AvatarContainerPlaceholder = styled(AvatarContainer)`
+	align-items: center;
+	justify-content: center;
+	color: ${props => props.theme.darkGray};
 `;
 
 const DropdownTrigger = styled.div`
@@ -43,6 +54,10 @@ const DropdownTrigger = styled.div`
 	}
 	position: relative;
 	z-index: 10;
+`;
+
+const DropdownTriggerPlaceholder = styled(DropdownTrigger)`
+	min-width: 200px;
 `;
 
 const DropdownContent = styled.div`
@@ -96,12 +111,28 @@ const DropdownContent = styled.div`
 	}
 `;
 
+const AvatarDropdownPlaceholder = () => (
+	<DropdownContainer>
+		<DropdownTriggerPlaceholder>
+			<AvatarContainerPlaceholder>
+				<FontAwesomeIcon icon="user" size="lg" />
+			</AvatarContainerPlaceholder>
+			<FontAwesomeIcon icon="chevron-down" />
+		</DropdownTriggerPlaceholder>
+	</DropdownContainer>
+);
+
 class AvatarDropdown extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			open: false
+			open: false,
+			hasError: false,
+			error: "",
+			loading: false
 		};
+		this._signUserOut = this._signUserOut.bind(this);
+		this._dissmissError = this._dissmissError.bind(this);
 	}
 
 	_toggleState() {
@@ -116,49 +147,113 @@ class AvatarDropdown extends Component {
 		});
 	}
 
-	_signUserOut(e) {
+	_dissmissError() {
+		this.setState({
+			hasError: false,
+			error: ""
+		});
+	}
+
+	async _signUserOut(e) {
 		e.preventDefault();
-		localStorage.removeItem("td_token");
-		window.location.reload();
+		this.setState({ ...this.state, loading: true });
+		try {
+			const response = await axios.post("/logout");
+			if (validResponse(response)) {
+				window.location.href = "/login";
+			} else {
+				this.setState({
+					hasError: true,
+					loading: false,
+					error: "Nekaj je šlo narobe..."
+				});
+			}
+		} catch (err) {
+			this.setState({
+				hasError: true,
+				loading: false,
+				error: "Nekaj je šlo narobe..."
+			});
+		}
 	}
 
 	render() {
+		const { userReady, user } = this.props;
+		const { hasError, error, loading } = this.state;
 		return (
 			<OutsideHandler handleClickOutside={this._closeDropdown.bind(this)}>
-				<DropdownContainer>
-					<DropdownTrigger
-						onClick={this._toggleState.bind(this)}
-						className={this.state.open ? "is-active" : ""}
+				<Fragment>
+					<Snackbar
+						purpose="error"
+						message={error}
+						position="top"
+						hasDissmissAction={true}
+						dissmissAction={this._dissmissError}
+						isOpen={hasError}
+					/>
+					<ReactPlaceholder
+						customPlaceholder={<AvatarDropdownPlaceholder />}
+						ready={userReady}
 					>
-						<AvatarContainer>
-							<img src="/images/avatar@2x.png" alt="User Name" />
-						</AvatarContainer>
-						Hi, Žiga Krašovec
-						<FontAwesomeIcon
-							icon={`chevron-${this.state.open ? "up" : "down"}`}
-						/>
-					</DropdownTrigger>
-					<DropdownContent className={this.state.open ? "is-active" : ""}>
-						<Link to="/users/my-profile/">
-							My profile
-							<Spacer />
-							<FontAwesomeIcon icon="user" />
-						</Link>
-						<Link to="/messages/">
-							Messages
-							<Spacer />
-							<FontAwesomeIcon icon="envelope" />
-						</Link>
-						<a className="is-danger" onClick={this._signUserOut} href="#">
-							Sign out
-							<Spacer />
-							<FontAwesomeIcon icon="sign-out-alt" />
-						</a>
-					</DropdownContent>
-				</DropdownContainer>
+						<DropdownContainer>
+							<DropdownTrigger
+								onClick={this._toggleState.bind(this)}
+								className={this.state.open ? "is-active" : ""}
+							>
+								{user.avatar ? (
+									<AvatarContainer>
+										<img src={user.avatar} alt={user.name} />
+									</AvatarContainer>
+								) : (
+									<AvatarContainerPlaceholder>
+										<FontAwesomeIcon icon="user" size="lg" />
+									</AvatarContainerPlaceholder>
+								)}
+								Živjo, {user.name}
+								<FontAwesomeIcon
+									icon={`chevron-${this.state.open ? "up" : "down"}`}
+								/>
+							</DropdownTrigger>
+							<DropdownContent className={this.state.open ? "is-active" : ""}>
+								<Link to="/users/my-profile/">
+									My profile
+									<Spacer />
+									<FontAwesomeIcon icon="user" />
+								</Link>
+								<Link to="/messages/">
+									Messages
+									<Spacer />
+									<FontAwesomeIcon icon="envelope" />
+								</Link>
+								<a className="is-danger" onClick={this._signUserOut} href="#">
+									Sign out
+									<Spacer />
+									{loading ? (
+										<FontAwesomeIcon icon="circle-notch" spin size="1x" />
+									) : (
+										<FontAwesomeIcon icon="sign-out-alt" />
+									)}
+								</a>
+							</DropdownContent>
+						</DropdownContainer>
+					</ReactPlaceholder>
+				</Fragment>
 			</OutsideHandler>
 		);
 	}
 }
 
-export default withTheme(AvatarDropdown);
+AvatarDropdown.propTypes = {
+	user: PropTypes.object,
+	userReady: PropTypes.bool.isRequired
+};
+
+const mapStateToProps = state => ({
+	user: state.user.user,
+	userReady: state.user.ready
+});
+
+export default connect(
+	mapStateToProps,
+	null
+)(AvatarDropdown);

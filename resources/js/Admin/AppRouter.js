@@ -1,9 +1,14 @@
-import React, { Fragment } from "react";
+import React, { Fragment, Component } from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { connect } from "react-redux";
+import { getUser } from "./Store/Actions/UserActions";
+import _isEmpty from "lodash";
 import styled from "styled-components";
+import ReactPlaceholder from "react-placeholder";
 import NotFound from "./Pages/NotFound";
 import Dashboard from "./Pages/Dashboard";
-import Sidebar from "./Components/Sidebar";
+import MyProfile from "./Pages/User/MyProfile";
+import Sidebar, { SidebarPlaceholder } from "./Components/Sidebar";
 import Actionbar from "./Components/Actionbar";
 
 const MainArea = styled.div`
@@ -13,21 +18,60 @@ const MainArea = styled.div`
 	min-height: calc(100vh - 75px);
 `;
 
-const AppRouter = () => (
-	<BrowserRouter basename="admin">
-		<Fragment>
-			<Sidebar />
-			<Actionbar />
-			<MainArea>
-				<Switch>
-					<Route path="/" component={Dashboard} exact />
+class AppRouter extends Component {
+	constructor(props) {
+		super(props);
+	}
 
-					{/* If all else fails, display "NotFound" route */}
-					<Route component={NotFound} />
-				</Switch>
-			</MainArea>
-		</Fragment>
-	</BrowserRouter>
-);
+	componentDidMount() {
+		const { user, getUser } = this.props;
+		if (_isEmpty(user)) {
+			getUser();
+		}
+	}
 
-export default AppRouter;
+	render() {
+		const { userReady } = this.props;
+		return (
+			<BrowserRouter basename="admin">
+				<Fragment>
+					<ReactPlaceholder
+						customPlaceholder={<SidebarPlaceholder />}
+						ready={userReady}
+						showLoadingAnimation={true}
+						firstLaunchOnly={true}
+					>
+						<Sidebar />
+					</ReactPlaceholder>
+					<Actionbar />
+					<MainArea>
+						<Switch>
+							<Route path="/" component={Dashboard} exact />
+							<Route path="/users/my-profile/" component={MyProfile} exact />
+
+							{/* If all else fails, display "NotFound" route */}
+							<Route component={NotFound} />
+						</Switch>
+					</MainArea>
+				</Fragment>
+			</BrowserRouter>
+		);
+	}
+}
+
+const mapStateToProps = state => {
+	return {
+		user: state.user.user,
+		userReady: state.user.ready,
+		errors: [state.user.error]
+	};
+};
+
+const mapDispatchToProps = {
+	getUser
+};
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(AppRouter);
