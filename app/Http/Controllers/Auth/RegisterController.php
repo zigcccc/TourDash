@@ -75,8 +75,8 @@ class RegisterController extends Controller
         $user->roles()->attach(Role::where('name', 'user')->first());
         $success['token'] = $user->createToken('TourDash')->accessToken;
         $success['email'] = $user->email;
-        Auth::login($user);
         $user->sendEmailVerificationNotification();
+        Auth::login($user);
         return response()->json(['success' => $success, 'path' => '/'], 200);
     }
 }
