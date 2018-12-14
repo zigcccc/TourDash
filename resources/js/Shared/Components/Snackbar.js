@@ -29,7 +29,8 @@ class Snackbar extends Component {
 			position,
 			purpose,
 			message,
-			hasDissmissAction
+			hasDissmissAction,
+			dissmissAction
 		} = this.props;
 		const { dissmissed } = this.state;
 		return (
@@ -43,7 +44,9 @@ class Snackbar extends Component {
 			>
 				<span>{message}</span>
 				{hasDissmissAction && (
-					<DissmissIconContainer onClick={this.dissmissSnackbar}>
+					<DissmissIconContainer
+						onClick={dissmissAction ? dissmissAction : this.dissmissSnackbar}
+					>
 						<FontAwesomeIcon icon="times" size="sm" />
 					</DissmissIconContainer>
 				)}
@@ -57,12 +60,14 @@ Snackbar.propTypes = {
 	position: PropTypes.oneOf(["top", "bottom"]).isRequired,
 	purpose: PropTypes.oneOf(["success", "error", "warning"]).isRequired,
 	message: PropTypes.string,
-	hasDissmissAction: PropTypes.bool.isRequired
+	hasDissmissAction: PropTypes.bool.isRequired,
+	dissmissAction: PropTypes.func
 };
 
 Snackbar.defaultProps = {
 	position: "bottom",
 	purpose: "success",
+	isOpen: false,
 	hasDissmissAction: true
 };
 
@@ -71,6 +76,8 @@ const SnackBarContainer = styled.div`
 	z-index: 10000;
 	left: 50%;
 	padding: 0.75em 1.25em;
+	min-width: 200px;
+	min-height: 50px;
 	color: ${props =>
 		props.purpose === "warning"
 			? props.theme.darkPrimary
