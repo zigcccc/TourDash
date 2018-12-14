@@ -13,11 +13,20 @@ use Illuminate\Http\Request;
 |
 */
 
+Route::post('/login', 'API\PassportController@login');
+
 Route::group(['middleware' => 'auth:api'], function() {
+    // User CRUD
     Route::get('users', 'API\UserController@getUsers');
     Route::get('user/{id}', 'API\UserController@getUser');
     Route::put('user/{id}', 'API\UserController@updateUser');
     Route::delete('user/{id}', 'API\UserController@deleteUser');
-    Route::get('get-details', 'API\PassportController@getUserDetails');
-    Route::get('logout', 'API\PassportController@logout');
+
+    // Get currently signed in user info
+    Route::get('auth-user', 'API\UserController@getUserDetails');
+
+    // Update user profile image
+    Route::post('user/{id}/update-profile-image', 'API\UserController@setProfileImage');
+
+    // Route::get('logout', 'API\PassportController@logout');
 });
