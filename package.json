@@ -45,10 +45,12 @@
         "moment": "^2.22.2",
         "react-apexcharts": "^1.1.0",
         "react-cookie": "^3.0.8",
+        "react-placeholder": "^3.0.1",
         "react-redux": "^5.0.7",
         "react-router": "^4.3.1",
         "react-router-dom": "^4.3.1",
         "redux": "^4.0.0",
+        "redux-axios-middleware": "^4.0.0",
         "redux-thunk": "^2.3.0",
         "styled-components": "^4.0.2"
     },
