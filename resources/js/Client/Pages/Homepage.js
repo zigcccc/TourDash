@@ -8,10 +8,11 @@ class Homepage extends Component {
 		this.state = {
 			user: null
 		};
+		this.getUser = this.getUser.bind(this);
 	}
 	async getUser() {
 		try {
-			const user = await axios.get("/api/get-details", {
+			const user = await axios.get("/api/auth-user", {
 				headers: {
 					Authorization: `Bearer ${window.access_token}`
 				}
