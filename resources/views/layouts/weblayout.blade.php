@@ -17,7 +17,10 @@
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900">
         @yield('css')
         @if (Auth::check())
-            <script>window.access_token = "{{ Auth::user()->createToken('TourDash')->accessToken }}";</script>
+            <script>
+                window.xsrf_token = "{{ request()->cookie('XSRF-TOKEN') }}";
+                window.access_token = "{{ Auth::user()->createToken('TourDash')->accessToken }}";
+            </script>
         @endif
     </head>
     <body>
