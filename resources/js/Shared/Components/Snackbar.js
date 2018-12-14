@@ -1,18 +1,70 @@
-import React from "react";
+import React, { Component } from "react";
 import styled, { withTheme } from "styled-components";
+import PropTypes from "prop-types";
+import classNames from "classnames";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { capitalize } from "../../Admin/Utils";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faTimes } from "@fortawesome/free-solid-svg-icons";
+library.add(faTimes);
 
-const Snackbar = props => (
-	<SnackBarContainer
-		open={props.isOpen}
-		className={props.position}
-		purpose={props.purpose}
-	>
-		<span>{props.message}</span>
-	</SnackBarContainer>
-);
+class Snackbar extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			dissmissed: false
+		};
+		this.dissmissSnackbar = this.dissmissSnackbar.bind(this);
+	}
 
-//const SnackBarContainer = styled.div``;
+	dissmissSnackbar() {
+		this.setState({
+			dissmissed: true
+		});
+	}
+
+	render() {
+		const {
+			isOpen,
+			position,
+			purpose,
+			message,
+			hasDissmissAction
+		} = this.props;
+		const { dissmissed } = this.state;
+		return (
+			<SnackBarContainer
+				open={isOpen && !dissmissed}
+				className={classNames({
+					[position]: true,
+					"has-dissmiss": hasDissmissAction
+				})}
+				purpose={purpose}
+			>
+				<span>{message}</span>
+				{hasDissmissAction && (
+					<DissmissIconContainer onClick={this.dissmissSnackbar}>
+						<FontAwesomeIcon icon="times" size="sm" />
+					</DissmissIconContainer>
+				)}
+			</SnackBarContainer>
+		);
+	}
+}
+
+Snackbar.propTypes = {
+	isOpen: PropTypes.bool.isRequired,
+	position: PropTypes.oneOf(["top", "bottom"]).isRequired,
+	purpose: PropTypes.oneOf(["success", "error", "warning"]).isRequired,
+	message: PropTypes.string,
+	hasDissmissAction: PropTypes.bool.isRequired
+};
+
+Snackbar.defaultProps = {
+	position: "bottom",
+	purpose: "success",
+	hasDissmissAction: true
+};
 
 const SnackBarContainer = styled.div`
 	position: fixed;
@@ -37,6 +89,27 @@ const SnackBarContainer = styled.div`
 	}
 	&.bottom {
 		bottom: 10px;
+	}
+	&.has-dissmiss {
+		padding-right: 50px;
+	}
+`;
+
+const DissmissIconContainer = styled.div`
+	position: absolute;
+	right: 10px;
+	top: 50%;
+	transform: translateY(-50%);
+	width: 25px;
+	height: 25px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	transition: ${props => props.theme.easeTransition};
+	border-radius: 50%;
+	&:hover {
+		background-color: rgba(0, 0, 0, 0.2);
+		cursor: pointer;
 	}
 `;
 
