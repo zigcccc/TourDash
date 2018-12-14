@@ -27,6 +27,7 @@ class ForgotPassword extends Component {
 
 	handleChange(field, e) {
 		this.setState({
+			...this.state,
 			[field]: { hasError: false, value: e.target.value }
 		});
 	}
@@ -34,6 +35,7 @@ class ForgotPassword extends Component {
 	async handleSubmit() {
 		if (!validateEmail(this.state.email.value)) {
 			this.setState({
+				...this.state,
 				error: "Vnesite veljaven e-poštni naslov.",
 				email: {
 					...this.state.email,
@@ -50,8 +52,8 @@ class ForgotPassword extends Component {
 		try {
 			const response = await axios.post("/password/email", formData);
 			if (response.status >= 200 && response.status < 300) {
-				console.log(response);
 				this.setState({
+					...this.state,
 					loading: false,
 					success: response.data.success
 				});
@@ -61,6 +63,7 @@ class ForgotPassword extends Component {
 		} catch (e) {
 			console.log(e);
 			this.setState({
+				...this.state,
 				loading: false,
 				error: e.response ? e.response.data.error : "Something went wrong...",
 				email: {
