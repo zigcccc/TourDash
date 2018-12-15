@@ -5,7 +5,9 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
+use App\Http\Resources\User as UserResource;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
 use Validator;
@@ -24,14 +26,7 @@ class UserController extends Controller
     {
         try {
             $user = Auth::user();
-            $data = [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'avatar' => '/images/uploads/' . $user->avatar,
-                'role' => $user->roles()->first()->name
-            ];
-            return response()->json(['user' => $data], 200);
+            return new UserResource($user);
         } catch (AuthenticationException $e) {
             Debugbar::info($e->getMessage());
             return response()->json(['user' => null], 404);
@@ -116,18 +111,23 @@ class UserController extends Controller
     // Set user profile image
     public function setProfileImage(Request $request, $id)
     {
-        // Debugbar::info(['id' => $id, 'request' => $request->only('image')]);
-        // return response()->json(['info' => $id], 200);
         $input = $request->only('image');
+        $validatorMessages = [
+            'image.image' => 'Izbrana datoteka ni fotografija.',
+            'image.required' => 'Niste izbrali nobene fotografije.',
+            'image.mimetypes' => 'Napačen format datoteke. Izberite JPG, GIF ali PNG datoteko.',
+            'image.max' => 'Izbrana datoteka je prevelika. Največja dovoljena velikost datoteke je 2.5MB'
+        ];
         $validator = Validator::make($input, [
             'image' => 'image|required|mimetypes:image/jpeg,image/gif,image/png|max:2500'
-        ]);
+        ], $validatorMessages);
 
         // Check validation
         if ($validator->fails()) {
             return response()->json(['error' => $validator->errors()], 401);
         }
 
+        // Check if parameter is integer
         if (!is_numeric($id)) {
             return response()->json(['error' => 'User id must be an integer.'], 422);
         }
@@ -137,16 +137,12 @@ class UserController extends Controller
             if ($user->id !== intval($id)) {
                 return response()->json(['error' => 'Napaka pri avtorizaciji.'], 403);
             }
+            if ($user->avatar) {
+                Storage::delete($user->avatar);
+            }
             $user->avatar = $request->file('image')->store('image');
             $user->save();
-            $data = [
-                'id' => $user->id,
-                'name' => $user->name,
-                'email' => $user->email,
-                'avatar' => '/images/uploads/' . $user->avatar,
-                'role' => $user->roles()->first()->name
-            ];
-            return response()->json(['success' => 'Profilna slika uspešno posodobljena!', 'user' => $data], 200);
+            return new UserResource($user, ['success' => 'Profilna slika uspešno posodobljena!']);
         } catch (Exception $e) {
             return response()->json([
                 'error' => 'Pri posodabljanju je prišlo do napake.',
