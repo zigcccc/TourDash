@@ -175,10 +175,10 @@ class DashboardActivity extends Component {
 							src="/images/wink.svg"
 							alt="You are up to date with activities"
 						/>
-						<h3>You're up to date with all activities</h3>
-						<p>Great job keeping up with the visitors!</p>
+						<h3>Ni novih aktivnosti.</h3>
+						<p>Super, si na tekočem z dogajanjem na strani!</p>
 						<MainCta
-							text="refresh"
+							text="osveži"
 							handleClick={this._refreshActivities.bind(this)}
 							fontSize={14}
 							isLoading={loading}

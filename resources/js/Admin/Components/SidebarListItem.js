@@ -16,14 +16,14 @@ const ListItemHeading = styled.div`
   transition: ${props => props.theme.easeTransition};
   display: flex;
   justify-content: space-between;
-  align-items: center;
+	align-items: center;
+	font-size: 12px;
 	:hover {
     background: ${props => props.theme.mainColorHover};
     cursor: pointer;
 	}
 	h4 {
 		font-weight: 900;
-		font-size: 14px;
 	}
 `;
 
@@ -31,7 +31,6 @@ const ListItemGroup = styled.div`
 	padding: 0 15px;
 	overflow: hidden;
 	max-height: 0px;
-	transition: ${props => props.theme.easeTransition};
 	&.is-open {
 		max-height: 100vh;
 	}

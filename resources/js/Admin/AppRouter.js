@@ -31,7 +31,8 @@ class AppRouter extends Component {
 	}
 
 	render() {
-		const { userReady } = this.props;
+		const { userReady, user } = this.props;
+		const { pathname } = this.props.history.location;
 		return (
 			<BrowserRouter basename="admin">
 				<Fragment>
@@ -41,7 +42,7 @@ class AppRouter extends Component {
 						showLoadingAnimation={true}
 						firstLaunchOnly={true}
 					>
-						<Sidebar />
+						<Sidebar user={user} activePath={pathname} />
 					</ReactPlaceholder>
 					<Actionbar />
 					<MainArea>

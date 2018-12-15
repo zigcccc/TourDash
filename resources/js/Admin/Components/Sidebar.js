@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
+import { PropTypes } from "prop-types";
 import styled from "styled-components";
+import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import ReactPlaceholder from "react-placeholder";
 import Logo from "../../Shared/Components/Logo";
 import SidebarListItem from "./SidebarListItem";
+import { sidebarConfig } from "../Utils";
 
 const SidebarContainer = styled.div`
 	background-color: ${props => props.theme.mainColor};
@@ -18,7 +20,7 @@ const SidebarContainer = styled.div`
   right 0;
   max-width: ${props =>
 		props.collapsed ? "50px" : `${props.theme.sidebarWidth}px`};
-  transition: 200ms ease-in-out max-width;
+	transition: 200ms ease-in-out max-width;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -28,7 +30,8 @@ const SidebarContainer = styled.div`
 const ListLink = styled(Link)`
   border-radius: 200px;
   padding: 10px;
-  text-transform: uppercase;
+	text-transform: uppercase;
+	font-size: 12px;
   background-color: ${props =>
 		props.className === "is-active"
 			? props.theme.mainColorHover
@@ -135,45 +138,41 @@ class Sidebar extends Component {
 	}
 
 	render() {
+		const { collapsed } = this.state;
+		const { match, user, activePath } = this.props;
 		return (
-			<SidebarContainer collapsed={this.state.collapsed}>
+			<SidebarContainer collapsed={collapsed}>
 				<Link to="/" style={{ padding: "0 30px" }}>
 					<Logo.Light />
 				</Link>
 				<SidebarGroup>
-					<ListLink
-						to="/"
-						className={this.props.match.isExact ? "is-active" : ""}
-					>
-						Dashboard <FontAwesomeIcon icon="th" />
+					<ListLink to="/" className={match.isExact ? "is-active" : ""}>
+						Nadzorna plošča <FontAwesomeIcon icon="th" />
 					</ListLink>
 				</SidebarGroup>
-				<SidebarGroup>
-					<SidebarListItem heading="pages" isOpen={false}>
-						<Link to="/pages/">All pages</Link>
-						<Link to="/pages/add">Add new page</Link>
-						<Link to="/pages/menus">Edit site menus</Link>
-					</SidebarListItem>
-					<SidebarListItem heading="accommodations" isOpen={false}>
-						<Link to="/accommodations/">All accommodations</Link>
-						<Link to="/accommodations/add">Add new accommodation</Link>
-					</SidebarListItem>
-					<SidebarListItem heading="posts" isOpen={false}>
-						<Link to="/posts/">All posts</Link>
-						<Link to="/posts/add">Add new post</Link>
-					</SidebarListItem>
-				</SidebarGroup>
-				<SidebarGroup last>
-					<SidebarListItem heading="customization" isOpen={false}>
-						<Link to="/pages/">All pages</Link>
-						<Link to="/pages/add">Add new page</Link>
-						<Link to="/pages/menus">Edit site menus</Link>
-					</SidebarListItem>
-					<SidebarListItem heading="settings" isOpen={false}>
-						<Link to="/accommodations/">All accommodations</Link>
-						<Link to="/accommodations/add">Add new accommodation</Link>
-					</SidebarListItem>
-				</SidebarGroup>
+				{sidebarConfig.map((group, i) => (
+					<SidebarGroup last={i + 1 === sidebarConfig.length} key={i}>
+						{group.map(section => (
+							<SidebarListItem
+								heading={section.groupName}
+								key={section.groupName}
+								isOpen={activePath.indexOf(section.groupMainUrl) >= 0}
+							>
+								{section.groupContent.map(item => {
+									if (item.permissions.includes(user.role)) {
+										return (
+											<Link key={item.linkUrl} to={item.linkUrl}>
+												{item.linkName}
+											</Link>
+										);
+									} else {
+										return null;
+									}
+								})}
+							</SidebarListItem>
+						))}
+					</SidebarGroup>
+				))}
 				<SignOut href="/">
 					<span>
 						<FontAwesomeIcon icon="chevron-left" />
@@ -184,5 +183,10 @@ class Sidebar extends Component {
 		);
 	}
 }
+
+Sidebar.propTypes = {
+	user: PropTypes.object.isRequired,
+	activePath: PropTypes.string.isRequired
+};
 
 export default withRouter(Sidebar);

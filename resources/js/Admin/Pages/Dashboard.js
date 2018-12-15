@@ -108,13 +108,13 @@ class Dashboard extends Component {
 
 	render() {
 		return (
-			<PageWrapper pageTitle="Dashboard">
+			<PageWrapper pageTitle="Nadzorna plošča">
 				<DashboardOverviewColumns>
 					<DashboardOverviewColumn>
 						<Card
-							title="Pages"
+							title="Strani"
 							subtitle="6"
-							ctaText="add new"
+							ctaText="dodaj novo"
 							ctaAction="pages/add/"
 						>
 							<CardDropdown>
@@ -122,12 +122,12 @@ class Dashboard extends Component {
 									href="#"
 									onClick={this._refreshDashboardItem.bind(this, "pages")}
 								>
-									Refresh
+									Osveži
 									<Spacer />
 									<FontAwesomeIcon icon="redo-alt" />
 								</a>
 								<a href="#" onClick={this._goToSubpage.bind(this, "pages")}>
-									Manage
+									Uredi
 									<Spacer />
 									<FontAwesomeIcon icon="pencil-alt" />
 								</a>
@@ -154,15 +154,15 @@ class Dashboard extends Component {
 								link="/pages/book-a-room"
 							/>
 							<Link className="minimal-cta" to="/pages/">
-								manage pages <FontAwesomeIcon icon="long-arrow-alt-right" />
+								urejanje strani <FontAwesomeIcon icon="long-arrow-alt-right" />
 							</Link>
 						</Card>
 					</DashboardOverviewColumn>
 					<DashboardOverviewColumn>
 						<Card
-							title="Accommodations"
+							title="Nastanitve"
 							subtitle="9"
-							ctaText="add new"
+							ctaText="dodaj novo"
 							ctaAction="accommodations/add/"
 						>
 							<CardDropdown>
@@ -173,7 +173,7 @@ class Dashboard extends Component {
 										"accommodations"
 									)}
 								>
-									Refresh
+									Osveži
 									<Spacer />
 									<FontAwesomeIcon icon="redo-alt" />
 								</a>
@@ -181,7 +181,7 @@ class Dashboard extends Component {
 									href="#"
 									onClick={this._goToSubpage.bind(this, "accommodations")}
 								>
-									Manage
+									Uredi
 									<Spacer />
 									<FontAwesomeIcon icon="pencil-alt" />
 								</a>
@@ -208,16 +208,16 @@ class Dashboard extends Component {
 								link="/accommodations/suite-with-balcony/"
 							/>
 							<Link className="minimal-cta" to="/accommodations/">
-								manage accommodations{" "}
+								urejanje namestitev{" "}
 								<FontAwesomeIcon icon="long-arrow-alt-right" />
 							</Link>
 						</Card>
 					</DashboardOverviewColumn>
 					<DashboardOverviewColumn>
 						<Card
-							title="Posts"
+							title="Objave"
 							subtitle="12"
-							ctaText="add new"
+							ctaText="dodaj novo"
 							ctaAction="posts/add/"
 						>
 							<CardDropdown>
@@ -225,12 +225,12 @@ class Dashboard extends Component {
 									href="#"
 									onClick={this._refreshDashboardItem.bind(this, "posts")}
 								>
-									Refresh
+									Osveži
 									<Spacer />
 									<FontAwesomeIcon icon="redo-alt" />
 								</a>
 								<a href="#" onClick={this._goToSubpage.bind(this, "posts")}>
-									Manage
+									Uredi
 									<Spacer />
 									<FontAwesomeIcon icon="pencil-alt" />
 								</a>
@@ -257,18 +257,18 @@ class Dashboard extends Component {
 								link="/posts/koncert-siddharta"
 							/>
 							<Link className="minimal-cta" to="/posts/">
-								manage posts <FontAwesomeIcon icon="long-arrow-alt-right" />
+								urejanje objav <FontAwesomeIcon icon="long-arrow-alt-right" />
 							</Link>
 						</Card>
 					</DashboardOverviewColumn>
 				</DashboardOverviewColumns>
 				<DashboardDetailsColumns>
 					<ActivityColumn isSize="1/2">
-						<SectionTitle text="Activity" />
+						<SectionTitle text="Aktivnosti" />
 						<DashboardActivity />
 					</ActivityColumn>
 					<AnalyticsColumn isSize="1/2">
-						<SectionTitle text="Analytics" />
+						<SectionTitle text="Analitika" />
 						<AnalyticsTile isAncestor>
 							<Tile isParent isVertical isSize="1/2">
 								<Tile
@@ -276,7 +276,7 @@ class Dashboard extends Component {
 									render={props => (
 										<DashboardAnalytics
 											type="pageviews"
-											title="Page views"
+											title="Ogledi strani"
 											subtitle="2.309"
 											date={{
 												from: this.state.today,
@@ -292,7 +292,7 @@ class Dashboard extends Component {
 										<DashboardAnalytics
 											hasMarginTop={true}
 											type="devices"
-											title="Devices"
+											title="Naprave"
 											subtitle="dekstop vs mobile"
 											date={{
 												from: this.state.today,
@@ -309,7 +309,7 @@ class Dashboard extends Component {
 									render={props => (
 										<DashboardAnalytics
 											type="visitors"
-											title="Visitors"
+											title="Obiskovalci"
 											subtitle="returning vs new"
 											date={{
 												from: this.state.today,
@@ -325,8 +325,8 @@ class Dashboard extends Component {
 										<DashboardAnalytics
 											hasMarginTop={true}
 											type="countries"
-											title="Page views"
-											subtitle="by countries"
+											title="Ogledi strani"
+											subtitle="po državah"
 											date={{
 												from: this.state.today,
 												to: this.state.oneWeekFromNow
@@ -339,7 +339,7 @@ class Dashboard extends Component {
 						</AnalyticsTile>
 						<InvertedCta
 							handleClick={this._goToAnalytics.bind(this)}
-							text="VISIT ANALYTICS"
+							text="VSA ANALITIKA"
 							fontSize={14}
 						/>
 					</AnalyticsColumn>
