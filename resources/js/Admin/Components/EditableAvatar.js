@@ -55,7 +55,7 @@ EditableAvatar.propTypes = {
 	imageLoading: PropTypes.bool.isRequired,
 	triggerUpload: PropTypes.func.isRequired,
 	uploadImage: PropTypes.func.isRequired,
-	triggerRef: PropTypes.instanceOf(Element)
+	triggerRef: PropTypes.shape({ current: PropTypes.instanceOf(Element) })
 };
 
 const EditableAvatarContainer = styled.div`

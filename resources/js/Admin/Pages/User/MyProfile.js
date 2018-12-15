@@ -52,7 +52,9 @@ class MyProfile extends Component {
 			...this.state,
 			selectedImage: e.target.files[0],
 			imageLoading: true,
-			selectedImagePreview: URL.createObjectURL(e.target.files[0])
+			selectedImagePreview: e.target.files[0]
+				? URL.createObjectURL(e.target.files[0])
+				: ""
 		});
 		const formData = new FormData();
 		formData.append("image", e.target.files[0]);
@@ -62,7 +64,7 @@ class MyProfile extends Component {
 				this.setState({
 					...this.state,
 					imageLoading: false,
-					successMessage: response.payload.data.success,
+					successMessage: response.payload.data.message.success,
 					hasSuccess: true
 				});
 			} else {
@@ -72,7 +74,9 @@ class MyProfile extends Component {
 					selectedImage: null,
 					selectedImagePreview: "",
 					hasErrors: true,
-					errorMessage: "Napaka pri nalaganju profilne slike."
+					errorMessage: response.error.response.data
+						? response.error.response.data.error.image[0]
+						: "Velikost datoteke je prevelika. Največja dovoljena velikost je 2.5MB"
 				});
 			}
 		} catch (err) {
@@ -82,7 +86,8 @@ class MyProfile extends Component {
 				selectedImage: null,
 				selectedImagePreview: "",
 				hasErrors: true,
-				errorMessage: "Napaka pri nalaganju profilne slike."
+				errorMessage:
+					"Napaka pri nalaganju fotografije. Bodite pozorni, da velikost datoteke ne presega 2.5MB"
 			});
 		}
 	}

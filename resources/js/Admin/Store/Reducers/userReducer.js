@@ -27,7 +27,7 @@ const userReducer = (state = initialState, action) => {
 				...state,
 				loading: false,
 				ready: true,
-				user: action.payload.data.user
+				user: action.payload.data.data
 			};
 		}
 		case GET_USER_FAIL: {
@@ -39,7 +39,7 @@ const userReducer = (state = initialState, action) => {
 			return { ...state, loading: true };
 		}
 		case UPDATE_PROFILE_IMAGE_SUCCESS: {
-			return { ...state, loading: false, user: action.payload.data.user };
+			return { ...state, loading: false, user: action.payload.data.data };
 		}
 		case UPDATE_PROFILE_IMAGE_FAIL: {
 			return {
