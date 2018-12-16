@@ -4,6 +4,29 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Badge from "./Badge";
 import { capitalize } from "../Utils";
 
+class SiteStatus extends Component {
+	render() {
+		return (
+			<SiteStatusContainer>
+				<StatusGroup>
+					<StatusIndicator status="success" />
+					Stanje strani: <strong>aktivno</strong>
+				</StatusGroup>
+				<Badge content="2" size={18} horizontalOffset={-3}>
+					<StatusGroup>
+						<StatusIndicator status="warning" />
+						SEO stanje: <strong>prihaja do napak</strong>
+					</StatusGroup>
+				</Badge>
+				<CustomLink href="/" target="_blank">
+					<FontAwesomeIcon icon="sign-out-alt" />
+					&nbsp;<span>https://tourdash.app</span>
+				</CustomLink>
+			</SiteStatusContainer>
+		);
+	}
+}
+
 const SiteStatusContainer = styled.div`
 	margin-left: 25px;
 	font-size: 14px;
@@ -45,28 +68,5 @@ const CustomLink = styled.a`
 		font-style: italic;
 	}
 `;
-
-class SiteStatus extends Component {
-	render() {
-		return (
-			<SiteStatusContainer>
-				<StatusGroup>
-					<StatusIndicator status="success" />
-					Site Status: <strong>active</strong>
-				</StatusGroup>
-				<Badge content="2" size={18} horizontalOffset={-3}>
-					<StatusGroup>
-						<StatusIndicator status="warning" />
-						SEO Status: <strong>moderate</strong>
-					</StatusGroup>
-				</Badge>
-				<CustomLink href="/" target="_blank">
-					<FontAwesomeIcon icon="sign-out-alt" />
-					&nbsp;<span>https://tourdash.app</span>
-				</CustomLink>
-			</SiteStatusContainer>
-		);
-	}
-}
 
 export default SiteStatus;

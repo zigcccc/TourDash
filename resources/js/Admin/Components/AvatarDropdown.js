@@ -216,17 +216,17 @@ class AvatarDropdown extends Component {
 							</DropdownTrigger>
 							<DropdownContent className={this.state.open ? "is-active" : ""}>
 								<Link to="/users/my-profile/">
-									My profile
+									Moj profil
 									<Spacer />
 									<FontAwesomeIcon icon="user" />
 								</Link>
 								<Link to="/messages/">
-									Messages
+									Sporočila
 									<Spacer />
 									<FontAwesomeIcon icon="envelope" />
 								</Link>
 								<a className="is-danger" onClick={this._signUserOut} href="#">
-									Sign out
+									Odjava
 									<Spacer />
 									{loading ? (
 										<FontAwesomeIcon icon="circle-notch" spin size="1x" />

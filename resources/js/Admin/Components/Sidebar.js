@@ -76,7 +76,7 @@ const SidebarGroup = styled.div`
 	}
 `;
 
-const SignOut = styled.a`
+const Exit = styled.a`
 	background: ${props => props.theme.mainColorHover};
 	position: fixed;
 	bottom: 0;
@@ -173,12 +173,12 @@ class Sidebar extends Component {
 						))}
 					</SidebarGroup>
 				))}
-				<SignOut href="/">
+				<Exit href="/">
 					<span>
 						<FontAwesomeIcon icon="chevron-left" />
 					</span>
-					back to tourdash.app
-				</SignOut>
+					nazaj na tourdash.app
+				</Exit>
 			</SidebarContainer>
 		);
 	}
