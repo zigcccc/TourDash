@@ -95,11 +95,17 @@ class UserController extends Controller
 
         // Find user and update it
         try {
-            User::where('id', $id)->update($input);
-            return response()->json([
-                'data' => User::where('id', $id)->get(),
-                'message' => 'Podatki uspešno posodobljeni!'
-            ], 200);
+            $user = Auth::user();
+            Debugbar::info($user->id !== intval($id), !$user->hasRole('superadmin'));
+            if ($user->id !== intval($id) && !$user->hasRole('superadmin')) {
+                return response()->json(['error' => 'Napaka pri avtorizaciji.'], 403);
+            }
+            $user->update($input);
+            return new UserResource($user, ['success' => 'Podatki uspešno posodobljeni']);
+            // return response()->json([
+            //     'data' => User::where('id', $id)->get(),
+            //     'message' => 'Podatki uspešno posodobljeni!'
+            // ], 200);
         } catch (QueryException $e) {
             return response()->json([
                 'error' => 'Pri posodabljanju je prišlo do napake.',
