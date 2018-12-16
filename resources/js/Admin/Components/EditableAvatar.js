@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
+import { Image } from "bloomer";
 
 const EditableAvatar = props => {
 	const {
@@ -21,7 +22,11 @@ const EditableAvatar = props => {
 			})}
 		>
 			{imagePreview || user.avatar ? (
-				<img src={imagePreview ? imagePreview : user.avatar} alt={user.name} />
+				<Image
+					isRatio="square"
+					src={imagePreview ? imagePreview : user.avatar}
+					alt={user.name}
+				/>
 			) : (
 				<FontAwesomeIcon icon="user" size="6x" />
 			)}
@@ -69,20 +74,34 @@ const EditableAvatarContainer = styled.div`
 	position: relative;
 	overflow: hidden;
 	transition: ${props => props.theme.easeTransition};
+	@media (max-width: 1550px) and (min-width: 1250px) {
+		width: 140px;
+		height: 140px;
+	}
 	&.has-image {
-		box-shadow: ${props => props.theme.hoverShadow};
+		box-shadow: ${props => props.theme.fancyShadow};
 	}
 	&:hover {
 		cursor: pointer;
+		&.has-image {
+			box-shadow: ${props => props.theme.fancyHoverShadow};
+			img {
+				transform: scale(1.02);
+			}
+		}
 		.avatar-overlay {
 			visibility: visible;
 			opacity: 1;
 		}
 	}
+	figure {
+		flex: 1;
+	}
 	img {
 		object-fit: cover;
 		width: 100%;
 		height: 100%;
+		transition: ${props => props.theme.easeTransition};
 	}
 	svg {
 		color: ${props => props.theme.darkGray};

@@ -5,6 +5,9 @@ import {
 	UPDATE_PROFILE_IMAGE,
 	UPDATE_PROFILE_IMAGE_FAIL,
 	UPDATE_PROFILE_IMAGE_SUCCESS,
+	UPDATE_USER,
+	UPDATE_USER_FAIL,
+	UPDATE_USER_SUCCESS,
 	CLEAR_ERROR
 } from "../Actions/UserActions";
 
@@ -32,6 +35,21 @@ const userReducer = (state = initialState, action) => {
 		}
 		case GET_USER_FAIL: {
 			return { ...state, loading: false, error: action.payload.data.message };
+		}
+
+		// Update user
+		case UPDATE_USER: {
+			return { ...state, loading: true };
+		}
+		case UPDATE_USER_SUCCESS: {
+			return { ...state, loading: false, user: action.payload.data.data };
+		}
+		case UPDATE_USER_FAIL: {
+			return {
+				...state,
+				loading: false,
+				error: "Napaka pri posodabljanju uporabnika"
+			};
 		}
 
 		//Update users profile image

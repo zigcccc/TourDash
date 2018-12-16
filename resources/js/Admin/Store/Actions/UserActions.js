@@ -6,6 +6,10 @@ export const UPDATE_PROFILE_IMAGE = "UPDATE_PROFILE_IMAGE";
 export const UPDATE_PROFILE_IMAGE_SUCCESS = "UPDATE_PROFILE_IMAGE_SUCCESS";
 export const UPDATE_PROFILE_IMAGE_FAIL = "UPDATE_PROFILE_IMAGE_FAIL";
 
+export const UPDATE_USER = "UPDATE_USER";
+export const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
+export const UPDATE_USER_FAIL = "UPDATE_USER_FAIL";
+
 export const CLEAR_ERROR = "CLEAR_ERROR";
 
 export function getUser() {
@@ -27,6 +31,19 @@ export function updateProfileImage(userId, formData) {
 				url: `/user/${userId}/update-profile-image`,
 				method: "POST",
 				data: formData
+			}
+		}
+	};
+}
+
+export function updateUser(userId, data) {
+	return {
+		type: UPDATE_USER,
+		payload: {
+			request: {
+				url: `/user/${userId}`,
+				method: "PUT",
+				data: data
 			}
 		}
 	};
