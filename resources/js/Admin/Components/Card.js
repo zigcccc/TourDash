@@ -7,7 +7,7 @@ import MainCta from "../../Shared/Components/MainCta";
 const CardContainer = styled.div`
 	flex: 1;
 	border-radius: 5px;
-	box-shadow: ${props => props.theme.lightShadow};
+	box-shadow: ${props => props.theme.fancyShadow};
 	background: ${props => props.theme.white};
 	position: relative;
 	padding: 20px;
