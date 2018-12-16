@@ -23,6 +23,8 @@ const theme = {
 	// shadows
 	lightShadow: "0 2px 4px 0 rgba(0,0,0,0.23), 0 3px 6px 0 rgba(0,0,0,0.16)",
 	hoverShadow: "0 4px 8px 0 rgba(0,0,0,0.23), 0 5px 10px 0 rgba(0,0,0,0.16)",
+	fancyShadow: "0 0 30px rgba(0,0,0,0.1)",
+	fancyHoverShadow: "0 20px 40px rgba(0,0,0,0.15)",
 	// Settings
 	sidebarWidth: 240
 };
