@@ -21,6 +21,7 @@ import EditableText from "../../Components/EditableText";
 import Card from "../../Components/Card";
 import CardDropdown from "../../Components/CardDropdown";
 import EditableAvatar from "../../Components/EditableAvatar";
+import PasswordUpdate from "../../Components/PasswordUpdate";
 import Snackbar from "../../../Shared/Components/Snackbar";
 import { validResponse } from "../../../Shared/Utils";
 import { Spacer } from "../../Components/Helpers";
@@ -266,7 +267,7 @@ class MyProfile extends Component {
 				<Modal isActive={modalOpen}>
 					<ModalBackground onClick={this.toggleModal} />
 					<ModalContent>
-						<Card title="Spremeni geslo">a</Card>
+						<PasswordUpdate user={user} closeModal={this.toggleModal} />
 					</ModalContent>
 					<ModalClose isSize="large" onClick={this.toggleModal} />
 				</Modal>

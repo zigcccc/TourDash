@@ -26,7 +26,8 @@ import {
 	faStar,
 	faTrashAlt,
 	faStarHalfAlt,
-	faEyeSlash
+	faEyeSlash,
+	faLockOpen
 } from "@fortawesome/free-solid-svg-icons";
 
 const initializeFontAwesome = () =>
@@ -57,7 +58,8 @@ const initializeFontAwesome = () =>
 		faStar,
 		faTrashAlt,
 		faStarHalfAlt,
-		faEyeSlash
+		faEyeSlash,
+		faLockOpen
 	);
 
 export default initializeFontAwesome;

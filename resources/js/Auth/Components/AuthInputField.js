@@ -28,6 +28,9 @@ const Field = styled(BloomerField)`
 		font-weight: 900;
 		padding: 12px 20px;
 		border-color: transparent !important;
+		&.has-small-font {
+			font-size: 16px;
+		}
 		:hover {
 			border-color: transparent !important;
 		}
@@ -45,6 +48,9 @@ const Field = styled(BloomerField)`
 		color: ${props => props.theme.darkGray} !important;
 		font-size: 24px;
 		transform: translate(0, -1px);
+		&.has-small-font {
+			font-size: 18px;
+		}
 	}
 `;
 
@@ -57,12 +63,22 @@ const AuthInputField = props => (
 	>
 		<Control hasIcons="right">
 			<Input
+				className={classNames({
+					"has-small-font": props.hasSmallFont
+				})}
 				type={props.hiddenCharacters ? "password" : "text"}
 				placeholder={props.placeholder}
 				value={props.value}
 				onChange={props.handleChange}
+				name={props.name}
 			/>
-			<Icon isSize="large" isAlign="right">
+			<Icon
+				className={classNames({
+					"has-small-font": props.hasSmallFont
+				})}
+				isSize="large"
+				isAlign="right"
+			>
 				<FontAwesomeIcon icon={props.icon} />
 			</Icon>
 		</Control>
@@ -74,7 +90,11 @@ AuthInputField.propTypes = {
 	hiddenCharacters: PropTypes.bool,
 	placeholder: PropTypes.string.isRequired,
 	value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-	isSmall: PropTypes.bool
+	isSmall: PropTypes.bool,
+	hasSmallFont: PropTypes.bool,
+	handleChange: PropTypes.func.isRequired,
+	icon: PropTypes.string,
+	name: PropTypes.string
 };
 
 export default withTheme(AuthInputField);
