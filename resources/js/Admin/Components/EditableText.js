@@ -81,11 +81,18 @@ class EditableText extends Component {
 									name={name}
 								/>
 							) : (
-								<GroupData onClick={this.toggleEdit}>
+								<GroupData
+									onClick={type === "password" ? null : this.toggleEdit}
+									className={classNames({
+										"no-hover": type === "password"
+									})}
+								>
 									{value}
-									<EditIcon>
-										<FontAwesomeIcon icon="pencil-alt" size="1x" />
-									</EditIcon>
+									{type !== "password" && (
+										<EditIcon>
+											<FontAwesomeIcon icon="pencil-alt" size="1x" />
+										</EditIcon>
+									)}
 								</GroupData>
 							)}
 							{((editing && wasEdited) || type === "password") && (
@@ -93,7 +100,7 @@ class EditableText extends Component {
 									text={type === "password" ? "Spremeni geslo" : "shrani"}
 									handleClick={this.handleClick}
 									fontSize={10}
-									isLoading={isLoading}
+									isLoading={type === "password" ? false : isLoading}
 								/>
 							)}
 						</GroupInner>
@@ -139,6 +146,11 @@ const GroupData = styled.p`
 	font-size: 18px;
 	&:hover {
 		cursor: pointer;
+	}
+	&.no-hover {
+		&:hover {
+			cursor: default;
+		}
 	}
 `;
 

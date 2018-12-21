@@ -48,10 +48,14 @@ const userReducer = (state = initialState, action) => {
 			return { ...state, loading: false, user: action.payload.data.data };
 		}
 		case UPDATE_USER_FAIL: {
+			let errorMessage = action.error
+				? action.error.response.data.error
+				: "Pri posodabljanju je prišlo do napake";
+			console.log(errorMessage);
 			return {
 				...state,
 				loading: false,
-				error: "Napaka pri posodabljanju uporabnika"
+				error: errorMessage
 			};
 		}
 

@@ -9,7 +9,14 @@ import {
 	deleteUser
 } from "../../Store/Actions/UserActions";
 import { PageWrapper } from "../../Components/Layout";
-import { Columns, Column, Modal, ModalBackground, ModalContent } from "bloomer";
+import {
+	Columns,
+	Column,
+	Modal,
+	ModalBackground,
+	ModalContent,
+	ModalClose
+} from "bloomer";
 import EditableText from "../../Components/EditableText";
 import Card from "../../Components/Card";
 import CardDropdown from "../../Components/CardDropdown";
@@ -61,7 +68,10 @@ class MyProfile extends Component {
 				});
 			}
 		} catch (err) {
-			console.log(err.response);
+			this.setState({
+				...this.state,
+				hasErrors: true
+			});
 		}
 	}
 
@@ -139,19 +149,16 @@ class MyProfile extends Component {
 				const accountDeleteResponse = await Promise.resolve(
 					deleteUser(user.id)
 				);
-				console.log(accountDeleteResponse.payload);
 				if (!validResponse(accountDeleteResponse.payload)) {
 					this.setState({
 						loading: false,
-						hasErrors: true,
-						errorMessage: user.error
+						hasErrors: true
 					});
 				}
 			} catch (e) {
 				this.setState({
 					loading: false,
-					hasErrors: true,
-					errorMessage: user.error || "Pri brisanju računa je prišlo do napake."
+					hasErrors: true
 				});
 			}
 		}
@@ -161,11 +168,10 @@ class MyProfile extends Component {
 	}
 
 	render() {
-		const { user, userLoaded, userLoading } = this.props;
+		const { user, error, userLoaded, userLoading } = this.props;
 		const {
 			selectedImagePreview,
 			successMessage,
-			errorMessage,
 			imageLoading,
 			hasErrors,
 			hasSuccess,
@@ -187,7 +193,7 @@ class MyProfile extends Component {
 					dissmissAction={this.dissmissNotifications}
 					purpose="error"
 					position="bottom"
-					message={errorMessage}
+					message={error}
 				/>
 				<ContentContainer>
 					<Column>
@@ -262,6 +268,7 @@ class MyProfile extends Component {
 					<ModalContent>
 						<Card title="Spremeni geslo">a</Card>
 					</ModalContent>
+					<ModalClose isSize="large" onClick={this.toggleModal} />
 				</Modal>
 			</PageWrapper>
 		);
@@ -275,6 +282,7 @@ MyProfile.propTypes = {
 const mapStateToProps = state => {
 	return {
 		user: state.user.user,
+		error: state.user.error,
 		userLoaded: state.user.ready,
 		userLoading: state.user.loading
 	};

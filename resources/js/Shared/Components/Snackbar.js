@@ -42,7 +42,11 @@ class Snackbar extends Component {
 				})}
 				purpose={purpose}
 			>
-				<span>{message}</span>
+				{typeof message === "string" && <span>{message}</span>}
+				{typeof message === "object" && (
+					<span>{Object.values(message)[0][0]}</span>
+				)}
+
 				{hasDissmissAction && (
 					<DissmissIconContainer
 						onClick={dissmissAction ? dissmissAction : this.dissmissSnackbar}
@@ -59,7 +63,7 @@ Snackbar.propTypes = {
 	isOpen: PropTypes.bool.isRequired,
 	position: PropTypes.oneOf(["top", "bottom"]).isRequired,
 	purpose: PropTypes.oneOf(["success", "error", "warning"]).isRequired,
-	message: PropTypes.string,
+	message: PropTypes.oneOfType(PropTypes.string, PropTypes.object),
 	hasDissmissAction: PropTypes.bool.isRequired,
 	dissmissAction: PropTypes.func
 };
