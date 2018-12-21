@@ -25,6 +25,9 @@ Route::group(['middleware' => 'auth:api'], function() {
     // Get currently signed in user info
     Route::get('auth-user', 'API\UserController@getUserDetails');
 
+    // Update user's password
+    Route::put('auth-user/update-password', 'API\UserController@updatePassword');
+
     // Update or set user's profile image
     Route::post('user/{id}/update-profile-image', 'API\UserController@setProfileImage');
 

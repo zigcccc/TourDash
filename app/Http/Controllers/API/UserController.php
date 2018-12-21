@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
 use App\Role;
+use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\User as UserResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -115,6 +116,31 @@ class UserController extends Controller
         }
     }
 
+    // Update user's password
+    public function updatePassword(Request $request)
+    {
+        $input = $request->only(['password_old', 'password_new', 'password_new_confirmation']);
+        $validator = Validator::make($input, [
+            'password_old' => 'required',
+            'password_new' => 'required|min:6|different:password_old',
+            'password_new_confirmation' => 'required|same:password_new'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+
+        $user = Auth::user();
+
+        if (Hash::check($request['password_old'], $user->password)) {
+            $user->password = Hash::make($request['password_new']);
+            $user->save();
+            return response()->json(['success' => 'Geslo je bilo uspešno posodobljeno!'], 200);
+        } else {
+            return response()->json(['error' => 'Vnešeno staro geslo je napačno.'], 403);
+        }
+    }
+
     // Update user's role
     public function updateUserRole(Request $request, $id)
     {
@@ -211,7 +237,7 @@ class UserController extends Controller
             if ($authUserId !== intval($id) && !$isSuperadmin) {
                 return response()->json(['error' => 'Napaka pri avtentikaciji.'], 403);
             }
-            
+
             User::findOrFail($id)->delete();
             return response()->json([
                 'message' => 'Uporabnik uspešno izbrisan.',
