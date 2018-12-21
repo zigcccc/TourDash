@@ -204,15 +204,34 @@ class UserController extends Controller
             return response()->json(['error' => 'User id must be an integer.'], 422);
         }
         try {
-            User::where('id', $id)->delete();
+
+            $authUserId = Auth::id();
+            $isSuperadmin = Auth::user()->hasRole('superadmin');
+
+            if ($authUserId !== intval($id) && !$isSuperadmin) {
+                return response()->json(['error' => 'Napaka pri avtentikaciji.'], 403);
+            }
+            
+            User::findOrFail($id)->delete();
             return response()->json([
-                'message' => 'Uporabnik uspešno izbrisan.'
+                'message' => 'Uporabnik uspešno izbrisan.',
+                'refresh' => $authUserId === intval($id)
             ], 200);
+
+        } catch(ModelNotFoundException $e) {
+
+            return response()->json([
+                'error' => 'Ta uporabnik ne obstaja.',
+                'error_details' => $e->getMessage()
+            ], 404);
+
         } catch (QueryException $e) {
+
             return response()->json([
                 'error' => 'Pri brisanju uporabnika je prišlo do napake',
                 'error_details' => $e->getMessage()
             ], 400);
+
         }
     }
 }
