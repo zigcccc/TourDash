@@ -63,7 +63,7 @@ Snackbar.propTypes = {
 	isOpen: PropTypes.bool.isRequired,
 	position: PropTypes.oneOf(["top", "bottom"]).isRequired,
 	purpose: PropTypes.oneOf(["success", "error", "warning"]).isRequired,
-	message: PropTypes.oneOfType(PropTypes.string, PropTypes.object),
+	message: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 	hasDissmissAction: PropTypes.bool.isRequired,
 	dissmissAction: PropTypes.func
 };
