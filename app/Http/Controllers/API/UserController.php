@@ -5,12 +5,15 @@ namespace App\Http\Controllers\API;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
+use App\Role;
 use App\Http\Resources\User as UserResource;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\QueryException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Validator;
+use Illuminate\Validation\Rule;
 use Debugbar;
 
 class UserController extends Controller
@@ -82,7 +85,6 @@ class UserController extends Controller
         $validator = Validator::make($input,
             [
                 'name' => 'string',
-                'role' => 'alpha',
                 'password' => 'min:6',
                 'email' => 'email|not_in:users'
             ]
@@ -96,7 +98,6 @@ class UserController extends Controller
         // Find user and update it
         try {
             $user = Auth::user();
-            Debugbar::info($user->id !== intval($id), !$user->hasRole('superadmin'));
             if ($user->id !== intval($id) && !$user->hasRole('superadmin')) {
                 return response()->json(['error' => 'Napaka pri avtorizaciji.'], 403);
             }
@@ -112,6 +113,45 @@ class UserController extends Controller
                 'error_details' => $e->errorInfo[2]
             ], 400);
         }
+    }
+
+    // Update user's role
+    public function updateUserRole(Request $request, $id)
+    {
+        $input = $request->only('role');
+        $validator = Validator::make($input,
+            [
+                'role' => ['required', 'alpha', Rule::in(['user', 'admin', 'superadmin'])]
+            ]
+        );
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 401);
+        }
+
+        
+        // Check if auth user is superadmin
+        if (!Auth::user()->hasRole('superadmin')) {
+            return response()->json(['error' => 'Napaka pri avtorizaciji.'], 403);
+        }
+
+        try {
+            $user = User::findOrFail($id);
+            $newRoleId = Role::where('name', $input['role'])->first();
+            $user->roles()->sync($newRoleId);
+
+            return new UserResource($user, ['success' => 'Vloga uporabnika uspešno posodobljena']);
+
+        } catch (Exception $e) {
+            return response()->json([
+                'error' => 'Pri posodabljanju je prišlo do napake.',
+                'error_details' => $e->getMessage()
+            ], 400);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'error' => 'Ta uporabnik ne obstaja.',
+                'error_details' => $e->getMessage()
+            ], 404);
+        }  
     }
 
     // Set user profile image
