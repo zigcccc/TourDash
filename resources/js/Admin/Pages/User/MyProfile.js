@@ -5,15 +5,19 @@ import ReactPlaceholder from "react-placeholder";
 import { connect } from "react-redux";
 import {
 	updateProfileImage,
-	updateUser
+	updateUser,
+	deleteUser
 } from "../../Store/Actions/UserActions";
 import { PageWrapper } from "../../Components/Layout";
-import { Columns, Column } from "bloomer";
+import { Columns, Column, Modal, ModalBackground, ModalContent } from "bloomer";
 import EditableText from "../../Components/EditableText";
 import Card from "../../Components/Card";
+import CardDropdown from "../../Components/CardDropdown";
 import EditableAvatar from "../../Components/EditableAvatar";
 import Snackbar from "../../../Shared/Components/Snackbar";
 import { validResponse } from "../../../Shared/Utils";
+import { Spacer } from "../../Components/Helpers";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class MyProfile extends Component {
 	constructor(props) {
@@ -25,13 +29,17 @@ class MyProfile extends Component {
 			successMessage: "",
 			errorMessage: "",
 			hasErrors: false,
-			hasSuccess: false
+			hasSuccess: false,
+			modalOpen: false,
+			deleteAccountLoading: false
 		};
 		this.imageUploadTrigger = React.createRef();
 		this.uploadImage = this.uploadImage.bind(this);
 		this.triggerUploadImage = this.triggerUploadImage.bind(this);
 		this.dissmissNotifications = this.dissmissNotifications.bind(this);
 		this.updateUser = this.updateUser.bind(this);
+		this.toggleModal = this.toggleModal.bind(this);
+		this.deleteAccount = this.deleteAccount.bind(this);
 	}
 
 	triggerUploadImage() {
@@ -111,6 +119,47 @@ class MyProfile extends Component {
 		});
 	}
 
+	toggleModal() {
+		this.setState({
+			...this.state,
+			modalOpen: !this.state.modalOpen
+		});
+	}
+
+	async deleteAccount(e) {
+		e.preventDefault();
+		this.setState({ ...this.state, deleteAccountLoading: true });
+		const response = confirm(
+			"Ste prepričani, da želite izbrisati račun? Tega dejanja ni mogoče povrniti..."
+		);
+
+		if (response) {
+			const { user, deleteUser } = this.props;
+			try {
+				const accountDeleteResponse = await Promise.resolve(
+					deleteUser(user.id)
+				);
+				console.log(accountDeleteResponse.payload);
+				if (!validResponse(accountDeleteResponse.payload)) {
+					this.setState({
+						loading: false,
+						hasErrors: true,
+						errorMessage: user.error
+					});
+				}
+			} catch (e) {
+				this.setState({
+					loading: false,
+					hasErrors: true,
+					errorMessage: user.error || "Pri brisanju računa je prišlo do napake."
+				});
+			}
+		}
+
+		// Set the loading state to false in any case
+		this.setState({ ...this.state, deleteAccountLoading: false });
+	}
+
 	render() {
 		const { user, userLoaded, userLoading } = this.props;
 		const {
@@ -119,7 +168,9 @@ class MyProfile extends Component {
 			errorMessage,
 			imageLoading,
 			hasErrors,
-			hasSuccess
+			hasSuccess,
+			modalOpen,
+			deleteAccountLoading
 		} = this.state;
 		return (
 			<PageWrapper pageTitle="Moj profil">
@@ -141,6 +192,17 @@ class MyProfile extends Component {
 				<ContentContainer>
 					<Column>
 						<Card title="Moji podatki">
+							<CardDropdown>
+								<a href="#" onClick={this.deleteAccount}>
+									Izbriši račun
+									<Spacer />
+									{deleteAccountLoading ? (
+										<FontAwesomeIcon icon="circle-notch" spin size="1x" />
+									) : (
+										<FontAwesomeIcon icon="trash-alt" />
+									)}
+								</a>
+							</CardDropdown>
 							<Columns>
 								<AvatarContainer isSize={{ widescreen: "1/3", default: "1/2" }}>
 									<ReactPlaceholder
@@ -173,6 +235,14 @@ class MyProfile extends Component {
 										name="email"
 										isLoading={userLoading}
 									/>
+									<EditableText
+										onSubmit={this.toggleModal}
+										value="••••••••••••••••"
+										label="Geslo"
+										type="password"
+										name="password"
+										isLoading={userLoading}
+									/>
 									<Group>
 										<GroupLabel>Skrbniške pravice</GroupLabel>
 										<GroupData>{user.role}</GroupData>
@@ -182,11 +252,17 @@ class MyProfile extends Component {
 						</Card>
 					</Column>
 					<Column>
-						<Card title="Moje aktivnosti">
+						<Card title="Moje aktivnosti" hasOptions={true}>
 							<br />
 						</Card>
 					</Column>
 				</ContentContainer>
+				<Modal isActive={modalOpen}>
+					<ModalBackground onClick={this.toggleModal} />
+					<ModalContent>
+						<Card title="Spremeni geslo">a</Card>
+					</ModalContent>
+				</Modal>
 			</PageWrapper>
 		);
 	}
@@ -206,20 +282,12 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = {
 	updateProfileImage,
-	updateUser
+	updateUser,
+	deleteUser
 };
 
 const ContentContainer = styled(Columns)`
 	margin-top: 30px;
-`;
-
-const AvatarPlaceholder = styled(ReactPlaceholder)`
-	width: 175px;
-	height: 175px;
-	@media (max-width: 1550px) and (min-width: 1250px) {
-		width: 140px;
-		height: 140px;
-	}
 `;
 
 const AvatarContainer = styled(Column)`

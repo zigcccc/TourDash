@@ -10,6 +10,10 @@ export const UPDATE_USER = "UPDATE_USER";
 export const UPDATE_USER_SUCCESS = "UPDATE_USER_SUCCESS";
 export const UPDATE_USER_FAIL = "UPDATE_USER_FAIL";
 
+export const DELETE_USER = "DELETE_USER";
+export const DELETE_USER_SUCCESS = "DELETE_USER_SUCCESS";
+export const DELETE_USER_FAIL = "DELETE_USER_FAIL";
+
 export const CLEAR_ERROR = "CLEAR_ERROR";
 
 export function getUser() {
@@ -44,6 +48,18 @@ export function updateUser(userId, data) {
 				url: `/user/${userId}`,
 				method: "PUT",
 				data: data
+			}
+		}
+	};
+}
+
+export function deleteUser(userId) {
+	return {
+		type: DELETE_USER,
+		payload: {
+			request: {
+				url: `/user/${userId}`,
+				method: "DELETE"
 			}
 		}
 	};

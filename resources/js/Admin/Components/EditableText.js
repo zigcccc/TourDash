@@ -4,6 +4,7 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import MainCtaBase from "../../Shared/Components/MainCta";
 import { OutsideHandler } from "../Components/Helpers";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class EditableText extends Component {
 	constructor(props) {
@@ -43,8 +44,12 @@ class EditableText extends Component {
 	}
 
 	handleClick() {
-		const { onSubmit } = this.props;
-		onSubmit(this.inputElement.current.name, this.inputElement.current.value);
+		const { onSubmit, type } = this.props;
+		if (type === "password") {
+			onSubmit();
+		} else {
+			onSubmit(this.inputElement.current.name, this.inputElement.current.value);
+		}
 	}
 
 	componentDidUpdate(prevProps, prevState) {
@@ -76,11 +81,16 @@ class EditableText extends Component {
 									name={name}
 								/>
 							) : (
-								<GroupData onClick={this.toggleEdit}>{value}</GroupData>
+								<GroupData onClick={this.toggleEdit}>
+									{value}
+									<EditIcon>
+										<FontAwesomeIcon icon="pencil-alt" size="1x" />
+									</EditIcon>
+								</GroupData>
 							)}
-							{editing && wasEdited && (
+							{((editing && wasEdited) || type === "password") && (
 								<MainCta
-									text="shrani"
+									text={type === "password" ? "Spremeni geslo" : "shrani"}
 									handleClick={this.handleClick}
 									fontSize={10}
 									isLoading={isLoading}
@@ -142,6 +152,20 @@ const GroupInput = styled.input`
 const MainCta = styled(MainCtaBase)`
 	min-width: 65px;
 	margin: 0;
+`;
+
+const EditIcon = styled.span`
+	color: ${props => props.theme.darkPrimary};
+	font-size: 12px;
+	margin-left: 1em;
+	opacity: 0;
+	transition: ${props => props.theme.easeTransition};
+	${GroupData}:hover & {
+		opacity: 1;
+	}
+	svg {
+		transform: translateY(-2px);
+	}
 `;
 
 export default EditableText;

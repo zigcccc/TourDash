@@ -8,7 +8,10 @@ import {
 	UPDATE_USER,
 	UPDATE_USER_FAIL,
 	UPDATE_USER_SUCCESS,
-	CLEAR_ERROR
+	CLEAR_ERROR,
+	DELETE_USER,
+	DELETE_USER_SUCCESS,
+	DELETE_USER_FAIL
 } from "../Actions/UserActions";
 
 const initialState = {
@@ -64,6 +67,24 @@ const userReducer = (state = initialState, action) => {
 				...state,
 				loading: false,
 				error: "Napaka pri nalaganju profilne slike"
+			};
+		}
+
+		// Delete user account
+		case DELETE_USER: {
+			return state;
+		}
+		case DELETE_USER_SUCCESS: {
+			if (action.payload.data.refresh) {
+				window.location.reload();
+			}
+			return state;
+		}
+		case DELETE_USER_FAIL: {
+			return {
+				...state,
+				loading: false,
+				error: "Napaka pri brisanju uporabniškega računa."
 			};
 		}
 

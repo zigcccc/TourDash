@@ -7,7 +7,7 @@ import { Spacer } from "./Helpers";
 
 const ActionbarContainer = styled.div`
 	position: fixed;
-	z-index: 100;
+	z-index: 39;
 	top: 0;
 	left: ${props => props.theme.sidebarWidth}px;
 	right: 0;
