@@ -1,4 +1,9 @@
+import produce from "immer";
+import _findIndex from "lodash/findIndex";
 import {
+	GET_ALL_USERS,
+	GET_ALL_USERS_FAIL,
+	GET_ALL_USERS_SUCCESS,
 	GET_USER,
 	GET_USER_FAIL,
 	GET_USER_SUCCESS,
@@ -8,6 +13,9 @@ import {
 	UPDATE_USER,
 	UPDATE_USER_FAIL,
 	UPDATE_USER_SUCCESS,
+	UPDATE_USER_ROLE,
+	UPDATE_USER_ROLE_SUCCESS,
+	UPDATE_USER_ROLE_FAIL,
 	CLEAR_ERROR,
 	DELETE_USER,
 	DELETE_USER_SUCCESS,
@@ -16,14 +24,54 @@ import {
 
 const initialState = {
 	user: {},
+	allUsers: {
+		data: [],
+		isLastPage: true,
+		isFirstPage: true,
+		totalPages: 1,
+		currentPage: 1
+	},
 	ready: false,
 	loading: true,
+	loadingAllUsers: false,
+	errorAllUsers: false,
 	error: ""
 };
 
 const userReducer = (state = initialState, action) => {
 	console.log(action);
 	switch (action.type) {
+		// Get all users
+		case GET_ALL_USERS: {
+			return { ...state, loadingAllUsers: true };
+		}
+		case GET_ALL_USERS_SUCCESS: {
+			return {
+				...state,
+				allUsers: {
+					data: action.payload.data.data,
+					isLastPage:
+						action.payload.data.meta.current_page ===
+						action.payload.data.meta.last_page,
+					isFirstPage: action.payload.data.meta.current_page === 1,
+					totalPages: action.payload.data.meta.total,
+					currentPage: action.payload.data.meta.current_page
+				},
+				loadingAllUsers: false
+			};
+		}
+		case GET_ALL_USERS_FAIL: {
+			let errorMessage = action.error
+				? action.error.response.data.error
+				: "Napaka pri pridobivanju podatkov o uporabnikih.";
+			return {
+				...state,
+				loadingAllUsers: false,
+				errorAllUsers: action,
+				errorAllUsers: errorMessage
+			};
+		}
+
 		// Get user details
 		case GET_USER: {
 			return { ...state, loading: true };
@@ -51,12 +99,26 @@ const userReducer = (state = initialState, action) => {
 			let errorMessage = action.error
 				? action.error.response.data.error
 				: "Pri posodabljanju je prišlo do napake";
-			console.log(errorMessage);
 			return {
 				...state,
 				loading: false,
 				error: errorMessage
 			};
+		}
+
+		// Update user role
+		case UPDATE_USER_ROLE: {
+			return state;
+		}
+		case UPDATE_USER_ROLE_SUCCESS: {
+			let updatedUserId = action.payload.data.data.id;
+			let userToUpdate = _findIndex(state.allUsers.data, { id: updatedUserId });
+			return produce(state, draft => {
+				draft.allUsers.data[userToUpdate] = action.payload.data.data;
+			});
+		}
+		case UPDATE_USER_ROLE_FAIL: {
+			return state;
 		}
 
 		//Update users profile image

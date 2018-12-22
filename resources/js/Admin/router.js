@@ -7,6 +7,7 @@ import styled from "styled-components";
 import ReactPlaceholder from "react-placeholder";
 import NotFound from "./Pages/NotFound";
 import Dashboard from "./Pages/Dashboard";
+import UsersOverview from "./Pages/User/UsersOverview";
 import MyProfile from "./Pages/User/MyProfile";
 import Sidebar, { SidebarPlaceholder } from "./Components/Sidebar";
 import Actionbar from "./Components/Actionbar";
@@ -48,6 +49,7 @@ class AppRouter extends Component {
 					<MainArea>
 						<Switch>
 							<Route path="/" component={Dashboard} exact />
+							<Route path="/users/" component={UsersOverview} exact />
 							<Route path="/users/my-profile/" component={MyProfile} exact />
 
 							{/* If all else fails, display "NotFound" route */}

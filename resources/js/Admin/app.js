@@ -6,7 +6,7 @@ import axios from "axios";
 import axiosMiddleware from "redux-axios-middleware";
 import rootReducer from "./Store";
 import theme from "../Shared/Theme";
-import AppRouter from "./AppRouter";
+import Router from "./router";
 import createBrowserHistory from "history/createBrowserHistory";
 import initializeFontAwesome from "./Utils/initializeFontAwesome";
 import { ThemeProvider } from "styled-components";
@@ -50,7 +50,7 @@ export default class App extends Component {
 		return (
 			<ThemeProvider theme={theme}>
 				<Provider store={store}>
-					<AppRouter history={history} />
+					<Router history={history} />
 				</Provider>
 			</ThemeProvider>
 		);

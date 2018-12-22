@@ -33,9 +33,7 @@ const ListLink = styled(Link)`
 	text-transform: uppercase;
 	font-size: 12px;
   background-color: ${props =>
-		props.className === "is-active"
-			? props.theme.mainColorHover
-			: "transparent"};
+		props.className === "is-active" ? "rgba(0,0,0,.25)" : "transparent"};
   transition: ${props => props.theme.easeTransition};
   display: flex;
   justify-content: space-between;
@@ -43,7 +41,7 @@ const ListLink = styled(Link)`
   color: ${props => props.theme.whiteShade1}
   font-weight: 900;
   :hover {
-    background: ${props => props.theme.mainColorHover};
+    background: rgba(0,0,0,.25);
     cursor: pointer;
     color: ${props => props.theme.whiteShade1}
   }
@@ -77,7 +75,7 @@ const SidebarGroup = styled.div`
 `;
 
 const Exit = styled.a`
-	background: ${props => props.theme.mainColorHover};
+	background: rgba(0, 0, 0, 0.25);
 	position: fixed;
 	bottom: 0;
 	left: 0;

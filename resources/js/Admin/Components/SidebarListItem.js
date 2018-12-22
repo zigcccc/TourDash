@@ -10,17 +10,17 @@ const ListItem = styled.div`
 const ListItemHeading = styled.div`
 	border-radius: 200px;
 	padding: 10px;
-  text-transform: uppercase;
-  background-color: ${props =>
-		props.isOpen ? props.theme.mainColorHover : "transparent"}
-  transition: ${props => props.theme.easeTransition};
-  display: flex;
-  justify-content: space-between;
+	text-transform: uppercase;
+	background-color: ${props =>
+		props.isOpen ? "rgba(0, 0, 0, 0.25)" : "transparent"};
+	transition: ${props => props.theme.easeTransition};
+	display: flex;
+	justify-content: space-between;
 	align-items: center;
 	font-size: 12px;
 	:hover {
-    background: ${props => props.theme.mainColorHover};
-    cursor: pointer;
+		background: rgba(0, 0, 0, 0.25);
+		cursor: pointer;
 	}
 	h4 {
 		font-weight: 900;
