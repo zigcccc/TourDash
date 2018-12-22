@@ -25,6 +25,16 @@ class UserController extends Controller
         $this->middleware('auth:api');
     }
 
+    // Get all users
+    public function getUsers()
+    {
+        if (!Auth::user()->hasRole('superadmin')) {
+            return response()->json(['error' => 'Za ogled podatkov o vseh uporabnikih nimate zadostnih dovoljenj.']);
+        }
+
+        return UserResource::collection(User::orderBy('name')->paginate(20));
+    }
+
     // Get logged in user
     public function getUserDetails()
     {
@@ -34,25 +44,6 @@ class UserController extends Controller
         } catch (AuthenticationException $e) {
             Debugbar::info($e->getMessage());
             return response()->json(['user' => null], 404);
-        }
-    }
-
-    // Get all users
-    public function getUsers(Request $request)
-    {
-        if (array_key_exists('role', $request->all())) {
-            $role = $request->all()['role'];
-            $validator = Validator::make(['role' => $role], [
-                'role' => 'in:admin,user,subscriber'
-            ]);
-            if ($validator->fails()) {
-                return response()->json(['error' => $validator->errors()], 400);
-            }
-            $users = User::where('role', $role)->orderBy('name')->get();
-            return response()->json(['data' => $users], 200);
-        } else {
-            $users = DB::table('users')->orderBy('name')->get();
-            return response()->json(['data' => $users], 200);
         }
     }
 
@@ -156,7 +147,8 @@ class UserController extends Controller
 
         
         // Check if auth user is superadmin
-        if (!Auth::user()->hasRole('superadmin')) {
+        $auth = Auth::user();
+        if (!$auth->hasRole('superadmin')) {
             return response()->json(['error' => 'Napaka pri avtorizaciji.'], 403);
         }
 
