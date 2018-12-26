@@ -1,19 +1,22 @@
 import React from "react";
 import styled from "styled-components";
+import { Spacer } from "../Helpers/";
 
 const CenteredItem = props => {
-	return <Container>{props.children}</Container>;
+	return (
+		<Container>
+			<Spacer />
+			{props.children}
+			<Spacer />
+		</Container>
+	);
 };
 
 const Container = styled.div`
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	position: absolute;
-	top: 0;
-	bottom: 0;
-	right: 0;
-	left: 0;
+	flex: 1;
 `;
 
 export default CenteredItem;

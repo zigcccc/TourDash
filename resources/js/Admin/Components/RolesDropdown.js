@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import styled from "styled-components";
+import classNames from "classnames";
 import PropTypes from "prop-types";
 import {
 	Button,
@@ -45,7 +46,7 @@ class RolesDropdown extends Component {
 
 	render() {
 		const { active, loading } = this.state;
-		const { handleClick, user } = this.props;
+		const { user, icon } = this.props;
 		return (
 			<RoleDropdown isAlign="right" isActive={active}>
 				<DropdownTrigger style={{ width: "100%" }}>
@@ -54,7 +55,7 @@ class RolesDropdown extends Component {
 						{loading ? (
 							<FontAwesomeIcon icon="circle-notch" spin size="1x" />
 						) : (
-							<FontAwesomeIcon icon="pencil-alt" size="1x" />
+							<FontAwesomeIcon icon={icon} size="1x" />
 						)}
 					</DropdownButton>
 				</DropdownTrigger>
@@ -64,9 +65,17 @@ class RolesDropdown extends Component {
 							<Fragment key={role}>
 								<DropdownItem
 									isActive={role === user.role}
-									onClick={() => this.selectRole(role)}
+									className={classNames({
+										"is-disabled": role === user.role
+									})}
+									onClick={() =>
+										role !== user.role ? this.selectRole(role) : null
+									}
 								>
 									{role}
+									{role === user.role && (
+										<FontAwesomeIcon icon="check" size="xs" />
+									)}
 								</DropdownItem>
 								{i !== possibleRoles.length - 1 && <DropdownDivider />}
 							</Fragment>
@@ -80,7 +89,8 @@ class RolesDropdown extends Component {
 
 RolesDropdown.propTypes = {
 	user: PropTypes.object,
-	handleClick: PropTypes.func.isRequired
+	handleClick: PropTypes.func.isRequired,
+	icon: PropTypes.string.isRequired
 };
 
 const RoleDropdown = styled(Dropdown)`
@@ -106,9 +116,19 @@ const DropdownButton = styled(Button)`
 `;
 
 const DropdownItem = styled(BloomerDropdownItem)`
+	svg {
+		margin-left: 1em;
+	}
 	&:hover {
 		cursor: pointer;
 		background: rgba(0, 0, 0, 0.05);
+	}
+	&.is-disabled {
+		color: ${props => props.theme.darkGray};
+		cursor: not-allowed;
+		&:hover {
+			background: transparent;
+		}
 	}
 `;
 

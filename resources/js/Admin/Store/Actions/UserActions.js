@@ -22,14 +22,18 @@ export const DELETE_USER = "DELETE_USER";
 export const DELETE_USER_SUCCESS = "DELETE_USER_SUCCESS";
 export const DELETE_USER_FAIL = "DELETE_USER_FAIL";
 
+export const SEARCH_USERS = "SEARCH_USERS";
+export const SEARCH_USERS_SUCCESS = "SEARCH_USERS_SUCCESS";
+export const SEARCH_USERS_FAIL = "SEARCH_USERS_FAIL";
+
 export const CLEAR_ERROR = "CLEAR_ERROR";
 
-export function getUsers() {
+export function getUsers(page = 1) {
 	return {
 		type: GET_ALL_USERS,
 		payload: {
 			request: {
-				url: "/users"
+				url: `/users?page=${page}`
 			}
 		}
 	};
@@ -94,6 +98,18 @@ export function deleteUser(userId) {
 			request: {
 				url: `/user/${userId}`,
 				method: "DELETE"
+			}
+		}
+	};
+}
+
+export function searchUsers(query) {
+	return {
+		type: SEARCH_USERS,
+		payload: {
+			request: {
+				url: `users/search?q=${query}`,
+				method: "GET"
 			}
 		}
 	};

@@ -1,5 +1,7 @@
 import produce from "immer";
 import _findIndex from "lodash/findIndex";
+import _last from "lodash/last";
+import _remove from "lodash/remove";
 import {
 	GET_ALL_USERS,
 	GET_ALL_USERS_FAIL,
@@ -19,7 +21,10 @@ import {
 	CLEAR_ERROR,
 	DELETE_USER,
 	DELETE_USER_SUCCESS,
-	DELETE_USER_FAIL
+	DELETE_USER_FAIL,
+	SEARCH_USERS,
+	SEARCH_USERS_SUCCESS,
+	SEARCH_USERS_FAIL
 } from "../Actions/UserActions";
 
 const initialState = {
@@ -54,7 +59,9 @@ const userReducer = (state = initialState, action) => {
 						action.payload.data.meta.current_page ===
 						action.payload.data.meta.last_page,
 					isFirstPage: action.payload.data.meta.current_page === 1,
-					totalPages: action.payload.data.meta.total,
+					totalPages: Math.ceil(
+						action.payload.data.meta.total / action.payload.data.meta.per_page
+					),
 					currentPage: action.payload.data.meta.current_page
 				},
 				loadingAllUsers: false
@@ -143,6 +150,16 @@ const userReducer = (state = initialState, action) => {
 		case DELETE_USER_SUCCESS: {
 			if (action.payload.data.refresh) {
 				window.location.reload();
+			} else {
+				let userId = parseInt(
+					_last(action.meta.previousAction.payload.request.url.split("/"))
+				);
+				return produce(state, draft => {
+					draft.allUsers.data = _remove(
+						state.allUsers.data,
+						user => user.id !== userId
+					);
+				});
 			}
 			return state;
 		}
@@ -151,6 +168,42 @@ const userReducer = (state = initialState, action) => {
 				...state,
 				loading: false,
 				error: "Napaka pri brisanju uporabniškega računa."
+			};
+		}
+
+		// Search Users
+		case SEARCH_USERS: {
+			return {
+				...state,
+				loadingAllUsers: true
+			};
+		}
+		case SEARCH_USERS_SUCCESS: {
+			return {
+				...state,
+				allUsers: {
+					data: action.payload.data.data,
+					isLastPage:
+						action.payload.data.meta.current_page ===
+						action.payload.data.meta.last_page,
+					isFirstPage: action.payload.data.meta.current_page === 1,
+					totalPages: Math.ceil(
+						action.payload.data.meta.total / action.payload.data.meta.per_page
+					),
+					currentPage: action.payload.data.meta.current_page
+				},
+				loadingAllUsers: false
+			};
+		}
+		case SEARCH_USERS_FAIL: {
+			let errorMessage = action.error
+				? action.error.response.data.error
+				: "Napaka pri pridobivanju podatkov o uporabnikih.";
+			return {
+				...state,
+				loadingAllUsers: false,
+				errorAllUsers: action,
+				errorAllUsers: errorMessage
 			};
 		}
 
