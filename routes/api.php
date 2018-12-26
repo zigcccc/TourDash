@@ -33,4 +33,7 @@ Route::group(['middleware' => 'auth:api'], function() {
 
     // Update user role
     Route::put('user/{id}/update-role', 'API\UserController@updateUserRole');
+
+    // Search for users
+    Route::get('users/search', 'API\UserController@searchUsers');
 });

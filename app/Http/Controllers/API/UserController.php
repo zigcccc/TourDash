@@ -20,10 +20,10 @@ use Debugbar;
 class UserController extends Controller
 {
 
-    public function __construct()
-    {
-        $this->middleware('auth:api');
-    }
+    // public function __construct()
+    // {
+    //     $this->middleware('auth:api');
+    // }
 
     // Get all users
     public function getUsers()
@@ -32,7 +32,7 @@ class UserController extends Controller
             return response()->json(['error' => 'Za ogled podatkov o vseh uporabnikih nimate zadostnih dovoljenj.']);
         }
 
-        return UserResource::collection(User::orderBy('name')->paginate(20));
+        return UserResource::collection(User::where('id', '!=', Auth::id())->orderBy('name')->paginate(10));
     }
 
     // Get logged in user
@@ -213,6 +213,16 @@ class UserController extends Controller
                 'error_details' => $e->getMessage()
             ], 400);
         }
+    }
+
+    // Search Users
+    public function searchUsers(Request $request)
+    {
+        $input = $request->only('q');
+        $q = $input['q'];
+        
+        $result = User::where('name', 'LIKE', '%' . $q . '%')->where('id', '!=', Auth::id())->orderBy('name');
+        return UserResource::collection($result->paginate(10));
     }
 
     // Delete user
