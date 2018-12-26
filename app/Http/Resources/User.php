@@ -35,7 +35,7 @@ class User extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'email' => $this->email,
-            'avatar' => $this->avatar ? '/images/uploads/' . $this->avatar : null,
+            'avatar' => $this->avatar ? avatar_asset($this->avatar) : null,
             'role' => $this->roles()->first()->name
         ];
     }
