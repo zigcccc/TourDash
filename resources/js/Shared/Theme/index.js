@@ -21,6 +21,7 @@ const theme = {
 	bounceTransition: "all 450ms cubic-bezier(0.68, -0.55, 0.265, 1.55)",
 	easeTransition: "all 300ms cubic-bezier(0.785, 0.135, 0.15, 0.86)",
 	// shadows
+	minimalShadow: "0 2px 4px 0 rgba(0,0,0,0.13), 0 3px 6px 0 rgba(0,0,0,0.08)",
 	lightShadow: "0 2px 4px 0 rgba(0,0,0,0.23), 0 3px 6px 0 rgba(0,0,0,0.16)",
 	hoverShadow: "0 4px 8px 0 rgba(0,0,0,0.23), 0 5px 10px 0 rgba(0,0,0,0.16)",
 	fancyShadow: "0 0 30px rgba(0,0,0,0.1)",

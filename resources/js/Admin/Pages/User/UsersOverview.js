@@ -45,7 +45,9 @@ class UsersOverview extends Component {
 	}
 
 	componentDidMount() {
-		this.props.getUsers();
+		if (this.props.users.data.length === 0) {
+			this.props.getUsers();
+		}
 	}
 
 	clearSuccess() {

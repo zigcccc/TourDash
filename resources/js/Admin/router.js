@@ -7,6 +7,7 @@ import styled from "styled-components";
 import ReactPlaceholder from "react-placeholder";
 import NotFound from "./Pages/NotFound";
 import Dashboard from "./Pages/Dashboard";
+import CreateNewPage from "./Pages/Pages/CreateNewPage";
 import UsersOverview from "./Pages/User/UsersOverview";
 import MyProfile from "./Pages/User/MyProfile";
 import Sidebar, { SidebarPlaceholder } from "./Components/Sidebar";
@@ -49,6 +50,7 @@ class AppRouter extends Component {
 					<MainArea>
 						<Switch>
 							<Route path="/" component={Dashboard} exact />
+							<Route path="/pages/add/" component={CreateNewPage} exact />
 							<Route path="/users/" component={UsersOverview} exact />
 							<Route path="/users/my-profile/" component={MyProfile} exact />
 
