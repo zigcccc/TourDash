@@ -15,6 +15,12 @@ use Illuminate\Http\Request;
 
 Route::post('/login', 'API\PassportController@login');
 
+// Get all pages
+Route::get('/pages', 'API\PageController@index');
+
+// Get specific page
+Route::get('/pages/{id}', 'API\PageController@show');
+
 Route::group(['middleware' => 'auth:api'], function() {
     // User CRUD
     Route::get('users', 'API\UserController@getUsers');

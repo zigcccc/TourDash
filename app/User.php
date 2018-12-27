@@ -7,6 +7,7 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Role;
+use App\Page;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -65,5 +66,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function hasRole($role)
     {
         return $this->roles()->where('name', $role)->exists();
+    }
+
+    public function pages()
+    {
+        return $this->hasMany(Page::class);
     }
 }
