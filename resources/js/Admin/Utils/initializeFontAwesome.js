@@ -30,7 +30,9 @@ import {
 	faLockOpen,
 	faCheck,
 	faArrowUp,
-	faArrowDown
+	faArrowDown,
+	faLink,
+	faUnlink
 } from "@fortawesome/free-solid-svg-icons";
 
 const initializeFontAwesome = () =>
@@ -65,7 +67,9 @@ const initializeFontAwesome = () =>
 		faLockOpen,
 		faCheck,
 		faArrowUp,
-		faArrowDown
+		faArrowDown,
+		faLink,
+		faUnlink
 	);
 
 export default initializeFontAwesome;

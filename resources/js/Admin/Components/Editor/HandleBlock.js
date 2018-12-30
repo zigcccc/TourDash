@@ -3,45 +3,20 @@ import styled from "styled-components";
 import PropTypes from "prop-types";
 import classNames from "classnames";
 import HandleTypography from "./HandleTypography";
-import { OutsideHandler } from "../Helpers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class BlockContainer extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			editing: false
-		};
-		this.setEdit = this.setEdit.bind(this);
-		this.unsetEdit = this.unsetEdit.bind(this);
-	}
-
-	setEdit() {
-		this.props.setActiveBlock();
-		this.setState({
-			editing: true
-		});
-	}
-
-	unsetEdit() {
-		this.props.unsetActiveBlock();
-		this.setState({
-			editing: false
-		});
-	}
-
 	render() {
 		return (
-			<OutsideHandler handleClickOutside={this.unsetEdit}>
-				<Block
-					onClick={this.setEdit}
-					className={classNames({
-						editing: this.state.editing
-					})}
-				>
-					{this.props.children}
-				</Block>
-			</OutsideHandler>
+			<Block
+				onClick={this.props.setActiveBlock}
+				className={classNames({
+					"editor-block": true,
+					editing: this.props.active
+				})}
+			>
+				{this.props.children}
+			</Block>
 		);
 	}
 }
@@ -51,7 +26,6 @@ class HandleBlock extends Component {
 		const {
 			type,
 			setActiveBlock,
-			unsetActiveBlock,
 			moveUp,
 			moveDown,
 			onDelete,
@@ -62,10 +36,7 @@ class HandleBlock extends Component {
 		switch (type) {
 			case "typography": {
 				return (
-					<BlockContainer
-						setActiveBlock={setActiveBlock}
-						unsetActiveBlock={unsetActiveBlock}
-					>
+					<BlockContainer setActiveBlock={setActiveBlock} active={isActive}>
 						<HandleTypography {...this.props} />
 						<BlockActions
 							className={classNames({
@@ -99,7 +70,6 @@ class HandleBlock extends Component {
 HandleBlock.propTypes = {
 	type: PropTypes.string.isRequired,
 	setActiveBlock: PropTypes.func.isRequired,
-	unsetActiveBlock: PropTypes.func.isRequired,
 	moveUp: PropTypes.func.isRequired,
 	moveDown: PropTypes.func.isRequired,
 	onDelete: PropTypes.func.isRequired,
@@ -115,7 +85,7 @@ HandleBlock.defaultProps = {
 };
 
 const Block = styled.div`
-	padding: 2em;
+	padding: 1em;
 	margin: 1em 0.5em;
 	border: 2px dashed ${props => props.theme.lightGray};
 	position: relative;

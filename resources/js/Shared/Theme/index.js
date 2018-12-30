@@ -30,4 +30,15 @@ const theme = {
 	sidebarWidth: 240
 };
 
+export const defaultPickerColors = [
+	theme.mainColor,
+	theme.mainColorHover,
+	theme.darkBlue,
+	theme.whiteShade1,
+	theme.whiteShade3,
+	theme.darkGray,
+	theme.darkPrimary,
+	theme.darkHeavy
+];
+
 export default theme;

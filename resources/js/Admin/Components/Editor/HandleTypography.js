@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { Title } from "bloomer";
+import { Title as BloomerTitle } from "bloomer";
 import PropTypes from "prop-types";
 
 class HandleTypography extends Component {
@@ -29,5 +29,11 @@ HandleTypography.propTypes = {
 	options: PropTypes.object,
 	data: PropTypes.string.isRequired
 };
+
+const Title = styled(BloomerTitle)`
+	&:not(:last-child) {
+		margin-bottom: 0;
+	}
+`;
 
 export default HandleTypography;
