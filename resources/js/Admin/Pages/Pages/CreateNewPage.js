@@ -14,12 +14,11 @@ import { defaultPickerColors } from "../../../Shared/Theme";
 import { Spacer } from "../../Components/Helpers";
 import { Field, TextArea } from "bloomer";
 import Dropdown from "../../Components/Dropdown";
-import { TwitterPicker } from "react-color";
+import TwitterPicker from "react-color/lib/Twitter";
 import HandleBlock from "../../Components/Editor/HandleBlock";
-import Slider from "../../Components/Slider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import swal from "sweetalert";
-import MarginSetter from "../../Components/MarginSetter";
+import MarginSetter from "../../Components/Editor/MarginSetter";
 
 class CreateNewPage extends Component {
 	constructor(props) {
