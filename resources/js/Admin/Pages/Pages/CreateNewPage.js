@@ -19,6 +19,7 @@ import HandleBlock from "../../Components/Editor/HandleBlock";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import swal from "sweetalert";
 import MarginSetter from "../../Components/Editor/MarginSetter";
+import TextAlignment from "../../Components/Editor/TextAlignment";
 
 class CreateNewPage extends Component {
 	constructor(props) {
@@ -81,6 +82,7 @@ class CreateNewPage extends Component {
 		this.setTypographyBlockType = this.setTypographyBlockType.bind(this);
 		this.handleFontColor = this.handleFontColor.bind(this);
 		this.setMargin = this.setMargin.bind(this);
+		this.setTextAlignment = this.setTextAlignment.bind(this);
 	}
 
 	handleInputChange(e) {
@@ -225,6 +227,17 @@ class CreateNewPage extends Component {
 		);
 	}
 
+	setTextAlignment(alignment) {
+		this.setState(
+			produce(draft => {
+				draft.content[
+					draft.editingBlock.index
+				].options.style.textAlign = alignment;
+				draft.editingBlock.options.style.textAlign = alignment;
+			})
+		);
+	}
+
 	componentDidMount() {
 		const { pageTitle, slug, type, content } = this.state;
 		this.setState({
@@ -348,6 +361,13 @@ class CreateNewPage extends Component {
 											current={editingBlock.options.tag}
 											fullWidth={true}
 											condensed={true}
+										/>
+									</GroupItem>
+									<GroupItem>
+										<h5>Poravnava besedila:</h5>
+										<TextAlignment
+											onClick={this.setTextAlignment}
+											current={editingBlock.options.style.textAlign || "left"}
 										/>
 									</GroupItem>
 									<GroupItem>
