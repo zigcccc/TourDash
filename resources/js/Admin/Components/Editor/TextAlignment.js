@@ -9,22 +9,22 @@ const TextAlignment = ({ current, onClick }) => (
 		<FontAwesomeIcon
 			className={classNames({ active: current === "left" })}
 			icon="align-left"
-			onClick={() => onClick("left")}
+			onClick={() => onClick("textAlign", "left")}
 		/>
 		<FontAwesomeIcon
 			className={classNames({ active: current === "center" })}
 			icon="align-center"
-			onClick={() => onClick("center")}
+			onClick={() => onClick("textAlign", "center")}
 		/>
 		<FontAwesomeIcon
 			className={classNames({ active: current === "right" })}
 			icon="align-right"
-			onClick={() => onClick("right")}
+			onClick={() => onClick("textAlign", "right")}
 		/>
 		<FontAwesomeIcon
 			className={classNames({ active: current === "justify" })}
 			icon="align-justify"
-			onClick={() => onClick("justify")}
+			onClick={() => onClick("textAlign", "justify")}
 		/>
 	</TextAlignmentContainer>
 );

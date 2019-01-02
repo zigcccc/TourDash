@@ -32,10 +32,6 @@ class CreateNewPage extends Component {
 		this.setPageType = this.setPageType.bind(this);
 		this.savePage = this.savePage.bind(this);
 		this.unsetActiveBlock = this.unsetActiveBlock.bind(this);
-		this.setTypographyBlockType = this.setTypographyBlockType.bind(this);
-		this.handleFontColor = this.handleFontColor.bind(this);
-		this.setMargin = this.setMargin.bind(this);
-		this.setTextAlignment = this.setTextAlignment.bind(this);
 	}
 
 	handleInputChange(e) {
@@ -99,46 +95,6 @@ class CreateNewPage extends Component {
 		);
 	}
 
-	handleFontColor(color) {
-		this.setState(
-			produce(draft => {
-				draft.content[draft.editingBlock.index].options.style.color = color.hex;
-				draft.editingBlock.options.style.color = color.hex;
-			})
-		);
-	}
-
-	setTypographyBlockType(type) {
-		this.setState(
-			produce(draft => {
-				draft.content[draft.editingBlock.index].options.tag = type;
-				draft.editingBlock.options.tag = type;
-			})
-		);
-	}
-
-	setMargin(formattedMargin) {
-		this.setState(
-			produce(draft => {
-				draft.content[
-					draft.editingBlock.index
-				].options.style.margin = formattedMargin;
-				draft.editingBlock.options.style.margin = formattedMargin;
-			})
-		);
-	}
-
-	setTextAlignment(alignment) {
-		this.setState(
-			produce(draft => {
-				draft.content[
-					draft.editingBlock.index
-				].options.style.textAlign = alignment;
-				draft.editingBlock.options.style.textAlign = alignment;
-			})
-		);
-	}
-
 	componentDidMount() {
 		const { pageTitle, slug, type, content } = this.props.editingPage;
 		this.setState({
@@ -147,22 +103,26 @@ class CreateNewPage extends Component {
 	}
 
 	componentDidUpdate() {
+		const { editingPage, setPageUpdateStatus } = this.props;
 		const isEqual = this.getDiff();
-		if (!isEqual && !this.props.editingPage.hasBeenUpdated) {
-			this.props.setPageUpdateStatus(true);
+		if (!isEqual && !editingPage.hasBeenUpdated) {
+			setPageUpdateStatus(true);
 		}
-		if (isEqual && this.props.editingPage.hasBeenUpdated) {
-			this.props.setPageUpdateStatus(false);
+		if (isEqual && editingPage.hasBeenUpdated) {
+			setPageUpdateStatus(false);
 		}
 	}
 
 	render() {
 		const {
+			editingBlock,
 			pageTitle,
 			slugOverriden,
 			slug,
 			type,
-			content
+			content,
+			hasBeenUpdated,
+			savingPage
 		} = this.props.editingPage;
 		return (
 			<CreatePageContainer>
@@ -209,7 +169,12 @@ class CreateNewPage extends Component {
 					</EditorContent>
 				</EditorArea>
 				<SidebarArea>
-					<SidebarEditor />
+					<SidebarEditor
+						editingBlock={editingBlock}
+						pageUpdated={hasBeenUpdated}
+						savingPage={savingPage}
+						onSavePage={this.savePage}
+					/>
 				</SidebarArea>
 			</CreatePageContainer>
 		);

@@ -26,7 +26,8 @@ class BlockContainer extends Component {
 					editing: this.props.active,
 					"has-parent": this.props.hasParent,
 					container: !this.props.hasParent,
-					"is-last": this.props.isLast
+					"is-last": this.props.isLast,
+					"is-fluid": this.props.isFluid
 				})}
 			>
 				{this.props.children}
@@ -100,6 +101,7 @@ class HandleBlock extends Component {
 				active={isActive}
 				hasParent={this.props.block.hasParent}
 				isLast={isLastItem}
+				isFluid={block.isFluid}
 			>
 				{(() => {
 					switch (block.type) {
@@ -158,7 +160,11 @@ const Block = styled.div`
 	margin: 1em auto;
 	border: 2px dashed ${props => props.theme.lightGray};
 	position: relative;
-	&.container {
+	&.has-parent {
+		margin-bottom: 0;
+		margin-top: 10px;
+	}
+	&.container:not(.is-fluid) {
 		@media screen and (min-width: 1472px) {
 			width: 1152px;
 			max-width: 95%;
@@ -192,6 +198,7 @@ const BlockActions = styled.div`
 		right: 0;
 		left: unset;
 		flex-direction: column;
+		transition: none;
 		transform: translate(50%, -50%);
 	}
 	${Block}.has-parent.is-last > & {

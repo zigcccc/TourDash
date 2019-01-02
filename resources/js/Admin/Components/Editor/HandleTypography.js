@@ -8,13 +8,13 @@ class HandleTypography extends Component {
 		const { options, data } = this.props.block;
 		switch (options.tag) {
 			case "p": {
-				return <p>{data}</p>;
+				return <p style={options.style}>{data}</p>;
 			}
 			case "small": {
-				return <small>{data}</small>;
+				return <small style={options.style}>{data}</small>;
 			}
 			case "quote": {
-				return <blockquote>{data}</blockquote>;
+				return <blockquote style={options.style}>{data}</blockquote>;
 			}
 			default: {
 				return (

@@ -46,7 +46,7 @@ class MarginSetter extends Component {
 	setFormattedMargin() {
 		const { top, right, bottom, left, unit } = this.state;
 		const formatedMargin = `${top}${unit} ${right}${unit} ${bottom}${unit} ${left}${unit}`;
-		this.props.onChange(formatedMargin);
+		this.props.onChange("margin", formatedMargin);
 	}
 
 	changeUnit(unit) {

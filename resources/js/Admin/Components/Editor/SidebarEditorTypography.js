@@ -1,5 +1,12 @@
 import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
 import styled from "styled-components";
+import {
+	setTypographyBlockTag,
+	toggleFluidBlock,
+	setBlockStyle,
+	setBlockContent
+} from "../../Store/Actions/EditingPageActions";
 import possibleTypographyElements from "./possibleTypographyElements";
 import { defaultPickerColors } from "../../../Shared/Theme";
 import MarginSetter from "./MarginSetter";
@@ -8,8 +15,41 @@ import TwitterPicker from "react-color/lib/Twitter";
 import { Field, TextArea } from "bloomer";
 import Dropdown from "../Dropdown";
 import { Group } from "./SidebarEditor";
+import Switch from "../Switch";
 
 class SidebarEditorTypography extends Component {
+	constructor(props) {
+		super(props);
+		this.setTypographyBlockType = this.setTypographyBlockType.bind(this);
+		this.toggleFluidBlock = this.toggleFluidBlock.bind(this);
+		this.setBlockStyle = this.setBlockStyle.bind(this);
+		this.handleFontColor = this.handleFontColor.bind(this);
+		this.handleTextDataChange = this.handleTextDataChange.bind(this);
+	}
+
+	setTypographyBlockType(tag) {
+		const { setTypographyBlockTag } = this.props;
+		setTypographyBlockTag(tag);
+	}
+
+	toggleFluidBlock({ target }) {
+		this.props.toggleFluidBlock(!target.checked);
+	}
+
+	handleFontColor(color) {
+		const { setBlockStyle } = this.props;
+		setBlockStyle("color", color.hex);
+	}
+
+	setBlockStyle(property, value) {
+		this.props.setBlockStyle(property, value);
+	}
+
+	handleTextDataChange(e) {
+		const { setBlockContent } = this.props;
+		setBlockContent(e.target.value);
+	}
+
 	render() {
 		const { data, options } = this.props.editingBlock;
 		const { editingBlock } = this.props;
@@ -18,10 +58,7 @@ class SidebarEditorTypography extends Component {
 				<Group>
 					<h3>Vsebina</h3>
 					<Field>
-						<TextArea
-							//onChange={this.handleTextDataChange.bind(this)}
-							value={data}
-						/>
+						<TextArea onChange={this.handleTextDataChange} value={data} />
 					</Field>
 				</Group>
 				<Group>
@@ -40,7 +77,7 @@ class SidebarEditorTypography extends Component {
 					<GroupItem>
 						<h5>Poravnava besedila:</h5>
 						<TextAlignment
-							onClick={this.setTextAlignment}
+							onClick={this.setBlockStyle}
 							current={options.style.textAlign || "left"}
 						/>
 					</GroupItem>
@@ -57,11 +94,21 @@ class SidebarEditorTypography extends Component {
 					<GroupItem>
 						<h5>Odmiki elementa:</h5>
 						<MarginSetter
-							onChange={this.setMargin}
+							onChange={this.setBlockStyle}
 							currentBlock={editingBlock}
 							currentMargin={options.style ? options.style.margin : null}
 						/>
 					</GroupItem>
+					{!editingBlock.hasParent && (
+						<GroupItem>
+							<h5>Omejena širina:</h5>
+							<Switch
+								name="block-fluid"
+								checked={!editingBlock.isFluid}
+								handleChange={this.toggleFluidBlock}
+							/>
+						</GroupItem>
+					)}
 				</Group>
 			</Fragment>
 		);
@@ -76,4 +123,18 @@ const GroupItem = styled.div`
 	}
 `;
 
-export default SidebarEditorTypography;
+const mapStateToProps = state => ({
+	editingBlock: state.editingPage.editingBlock
+});
+
+const mapDispatchToProps = {
+	setTypographyBlockTag,
+	toggleFluidBlock,
+	setBlockStyle,
+	setBlockContent
+};
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(SidebarEditorTypography);

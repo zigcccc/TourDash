@@ -9,7 +9,11 @@ import {
 	MOVE_BLOCK_DOWN,
 	DELETE_BLOCK,
 	SET_PAGE_TYPE,
-	SET_PAGE_UPDATE_STATUS
+	SET_PAGE_UPDATE_STATUS,
+	SET_TYPOGRAPHY_BLOCK_TAG,
+	TOGGLE_FLUID_BLOCK,
+	SET_BLOCK_STYLE,
+	SET_BLOCK_CONTENT
 } from "../Actions/EditingPageActions";
 
 const initialState = {
@@ -114,7 +118,7 @@ const editingPageReducer = (state = initialState, action) => {
 		case DELETE_BLOCK: {
 			let { blockId, hasParent, parentUid } = action.payload;
 			if (hasParent) {
-				let parentIndex = _findIndex(state.content, ["uid", parentUid]);
+				let parentIndex = getParentIndex(state.content, parentUid);
 				return produce(state, draft => {
 					draft.content[parentIndex].data = draft.content[
 						parentIndex
@@ -127,6 +131,76 @@ const editingPageReducer = (state = initialState, action) => {
 			}
 		}
 
+		// Toggle fluid block
+		case TOGGLE_FLUID_BLOCK: {
+			return produce(state, draft => {
+				draft.content[draft.editingBlockIndex].isFluid = action.payload.state;
+				draft.editingBlock.isFluid = action.payload.state;
+			});
+		}
+
+		// Set block content
+		case SET_BLOCK_CONTENT: {
+			let { content } = action.payload;
+			let { hasParent, parentBlockUid } = state.editingBlock;
+			if (hasParent) {
+				let parentIndex = getParentIndex(state.content, parentBlockUid);
+				return produce(state, draft => {
+					draft.content[parentIndex].data[
+						draft.editingBlockIndex
+					].data = content;
+					draft.editingBlock.data = content;
+				});
+			} else {
+				return produce(state, draft => {
+					draft.content[draft.editingBlockIndex].data = content;
+					draft.editingBlock.data = content;
+				});
+			}
+		}
+
+		// Set Block Style
+		case SET_BLOCK_STYLE: {
+			let { property, value } = action.payload;
+			let { hasParent, parentBlockUid } = state.editingBlock;
+			if (hasParent) {
+				let parentIndex = getParentIndex(state.content, parentBlockUid);
+				return produce(state, draft => {
+					draft.content[parentIndex].data[
+						draft.editingBlockIndex
+					].options.style[property] = value;
+					draft.editingBlock.options.style[property] = value;
+				});
+			} else {
+				return produce(state, draft => {
+					draft.content[draft.editingBlockIndex].options.style[
+						property
+					] = value;
+					draft.editingBlock.options.style[property] = value;
+				});
+			}
+		}
+
+		// Set typography block tag
+		case SET_TYPOGRAPHY_BLOCK_TAG: {
+			let { tag } = action.payload;
+			let { hasParent, parentBlockUid } = state.editingBlock;
+			if (hasParent) {
+				let parentIndex = getParentIndex(state.content, parentBlockUid);
+				return produce(state, draft => {
+					draft.content[parentIndex].data[
+						draft.editingBlockIndex
+					].options.tag = tag;
+					draft.editingBlock.options.tag = tag;
+				});
+			} else {
+				return produce(state, draft => {
+					draft.content[draft.editingBlockIndex].options.tag = tag;
+					draft.editingBlock.options.tag = tag;
+				});
+			}
+		}
+
 		default: {
 			return state;
 		}
@@ -134,16 +208,7 @@ const editingPageReducer = (state = initialState, action) => {
 };
 
 function getParentIndex(state, id) {
-	let parentIndex = null;
-	state.content.forEach((block, i) => {
-		if (
-			typeof block.data === "object" &&
-			block.data.filter(item => item.uid === id)
-		) {
-			parentIndex = i;
-		}
-	});
-	return parentIndex;
+	return _findIndex(state, ["uid", id]);
 }
 
 export default editingPageReducer;

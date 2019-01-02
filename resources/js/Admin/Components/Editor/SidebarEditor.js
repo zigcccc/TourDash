@@ -1,5 +1,4 @@
 import React, { Component, Fragment } from "react";
-import { connect } from "react-redux";
 import _isEmpty from "lodash/isEmpty";
 import classNames from "classnames";
 import PropTypes from "prop-types";
@@ -8,56 +7,56 @@ import SidebarEditorTypography from "./SidebarEditorTypography";
 import blockTypeMap from "./blockTypeMap";
 import { Spacer } from "../Helpers";
 
-class SidebarEditor extends Component {
-	render() {
-		const { editingBlock, hasBeenUpdated, savingPage } = this.props.editingPage;
-		return (
-			<SiderbarPlaceholder>
-				<SidebarEditorContainer>
-					{!_isEmpty(editingBlock) ? (
-						<Fragment>
-							<Group>
-								<h3>Tip bloka</h3>
-								<p>{blockTypeMap[editingBlock.type]}</p>
-							</Group>
-							{(() => {
-								switch (editingBlock.type) {
-									case "typography": {
-										return (
-											<SidebarEditorTypography editingBlock={editingBlock} />
-										);
-									}
-									default: {
-										return null;
-									}
+const SidebarEditor = ({
+	editingBlock,
+	pageUpdated,
+	savingPage,
+	onSavePage
+}) => {
+	return (
+		<SiderbarPlaceholder>
+			<SidebarEditorContainer>
+				{!_isEmpty(editingBlock) ? (
+					<Fragment>
+						<Group>
+							<h3>Tip bloka</h3>
+							<p>{blockTypeMap[editingBlock.type]}</p>
+						</Group>
+						{(() => {
+							switch (editingBlock.type) {
+								case "typography": {
+									return <SidebarEditorTypography />;
 								}
-							})()}
-						</Fragment>
-					) : (
-						<Fragment>
-							<SidebarEditorNoContentSelected>
-								Izberite vsebinski blok in začnite z urejanjem
-							</SidebarEditorNoContentSelected>
-						</Fragment>
-					)}
-				</SidebarEditorContainer>
-				<Spacer />
-				<SavePage
-					onClick={hasBeenUpdated ? this.savePage : null}
-					className={classNames({
-						disabled: !hasBeenUpdated
-					})}
-				>
-					{savingPage ? (
-						<FontAwesomeIcon icon="circle-notch" spin size="1x" />
-					) : (
-						"Shrani stran"
-					)}
-				</SavePage>
-			</SiderbarPlaceholder>
-		);
-	}
-}
+								default: {
+									return null;
+								}
+							}
+						})()}
+					</Fragment>
+				) : (
+					<Fragment>
+						<SidebarEditorNoContentSelected>
+							Izberite vsebinski blok in začnite z urejanjem
+						</SidebarEditorNoContentSelected>
+					</Fragment>
+				)}
+			</SidebarEditorContainer>
+			<Spacer />
+			<SavePage
+				onClick={pageUpdated ? onSavePage : null}
+				className={classNames({
+					disabled: !pageUpdated
+				})}
+			>
+				{savingPage ? (
+					<FontAwesomeIcon icon="circle-notch" spin size="1x" />
+				) : (
+					"Shrani stran"
+				)}
+			</SavePage>
+		</SiderbarPlaceholder>
+	);
+};
 
 SidebarEditor.propTypes = {
 	editingBlock: PropTypes.object
@@ -131,13 +130,4 @@ const SavePage = styled.button`
 	}
 `;
 
-const mapStateToProps = state => ({
-	editingPage: state.editingPage
-});
-
-const mapDispatchToProps = {};
-
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(SidebarEditor);
+export default SidebarEditor;
