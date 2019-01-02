@@ -58384,11 +58384,12 @@ var MainHeading = function MainHeading(props) {
 /*!********************************************!*\
   !*** ./resources/js/Shared/Theme/index.js ***!
   \********************************************/
-/*! exports provided: default */
+/*! exports provided: defaultPickerColors, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "defaultPickerColors", function() { return defaultPickerColors; });
 var theme = {
   // color pallete
   mainColor: "#1F77FA",
@@ -58420,6 +58421,7 @@ var theme = {
   // Settings
   sidebarWidth: 240
 };
+var defaultPickerColors = [theme.mainColor, theme.mainColorHover, theme.darkBlue, theme.whiteShade1, theme.whiteShade3, theme.darkGray, theme.darkPrimary, theme.darkHeavy];
 /* harmony default export */ __webpack_exports__["default"] = (theme);
 
 /***/ }),

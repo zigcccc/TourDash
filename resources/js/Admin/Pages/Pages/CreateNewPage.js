@@ -3,74 +3,27 @@ import styled from "styled-components";
 import { produce } from "immer";
 import classNames from "classnames";
 import { connect } from "react-redux";
+import {
+	setActiveBlock,
+	unsetActiveBlock,
+	setPageType,
+	setPageUpdateStatus
+} from "../../Store/Actions/EditingPageActions";
 import _isEqual from "lodash/isEqual";
 import _remove from "lodash/remove";
 import _findIndex from "lodash/findIndex";
 import _move from "lodash-move";
 import slugify from "slugify";
-import blockTypeMap from "../../Components/Editor/blockTypeMap";
-import possibleTypographyElements from "../../Components/Editor/possibleTypographyElements";
-import { defaultPickerColors } from "../../../Shared/Theme";
+import SidebarEditor from "../../Components/Editor/SidebarEditor";
 import { Spacer } from "../../Components/Helpers";
-import { Field, TextArea } from "bloomer";
 import Dropdown from "../../Components/Dropdown";
-import TwitterPicker from "react-color/lib/Twitter";
 import HandleBlock from "../../Components/Editor/HandleBlock";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import swal from "sweetalert";
-import MarginSetter from "../../Components/Editor/MarginSetter";
-import TextAlignment from "../../Components/Editor/TextAlignment";
 
 class CreateNewPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			editingBlock: null,
-			editingBlockIndex: null,
-			pageTitle: "Ime strani",
-			slug: "ime-strani",
-			slugOverriden: false,
-			hasBeenUpdated: false,
-			type: "vsebinska",
-			savingPage: false,
-			content: [
-				{
-					uid: Math.floor(Math.random() * 100000),
-					type: "typography",
-					data: "Glavni naslov",
-					options: {
-						tag: "h1",
-						style: {
-							textAlign: "center",
-							color: "#2d2d2d",
-							fontSize: "48px"
-						}
-					}
-				},
-				{
-					uid: Math.floor(Math.random() * 100000),
-					type: "typography",
-					data: "Vsebinski podnaslov",
-					options: {
-						tag: "h4",
-						style: {
-							textAlign: "center"
-						}
-					}
-				},
-				{
-					uid: Math.floor(Math.random() * 100000),
-					type: "typography",
-					data:
-						"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-					options: {
-						tag: "p",
-						style: {
-							textAlign: "justify"
-						}
-					}
-				}
-			],
 			originalState: null
 		};
 		this.handleInputChange = this.handleInputChange.bind(this);
@@ -105,72 +58,20 @@ class CreateNewPage extends Component {
 	}
 
 	setPageType(type) {
-		this.setState({
-			type: type
-		});
-	}
-
-	setActiveBlock(block, index) {
-		this.setState({
-			editingBlock: { ...block, index: index }
-		});
+		this.props.setPageType(type);
 	}
 
 	unsetActiveBlock(e) {
 		if (e.target !== e.currentTarget) {
 			return;
 		}
-		this.setState({
-			editingBlock: null
-		});
+		this.props.unsetActiveBlock();
 	}
 
 	getDiff() {
-		const { pageTitle, slug, type, content, originalState } = this.state;
+		const { originalState } = this.state;
+		const { pageTitle, slug, type, content } = this.props.editingPage;
 		return _isEqual({ pageTitle, slug, type, content }, originalState);
-	}
-
-	moveBlockUp(index, e) {
-		e.stopPropagation();
-		if (index !== 0) {
-			this.setState({
-				...this.state,
-				content: _move(this.state.content, index, index - 1)
-			});
-		}
-	}
-
-	moveBlockDown(index, e) {
-		e.stopPropagation();
-		if (index < this.state.content.length - 1) {
-			this.setState({
-				...this.state,
-				content: _move(this.state.content, index, index + 1)
-			});
-		}
-	}
-
-	async deleteBlock(index, e) {
-		e.stopPropagation();
-		const response = await swal(
-			"Ste prepričani, da želite izbrisati blok?",
-			"",
-			"info",
-			{
-				button: {
-					text: "Izbriši",
-					className: "tourdash-btn"
-				}
-			}
-		);
-		if (response) {
-			this.setState({
-				...this.state,
-				content: _remove(this.state.content, (elem, i) => {
-					return index !== i;
-				})
-			});
-		}
 	}
 
 	savePage() {
@@ -239,24 +140,19 @@ class CreateNewPage extends Component {
 	}
 
 	componentDidMount() {
-		const { pageTitle, slug, type, content } = this.state;
+		const { pageTitle, slug, type, content } = this.props.editingPage;
 		this.setState({
-			...this.state,
 			originalState: { pageTitle, slug, type, content }
 		});
 	}
 
 	componentDidUpdate() {
 		const isEqual = this.getDiff();
-		if (!isEqual && !this.state.hasBeenUpdated) {
-			this.setState({
-				hasBeenUpdated: true
-			});
+		if (!isEqual && !this.props.editingPage.hasBeenUpdated) {
+			this.props.setPageUpdateStatus(true);
 		}
-		if (isEqual && this.state.hasBeenUpdated) {
-			this.setState({
-				hasBeenUpdated: false
-			});
+		if (isEqual && this.props.editingPage.hasBeenUpdated) {
+			this.props.setPageUpdateStatus(false);
 		}
 	}
 
@@ -266,11 +162,8 @@ class CreateNewPage extends Component {
 			slugOverriden,
 			slug,
 			type,
-			content,
-			savingPage,
-			editingBlock,
-			hasBeenUpdated
-		} = this.state;
+			content
+		} = this.props.editingPage;
 		return (
 			<CreatePageContainer>
 				<EditorArea onClick={this.unsetActiveBlock}>
@@ -308,25 +201,7 @@ class CreateNewPage extends Component {
 					</EditorActionBar>
 					<EditorContent>
 						{content.map((block, i) => (
-							<Fragment key={block.uid}>
-								<HandleBlock
-									setActiveBlock={this.setActiveBlock.bind(this, block, i)}
-									unsetActiveBlock={this.unsetActiveBlock}
-									moveUp={this.moveBlockUp.bind(this, i)}
-									moveDown={this.moveBlockDown.bind(this, i)}
-									onDelete={this.deleteBlock.bind(this, i)}
-									isFirstItem={i === 0}
-									isActive={
-										editingBlock && editingBlock.uid === block.uid
-											? true
-											: false
-									}
-									isLastItem={i === content.length - 1}
-									type={block.type}
-									data={block.data}
-									options={block.options}
-								/>
-							</Fragment>
+							<HandleBlock key={block.uid} block={block} blockIndex={i} />
 						))}
 						<AddNewContent>
 							<FontAwesomeIcon icon="plus" />
@@ -334,88 +209,7 @@ class CreateNewPage extends Component {
 					</EditorContent>
 				</EditorArea>
 				<SidebarArea>
-					<SidebarEditor>
-						{editingBlock ? (
-							<Fragment>
-								<Group>
-									<h3>Tip bloka</h3>
-									<p>{blockTypeMap[editingBlock.type]}</p>
-								</Group>
-								<Group>
-									<h3>Vsebina</h3>
-									<Field>
-										<TextArea
-											onChange={this.handleTextDataChange.bind(this)}
-											value={editingBlock.data}
-										/>
-									</Field>
-								</Group>
-								<Group>
-									<h3>Dodatne nastavitve</h3>
-									<GroupItem>
-										<h5>Tip elementa:</h5>
-										<Dropdown
-											color="dark"
-											handleClick={this.setTypographyBlockType}
-											possibilities={possibleTypographyElements}
-											current={editingBlock.options.tag}
-											fullWidth={true}
-											condensed={true}
-										/>
-									</GroupItem>
-									<GroupItem>
-										<h5>Poravnava besedila:</h5>
-										<TextAlignment
-											onClick={this.setTextAlignment}
-											current={editingBlock.options.style.textAlign || "left"}
-										/>
-									</GroupItem>
-									<GroupItem>
-										<h5>Barva pisave:</h5>
-										<TwitterPicker
-											width="250"
-											triangle="hide"
-											color={editingBlock.options.style.color || "#2d2d2d"}
-											colors={defaultPickerColors}
-											onChangeComplete={this.handleFontColor}
-										/>
-									</GroupItem>
-									<GroupItem>
-										<h5>Odmiki elementa:</h5>
-										<MarginSetter
-											onChange={this.setMargin}
-											currentBlock={editingBlock}
-											currentMargin={
-												editingBlock.options.style
-													? editingBlock.options.style.margin
-													: null
-											}
-										/>
-									</GroupItem>
-								</Group>
-							</Fragment>
-						) : (
-							<Fragment>
-								<SidebarEditorNoContentSelected>
-									Izberite vsebinski blok in začnite z urejanjem
-								</SidebarEditorNoContentSelected>
-							</Fragment>
-						)}
-					</SidebarEditor>
-					<hr />
-					<Spacer />
-					<SavePage
-						onClick={hasBeenUpdated ? this.savePage : null}
-						className={classNames({
-							disabled: !hasBeenUpdated
-						})}
-					>
-						{savingPage ? (
-							<FontAwesomeIcon icon="circle-notch" spin size="1x" />
-						) : (
-							"Shrani stran"
-						)}
-					</SavePage>
+					<SidebarEditor />
 				</SidebarArea>
 			</CreatePageContainer>
 		);
@@ -494,84 +288,23 @@ const SidebarArea = styled.div`
 	background: ${props => props.theme.whiteShade2};
 	display: flex;
 	flex-direction: column;
-`;
-
-const SidebarEditor = styled.div`
-	padding: 10px 15px;
-`;
-
-const Group = styled.div`
-	margin: 10px 0;
-	&:first-child {
-		margin-top: 0;
-	}
-	&:last-child {
-		margin-bottom: 0;
-		&::after {
-			display: none;
-		}
-	}
-	h3 {
-		font-weight: 900;
-		font-size: 12px;
-		text-transform: uppercase;
-		margin-bottom: 5px;
-	}
-	&::after {
-		content: "";
-		display: block;
-		margin: 15px auto;
-		width: 50%;
-		height: 1px;
-		background: ${props => props.theme.lightGray};
+	overflow-y: scroll;
+	padding-bottom: 75px;
+	&::-webkit-scrollbar {
+		width: 0px;
 	}
 `;
 
-const GroupItem = styled.div`
-	margin: 10px 0;
-	h5 {
-		font-size: 12px;
-		margin-bottom: 3px;
-	}
-`;
+const mapStateToProps = state => ({
+	editingPage: state.editingPage
+});
 
-const TextEditor = styled.textarea`
-	width: 100%;
-	margin-top: 5px;
-	font-size: 14px;
-`;
-
-const SidebarEditorNoContentSelected = styled.p`
-	text-align: center;
-`;
-
-const SavePage = styled.button`
-	border: none;
-	outline: none;
-	background-color: ${props => props.theme.mainColor};
-	color: ${props => props.theme.white};
-	text-transform: uppercase;
-	font-weight: 900;
-	font-size: 14px;
-	padding: 1.5em 1em;
-	transition: ${props => props.theme.easeTransition};
-	&.disabled {
-		background-color: ${props => props.theme.whiteShade3};
-		color: ${props => props.theme.darkGray};
-		&:hover {
-			cursor: not-allowed;
-			background-color: ${props => props.theme.whiteShade3};
-		}
-	}
-	&:hover {
-		cursor: pointer;
-		background-color: ${props => props.theme.mainColorHover};
-	}
-`;
-
-const mapStateToProps = state => ({});
-
-const mapDispatchToProps = {};
+const mapDispatchToProps = {
+	setActiveBlock,
+	unsetActiveBlock,
+	setPageType,
+	setPageUpdateStatus
+};
 
 export default connect(
 	mapStateToProps,

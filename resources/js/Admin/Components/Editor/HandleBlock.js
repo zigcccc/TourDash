@@ -1,9 +1,19 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import { connect } from "react-redux";
+import {
+	setActiveBlock,
+	moveBlockUp,
+	moveBlockDown,
+	deleteBlock
+} from "../../Store/Actions/EditingPageActions";
 import PropTypes from "prop-types";
 import classNames from "classnames";
+import _findIndex from "lodash/findIndex";
 import HandleTypography from "./HandleTypography";
+import HandleColumns from "./HandleColumns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import swal from "sweetalert";
 
 class BlockContainer extends Component {
 	render() {
@@ -12,7 +22,11 @@ class BlockContainer extends Component {
 				onClick={this.props.setActiveBlock}
 				className={classNames({
 					"editor-block": true,
-					editing: this.props.active
+					content: true,
+					editing: this.props.active,
+					"has-parent": this.props.hasParent,
+					container: !this.props.hasParent,
+					"is-last": this.props.isLast
 				})}
 			>
 				{this.props.children}
@@ -22,60 +36,115 @@ class BlockContainer extends Component {
 }
 
 class HandleBlock extends Component {
-	render() {
-		const {
-			type,
-			setActiveBlock,
-			moveUp,
-			moveDown,
-			onDelete,
-			isFirstItem,
-			isLastItem,
-			isActive
-		} = this.props;
-		switch (type) {
-			case "typography": {
-				return (
-					<BlockContainer setActiveBlock={setActiveBlock} active={isActive}>
-						<HandleTypography {...this.props} />
-						<BlockActions
-							className={classNames({
-								active: isActive
-							})}
-						>
-							{!isFirstItem && (
-								<Action onClick={moveUp}>
-									<FontAwesomeIcon icon="arrow-up" />
-								</Action>
-							)}
-							{!isLastItem && (
-								<Action onClick={moveDown}>
-									<FontAwesomeIcon icon="arrow-down" />
-								</Action>
-							)}
-							<Action className="danger" onClick={onDelete}>
-								<FontAwesomeIcon icon="trash-alt" />
-							</Action>
-						</BlockActions>
-					</BlockContainer>
-				);
+	constructor(props) {
+		super(props);
+		this.moveUp = this.moveUp.bind(this);
+		this.moveDown = this.moveDown.bind(this);
+		this.deleteBlock = this.deleteBlock.bind(this);
+		this.setActiveBlock = this.setActiveBlock.bind(this);
+	}
+
+	moveUp(e) {
+		e.stopPropagation();
+		const { block, blockIndex, moveBlockUp } = this.props;
+		moveBlockUp(blockIndex, block.hasParent, block.parentBlockUid);
+	}
+
+	moveDown(e) {
+		e.stopPropagation();
+		const { block, blockIndex, moveBlockDown } = this.props;
+		moveBlockDown(blockIndex, block.hasParent, block.parentBlockUid);
+	}
+
+	setActiveBlock(e) {
+		e.stopPropagation();
+		const { block, blockIndex, setActiveBlock } = this.props;
+		const relation = block.hasParent ? "child" : "parent";
+		setActiveBlock(block, blockIndex, relation);
+	}
+
+	async deleteBlock(e) {
+		e.stopPropagation();
+		const { deleteBlock, block, parentBlock } = this.props;
+		const response = await swal(
+			"Ste prepričani, da želite izbrisati blok?",
+			"",
+			"info",
+			{
+				button: {
+					text: "Izbriši",
+					className: "tourdash-btn"
+				}
 			}
-			default: {
-				return null;
-			}
+		);
+		if (response) {
+			block.hasParent
+				? deleteBlock(block.uid, block.hasParent, parentBlock.uid)
+				: deleteBlock(block.uid);
 		}
+	}
+
+	render() {
+		const { block, blockIndex, parentBlock } = this.props;
+		const { editingBlock, content } = this.props.editingPage;
+
+		const isActive = editingBlock && editingBlock.uid === block.uid;
+		const isFirstItem = blockIndex === 0;
+		const isLastItem = block.hasParent
+			? blockIndex === parentBlock.data.length - 1
+			: blockIndex === content.length - 1;
+
+		return (
+			<BlockContainer
+				setActiveBlock={this.setActiveBlock}
+				active={isActive}
+				hasParent={this.props.block.hasParent}
+				isLast={isLastItem}
+			>
+				{(() => {
+					switch (block.type) {
+						case "typography": {
+							return <HandleTypography {...this.props} />;
+						}
+						case "columns": {
+							return <HandleColumns {...this.props} />;
+						}
+						default: {
+							return null;
+						}
+					}
+				})()}
+				<BlockActions
+					className={classNames({
+						active: isActive
+					})}
+				>
+					{!isFirstItem && (
+						<Action onClick={this.moveUp}>
+							<FontAwesomeIcon
+								icon={block.hasParent ? "arrow-left" : "arrow-up"}
+							/>
+						</Action>
+					)}
+					{!isLastItem && (
+						<Action onClick={this.moveDown}>
+							<FontAwesomeIcon
+								icon={block.hasParent ? "arrow-right" : "arrow-down"}
+							/>
+						</Action>
+					)}
+					<Action className="danger" onClick={this.deleteBlock}>
+						<FontAwesomeIcon icon="trash-alt" />
+					</Action>
+				</BlockActions>
+			</BlockContainer>
+		);
 	}
 }
 
 HandleBlock.propTypes = {
-	type: PropTypes.string.isRequired,
-	setActiveBlock: PropTypes.func.isRequired,
-	moveUp: PropTypes.func.isRequired,
-	moveDown: PropTypes.func.isRequired,
-	onDelete: PropTypes.func.isRequired,
-	isFirstItem: PropTypes.bool.isRequired,
-	isLastItem: PropTypes.bool.isRequired,
-	isActive: PropTypes.bool.isRequired
+	block: PropTypes.object.isRequired,
+	blockIndex: PropTypes.number.isRequired
 };
 
 HandleBlock.defaultProps = {
@@ -86,9 +155,19 @@ HandleBlock.defaultProps = {
 
 const Block = styled.div`
 	padding: 1em;
-	margin: 1em 0.5em;
+	margin: 1em auto;
 	border: 2px dashed ${props => props.theme.lightGray};
 	position: relative;
+	&.container {
+		@media screen and (min-width: 1472px) {
+			width: 1152px;
+			max-width: 95%;
+		}
+		@media screen and (min-width: 1280px) {
+			width: 1152px;
+			max-width: 95%;
+		}
+	}
 	&:hover {
 		cursor: pointer;
 	}
@@ -107,7 +186,26 @@ const BlockActions = styled.div`
 	opacity: 0;
 	visibility: hidden;
 	transition: ${props => props.theme.easeTransition};
-	${Block}:hover & {
+	${Block}.has-parent > & {
+		bottom: unset;
+		top: 50%;
+		right: 0;
+		left: unset;
+		flex-direction: column;
+		transform: translate(50%, -50%);
+	}
+	${Block}.has-parent.is-last > & {
+		right: unset;
+		left: 0;
+		transform: translate(-50%, -50%);
+	}
+	${Block}.has-parent:hover > & {
+		transform: translate(50%, -50%);
+	}
+	${Block}.has-parent.is-last:hover > & {
+		transform: translate(-50%, -50%);
+	}
+	${Block}:hover > & {
 		transform: translate(-50%, 0);
 		opacity: 1;
 		visibility: visible;
@@ -130,6 +228,9 @@ const Action = styled.span`
 	border-radius: 50%;
 	font-size: 12px;
 	margin: 0 0.5em;
+	${Block}.has-parent & {
+		margin: 0.25em 0;
+	}
 	transition: ${props => props.theme.easeTransition};
 	&.danger {
 		background: ${props => props.theme.colorError};
@@ -139,4 +240,18 @@ const Action = styled.span`
 	}
 `;
 
-export default HandleBlock;
+const mapStateToProps = state => ({
+	editingPage: state.editingPage
+});
+
+const mapDispatchToProps = {
+	setActiveBlock,
+	moveBlockDown,
+	moveBlockUp,
+	deleteBlock
+};
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(HandleBlock);

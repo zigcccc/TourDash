@@ -5,10 +5,16 @@ import PropTypes from "prop-types";
 
 class HandleTypography extends Component {
 	render() {
-		const { options, data } = this.props;
+		const { options, data } = this.props.block;
 		switch (options.tag) {
 			case "p": {
-				return <p style={options.style}>{data}</p>;
+				return <p>{data}</p>;
+			}
+			case "small": {
+				return <small>{data}</small>;
+			}
+			case "quote": {
+				return <blockquote>{data}</blockquote>;
 			}
 			default: {
 				return (
@@ -26,13 +32,19 @@ class HandleTypography extends Component {
 }
 
 HandleTypography.propTypes = {
-	options: PropTypes.object,
-	data: PropTypes.string.isRequired
+	options: PropTypes.object
+	//data: PropTypes.string.isRequired
 };
 
 const Title = styled(BloomerTitle)`
 	&:not(:last-child) {
 		margin-bottom: 0;
+	}
+	&:active {
+		outline: none;
+	}
+	&:focus {
+		outline: none;
 	}
 `;
 

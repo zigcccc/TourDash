@@ -44,7 +44,6 @@ const initialState = {
 };
 
 const userReducer = (state = initialState, action) => {
-	console.log(action);
 	switch (action.type) {
 		// Get all users
 		case GET_ALL_USERS: {

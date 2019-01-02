@@ -46,6 +46,9 @@ const store = createStore(
 export { store };
 
 export default class App extends Component {
+	componentDidMount() {
+		ReactDOM.suppressContentEditableWarning;
+	}
 	render() {
 		return (
 			<ThemeProvider theme={theme}>

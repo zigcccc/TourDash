@@ -10551,6 +10551,16 @@ label.panel-block:hover {
   padding: 3rem 1.5rem 6rem;
 }
 
+.content p:not(:last-child),
+.content dl:not(:last-child),
+.content ol:not(:last-child),
+.content ul:not(:last-child),
+.content blockquote:not(:last-child),
+.content pre:not(:last-child),
+.content table:not(:last-child) {
+  margin-bottom: 0;
+}
+
 .swal-button.swal-button--confirm.tourdash-btn {
   background-color: #1F77FA;
 }
