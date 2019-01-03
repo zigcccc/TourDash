@@ -21,14 +21,18 @@ class MarginSetter extends Component {
 	}
 
 	setMargin({ target }) {
+		const marginValue = target.value.length === 0 ? 0 : parseInt(target.value);
+		if (!marginValue && marginValue !== 0) {
+			return;
+		}
 		if (this.state.eq) {
 			this.setState(
 				{
 					...this.state,
-					top: target.value,
-					right: target.value,
-					bottom: target.value,
-					left: target.value
+					top: marginValue,
+					right: marginValue,
+					bottom: marginValue,
+					left: marginValue
 				},
 				this.setFormattedMargin
 			);
@@ -36,7 +40,7 @@ class MarginSetter extends Component {
 			this.setState(
 				{
 					...this.state,
-					[target.name]: target.value
+					[target.name]: marginValue
 				},
 				this.setFormattedMargin
 			);

@@ -18,7 +18,8 @@ import {
 	SET_BLOCK_STYLE,
 	SET_BLOCK_CONTENT,
 	ADD_NEW_BLOCK,
-	SET_BLOCK_PROPERTY
+	SET_BLOCK_PROPERTY,
+	CLEAR_EDITING_BLOCK
 } from "../Actions/EditingPageActions";
 
 const initialState = {
@@ -312,6 +313,14 @@ const editingPageReducer = (state = initialState, action) => {
 					draft.editingBlock.options.tag = tag;
 				});
 			}
+		}
+
+		// Clear editing block
+		case CLEAR_EDITING_BLOCK: {
+			return produce(state, draft => {
+				draft.editingBlock = {};
+				draft.editingBlockIndex = null;
+			});
 		}
 
 		default: {

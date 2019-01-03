@@ -15,6 +15,7 @@ import HandleColumns from "./HandleColumns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import swal from "sweetalert";
 import HandleButton from "./HandleButton";
+import HandleSpacer from "./HandleSpacer";
 
 class BlockContainer extends Component {
 	render() {
@@ -114,6 +115,9 @@ class HandleBlock extends Component {
 						}
 						case "button": {
 							return <HandleButton {...this.props} />;
+						}
+						case "spacer": {
+							return <HandleSpacer {...this.props} />;
 						}
 						default: {
 							return null;

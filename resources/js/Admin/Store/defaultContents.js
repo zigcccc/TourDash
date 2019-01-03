@@ -23,7 +23,7 @@ export const contentBlocksDefaultContent = {
 		}
 	},
 	spacer: {
-		data: { height: 40, options: { hasDivider: false } }
+		data: { height: 40, hasDivider: false }
 	},
 	image: {
 		data: {
@@ -48,7 +48,7 @@ export const contentBlocksDefaultContent = {
 		data: { amountPerSlide: 3, sortBy: "numOfBeds" }
 	},
 	googleMaps: {
-		data: { center: { lng: 46.436659, lat: 14.049489 }, zoom: 11 }
+		data: { center: { lng: 46.436659, lat: 14.049489 }, zoom: 11, height: 450 }
 	},
 	reviews: {
 		data: { amountPerSlide: 1, sortBy: "date" }

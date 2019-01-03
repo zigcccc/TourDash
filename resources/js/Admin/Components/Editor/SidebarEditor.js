@@ -6,21 +6,28 @@ import styled from "styled-components";
 import AddContentBlock from "./AddContentBlock";
 import SidebarEditorTypography from "./SidebarEditorTypography";
 import SidebarEditorColumns from "./SidebarEditorColumns";
+import SidebarEditorButton from "./SidebarEditorButton";
+import SidebarEditorSpacer from "./SidebarEditorSpacer";
 import blockTypeMap from "./blockTypeMap";
 import { Spacer } from "../Helpers";
-import SidebarEditorButton from "./SidebarEditorButton";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const SidebarEditor = ({
 	editingBlock,
 	pageUpdated,
 	savingPage,
-	onSavePage
+	onSavePage,
+	clearEditingBlock
 }) => {
 	return (
 		<SiderbarPlaceholder>
 			<SidebarEditorContainer>
 				{!_isEmpty(editingBlock) ? (
 					<Fragment>
+						<BackToAllElements onClick={() => clearEditingBlock()}>
+							<FontAwesomeIcon icon="chevron-left" />
+							<span>Vsi elementi</span>
+						</BackToAllElements>
 						<Group>
 							<h3>Tip bloka</h3>
 							<p>{blockTypeMap[editingBlock.type]}</p>
@@ -35,6 +42,9 @@ const SidebarEditor = ({
 								}
 								case "button": {
 									return <SidebarEditorButton />;
+								}
+								case "spacer": {
+									return <SidebarEditorSpacer />;
 								}
 								default: {
 									return null;
@@ -78,6 +88,19 @@ const SiderbarPlaceholder = styled.div`
 
 const SidebarEditorContainer = styled.div`
 	padding: 10px 15px;
+`;
+
+const BackToAllElements = styled.div`
+	margin: 0.5em 0 1em;
+	color: ${props => props.theme.heavyGray};
+	transition: ${props => props.theme.easeTransition};
+	span {
+		margin-left: 1em;
+	}
+	&:hover {
+		cursor: pointer;
+		color: ${props => props.theme.mainColor};
+	}
 `;
 
 export const Group = styled.div`

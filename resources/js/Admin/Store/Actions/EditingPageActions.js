@@ -11,6 +11,7 @@ export const TOGGLE_FLUID_BLOCK = "TOGGLE_FLUID_BLOCK";
 export const SET_BLOCK_STYLE = "SET_BLOCK_STYLE";
 export const ADD_NEW_BLOCK = "ADD_NEW_BLOCK";
 export const SET_BLOCK_PROPERTY = "SET_BLOCK_PROPERTY";
+export const CLEAR_EDITING_BLOCK = "CLEAR_EDITING_BLOCK";
 
 export function setActiveBlock(block, index, blockRelation = "parent") {
 	return {
@@ -103,5 +104,11 @@ export function setBlockProperty(property, value) {
 	return {
 		type: SET_BLOCK_PROPERTY,
 		payload: { property, value }
+	};
+}
+
+export function clearEditingBlock() {
+	return {
+		type: CLEAR_EDITING_BLOCK
 	};
 }

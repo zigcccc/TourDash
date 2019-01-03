@@ -1,23 +1,36 @@
 import React from "react";
 import PropTypes from "prop-types";
+import classNames from "classnames";
 import styled from "styled-components";
 
-const InputField = ({ value, onChange, name, size }) => {
+const InputField = ({ value, onChange, name, size, hasErrors, type }) => {
 	return (
-		<Input value={value} onChange={onChange} name={name} className={size} />
+		<Input
+			value={value}
+			onChange={onChange}
+			name={name}
+			type={type}
+			className={classNames({
+				[size]: true,
+				"has-errors": hasErrors
+			})}
+		/>
 	);
 };
 
 InputField.propTypes = {
-	value: PropTypes.string,
+	value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 	onChange: PropTypes.func.isRequired,
 	name: PropTypes.string.isRequired,
-	size: PropTypes.oneOf(["small", "normal", "large"])
+	size: PropTypes.oneOf(["small", "normal", "large"]),
+	hasErros: PropTypes.bool,
+	type: PropTypes.string.isRequired
 };
 
 InputField.defaultProps = {
 	size: "normal",
-	name: "Input field"
+	name: "Input field",
+	type: "text"
 };
 
 const Input = styled.input`
@@ -30,6 +43,9 @@ const Input = styled.input`
 	padding: 0.5em 0.75em;
 	border: 2px solid ${props => props.theme.lightGray};
 	width: 100%;
+	&.has-errors {
+		border-color: ${props => props.theme.errorColor};
+	}
 	&.large {
 		font-size: 22px;
 	}
@@ -42,6 +58,9 @@ const Input = styled.input`
 	&:focus {
 		outline: none;
 		border: 2px solid ${props => props.theme.mainColor};
+		&.has-errors {
+			border-color: ${props => props.theme.errorColor};
+		}
 	}
 `;
 

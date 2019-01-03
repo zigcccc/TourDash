@@ -7,7 +7,8 @@ import {
 	setActiveBlock,
 	unsetActiveBlock,
 	setPageType,
-	setPageUpdateStatus
+	setPageUpdateStatus,
+	clearEditingBlock
 } from "../../Store/Actions/EditingPageActions";
 import _isEqual from "lodash/isEqual";
 import _remove from "lodash/remove";
@@ -163,9 +164,6 @@ class CreateNewPage extends Component {
 						{content.map((block, i) => (
 							<HandleBlock key={block.uid} block={block} blockIndex={i} />
 						))}
-						<AddNewContent>
-							<FontAwesomeIcon icon="plus" />
-						</AddNewContent>
 					</EditorContent>
 				</EditorArea>
 				<SidebarArea>
@@ -174,6 +172,7 @@ class CreateNewPage extends Component {
 						pageUpdated={hasBeenUpdated}
 						savingPage={savingPage}
 						onSavePage={this.savePage}
+						clearEditingBlock={this.props.clearEditingBlock}
 					/>
 				</SidebarArea>
 			</CreatePageContainer>
@@ -268,7 +267,8 @@ const mapDispatchToProps = {
 	setActiveBlock,
 	unsetActiveBlock,
 	setPageType,
-	setPageUpdateStatus
+	setPageUpdateStatus,
+	clearEditingBlock
 };
 
 export default connect(
