@@ -3,13 +3,24 @@ import PropTypes from "prop-types";
 import classNames from "classnames";
 import styled from "styled-components";
 
-const InputField = ({ value, onChange, name, size, hasErrors, type }) => {
+const InputField = ({
+	value,
+	onChange,
+	name,
+	size,
+	hasErrors,
+	type,
+	min,
+	max
+}) => {
+	const extraProps = type === "number" ? { min: min, max: max } : {};
 	return (
 		<Input
 			value={value}
 			onChange={onChange}
 			name={name}
 			type={type}
+			{...extraProps}
 			className={classNames({
 				[size]: true,
 				"has-errors": hasErrors

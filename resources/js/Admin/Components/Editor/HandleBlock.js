@@ -16,6 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import swal from "sweetalert";
 import HandleButton from "./HandleButton";
 import HandleSpacer from "./HandleSpacer";
+import HandleGoogleMaps from "./HandlegoogleMaps";
 
 class BlockContainer extends Component {
 	render() {
@@ -118,6 +119,9 @@ class HandleBlock extends Component {
 						}
 						case "spacer": {
 							return <HandleSpacer {...this.props} />;
+						}
+						case "googleMaps": {
+							return <HandleGoogleMaps {...this.props} />;
 						}
 						default: {
 							return null;

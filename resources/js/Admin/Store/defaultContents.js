@@ -48,7 +48,7 @@ export const contentBlocksDefaultContent = {
 		data: { amountPerSlide: 3, sortBy: "numOfBeds" }
 	},
 	googleMaps: {
-		data: { center: { lng: 46.436659, lat: 14.049489 }, zoom: 11, height: 450 }
+		data: { center: { lat: 46.436659, lng: 14.049489 }, zoom: 11, height: 450 }
 	},
 	reviews: {
 		data: { amountPerSlide: 1, sortBy: "date" }
