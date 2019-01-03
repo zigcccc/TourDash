@@ -1,15 +1,14 @@
 import React from "react";
 import styled from "styled-components";
-import _times from "lodash/times";
 import { Columns as BloomerColumns, Column } from "bloomer";
 import PropTypes from "prop-types";
 import HandleBlock from "./HandleBlock";
 
-const HandleColumns = props => (
-	<Columns>
-		{props.block.data.map((child, i) => (
+const HandleColumns = ({ block }) => (
+	<Columns style={block.options ? block.options.style : null}>
+		{block.data.map((child, i) => (
 			<Column key={child.uid}>
-				<HandleBlock parentBlock={props.block} block={child} blockIndex={i} />
+				<HandleBlock parentBlock={block} block={child} blockIndex={i} />
 			</Column>
 		))}
 	</Columns>

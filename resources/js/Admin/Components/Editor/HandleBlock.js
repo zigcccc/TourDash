@@ -14,6 +14,7 @@ import HandleTypography from "./HandleTypography";
 import HandleColumns from "./HandleColumns";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import swal from "sweetalert";
+import HandleButton from "./HandleButton";
 
 class BlockContainer extends Component {
 	render() {
@@ -48,13 +49,13 @@ class HandleBlock extends Component {
 	moveUp(e) {
 		e.stopPropagation();
 		const { block, blockIndex, moveBlockUp } = this.props;
-		moveBlockUp(blockIndex, block.hasParent, block.parentBlockUid);
+		moveBlockUp(blockIndex, block.uid, block.hasParent, block.parentBlockUid);
 	}
 
 	moveDown(e) {
 		e.stopPropagation();
 		const { block, blockIndex, moveBlockDown } = this.props;
-		moveBlockDown(blockIndex, block.hasParent, block.parentBlockUid);
+		moveBlockDown(blockIndex, block.uid, block.hasParent, block.parentBlockUid);
 	}
 
 	setActiveBlock(e) {
@@ -110,6 +111,9 @@ class HandleBlock extends Component {
 						}
 						case "columns": {
 							return <HandleColumns {...this.props} />;
+						}
+						case "button": {
+							return <HandleButton {...this.props} />;
 						}
 						default: {
 							return null;

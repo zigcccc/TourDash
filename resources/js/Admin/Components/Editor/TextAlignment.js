@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-const TextAlignment = ({ current, onClick }) => (
+const TextAlignment = ({ current, onClick, hasOptionJustify }) => (
 	<TextAlignmentContainer>
 		<FontAwesomeIcon
 			className={classNames({ active: current === "left" })}
@@ -21,21 +21,25 @@ const TextAlignment = ({ current, onClick }) => (
 			icon="align-right"
 			onClick={() => onClick("textAlign", "right")}
 		/>
-		<FontAwesomeIcon
-			className={classNames({ active: current === "justify" })}
-			icon="align-justify"
-			onClick={() => onClick("textAlign", "justify")}
-		/>
+		{hasOptionJustify && (
+			<FontAwesomeIcon
+				className={classNames({ active: current === "justify" })}
+				icon="align-justify"
+				onClick={() => onClick("textAlign", "justify")}
+			/>
+		)}
 	</TextAlignmentContainer>
 );
 
 TextAlignment.propTypes = {
 	current: PropTypes.string.isRequired,
-	onClick: PropTypes.func.isRequired
+	onClick: PropTypes.func.isRequired,
+	hasOptionJustify: PropTypes.bool.isRequired
 };
 
 TextAlignment.defaultProps = {
-	current: "left"
+	current: "left",
+	hasOptionJustify: true
 };
 
 const TextAlignmentContainer = styled.div`

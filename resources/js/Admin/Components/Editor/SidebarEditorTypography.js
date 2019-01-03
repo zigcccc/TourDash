@@ -1,6 +1,5 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
-import styled from "styled-components";
 import {
 	setTypographyBlockTag,
 	toggleFluidBlock,
@@ -14,7 +13,7 @@ import TextAlignment from "./TextAlignment";
 import TwitterPicker from "react-color/lib/Twitter";
 import { Field, TextArea } from "bloomer";
 import Dropdown from "../Dropdown";
-import { Group } from "./SidebarEditor";
+import { Group, GroupItem } from "./SidebarEditor";
 import Switch from "../Switch";
 
 class SidebarEditorTypography extends Component {
@@ -78,7 +77,7 @@ class SidebarEditorTypography extends Component {
 						<h5>Poravnava besedila:</h5>
 						<TextAlignment
 							onClick={this.setBlockStyle}
-							current={options.style.textAlign || "left"}
+							current={options.style ? options.style.textAlign : "left"}
 						/>
 					</GroupItem>
 					<GroupItem>
@@ -86,7 +85,7 @@ class SidebarEditorTypography extends Component {
 						<TwitterPicker
 							width="250"
 							triangle="hide"
-							color={options.style.color || "#2d2d2d"}
+							color={options.style ? options.style.color : "#2d2d2d"}
 							colors={defaultPickerColors}
 							onChangeComplete={this.handleFontColor}
 						/>
@@ -114,14 +113,6 @@ class SidebarEditorTypography extends Component {
 		);
 	}
 }
-
-const GroupItem = styled.div`
-	margin: 10px 0;
-	h5 {
-		font-size: 12px;
-		margin-bottom: 3px;
-	}
-`;
 
 const mapStateToProps = state => ({
 	editingBlock: state.editingPage.editingBlock

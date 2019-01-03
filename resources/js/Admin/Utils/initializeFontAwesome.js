@@ -38,7 +38,17 @@ import {
 	faAlignLeft,
 	faAlignCenter,
 	faAlignRight,
-	faAlignJustify
+	faAlignJustify,
+	faFont,
+	faMap,
+	faComments,
+	faHockeyPuck,
+	faGripHorizontal,
+	faImages,
+	faClone,
+	faCode,
+	faListAlt,
+	faArrowsAltV
 } from "@fortawesome/free-solid-svg-icons";
 
 const initializeFontAwesome = () =>
@@ -81,7 +91,17 @@ const initializeFontAwesome = () =>
 		faAlignLeft,
 		faAlignCenter,
 		faAlignRight,
-		faAlignJustify
+		faAlignJustify,
+		faFont,
+		faMap,
+		faComments,
+		faHockeyPuck,
+		faGripHorizontal,
+		faImages,
+		faClone,
+		faCode,
+		faListAlt,
+		faArrowsAltV
 	);
 
 export default initializeFontAwesome;

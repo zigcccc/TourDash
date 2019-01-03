@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
 import { PropTypes } from "prop-types";
 import styled from "styled-components";
-import classNames from "classnames";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Logo from "../../Shared/Components/Logo";
 import SidebarListItem from "./SidebarListItem";

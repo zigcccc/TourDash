@@ -1,11 +1,14 @@
-import React, { Component, Fragment } from "react";
+import React, { Fragment } from "react";
 import _isEmpty from "lodash/isEmpty";
 import classNames from "classnames";
 import PropTypes from "prop-types";
 import styled from "styled-components";
+import AddContentBlock from "./AddContentBlock";
 import SidebarEditorTypography from "./SidebarEditorTypography";
+import SidebarEditorColumns from "./SidebarEditorColumns";
 import blockTypeMap from "./blockTypeMap";
 import { Spacer } from "../Helpers";
+import SidebarEditorButton from "./SidebarEditorButton";
 
 const SidebarEditor = ({
 	editingBlock,
@@ -27,6 +30,12 @@ const SidebarEditor = ({
 								case "typography": {
 									return <SidebarEditorTypography />;
 								}
+								case "columns": {
+									return <SidebarEditorColumns />;
+								}
+								case "button": {
+									return <SidebarEditorButton />;
+								}
 								default: {
 									return null;
 								}
@@ -35,9 +44,10 @@ const SidebarEditor = ({
 					</Fragment>
 				) : (
 					<Fragment>
-						<SidebarEditorNoContentSelected>
-							Izberite vsebinski blok in začnite z urejanjem
-						</SidebarEditorNoContentSelected>
+						<Group>
+							<h3>Dodaj nov element</h3>
+							<AddContentBlock />
+						</Group>
 					</Fragment>
 				)}
 			</SidebarEditorContainer>
@@ -94,6 +104,14 @@ export const Group = styled.div`
 		width: 50%;
 		height: 1px;
 		background: ${props => props.theme.lightGray};
+	}
+`;
+
+export const GroupItem = styled.div`
+	margin: 10px 0;
+	h5 {
+		font-size: 12px;
+		margin-bottom: 3px;
 	}
 `;
 

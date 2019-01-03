@@ -108,7 +108,6 @@ class MarginSetter extends Component {
 
 	componentDidUpdate(prevProps, prevState) {
 		if (prevProps.currentBlock.uid !== this.props.currentBlock.uid) {
-			console.log(this.props.currentMargin);
 			this.setInitialValues(this.props.currentMargin);
 		}
 	}

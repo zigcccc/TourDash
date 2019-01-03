@@ -30,11 +30,16 @@ class EditableText extends Component {
 	}
 
 	onInputChange() {
-		this.setState({
-			wasEdited:
-				this.inputElement.current.defaultValue !==
-				this.inputElement.current.value
-		});
+		const { isWaitingForSubmit, handleChange } = this.props;
+		if (isWaitingForSubmit) {
+			this.setState({
+				wasEdited:
+					this.inputElement.current.defaultValue !==
+					this.inputElement.current.value
+			});
+		} else {
+			handleChange(this.inputElement.current.value);
+		}
 	}
 
 	disableEditing() {
@@ -62,7 +67,14 @@ class EditableText extends Component {
 	}
 
 	render() {
-		const { value, type, label, name, isLoading } = this.props;
+		const {
+			value,
+			type,
+			label,
+			name,
+			isLoading,
+			isWaitingForSubmit
+		} = this.props;
 		const { editing, wasEdited } = this.state;
 		return (
 			<Group>
@@ -95,7 +107,8 @@ class EditableText extends Component {
 									)}
 								</GroupData>
 							)}
-							{((editing && wasEdited) || type === "password") && (
+							{((editing && wasEdited && isWaitingForSubmit) ||
+								type === "password") && (
 								<MainCta
 									text={type === "password" ? "Spremeni geslo" : "shrani"}
 									handleClick={this.handleClick}
@@ -112,7 +125,8 @@ class EditableText extends Component {
 }
 
 EditableText.propTypes = {
-	onSubmit: PropTypes.func.isRequired,
+	onSubmit: PropTypes.func,
+	isWaitingForSubmit: PropTypes.bool.isRequired,
 	value: PropTypes.string,
 	type: PropTypes.oneOf(["email", "text", "password"]),
 	label: PropTypes.string,
@@ -121,7 +135,9 @@ EditableText.propTypes = {
 };
 
 EditableText.defaultProps = {
-	type: "text"
+	type: "text",
+	isWaitingForSubmit: true,
+	name: "Text field"
 };
 
 const Group = styled.div`
@@ -159,6 +175,7 @@ const GroupInput = styled.input`
 	border: none;
 	outline: none;
 	border-bottom: 2px solid ${props => props.theme.mainColor};
+	background-color: transparent;
 `;
 
 const MainCta = styled(MainCtaBase)`

@@ -9,6 +9,8 @@ export const SET_TYPOGRAPHY_BLOCK_TAG = "SET_TYPOGRAPHY_BLOCK_TAG";
 export const SET_BLOCK_CONTENT = "SET_BLOCK_CONTENT";
 export const TOGGLE_FLUID_BLOCK = "TOGGLE_FLUID_BLOCK";
 export const SET_BLOCK_STYLE = "SET_BLOCK_STYLE";
+export const ADD_NEW_BLOCK = "ADD_NEW_BLOCK";
+export const SET_BLOCK_PROPERTY = "SET_BLOCK_PROPERTY";
 
 export function setActiveBlock(block, index, blockRelation = "parent") {
 	return {
@@ -27,17 +29,17 @@ export function unsetActiveBlock() {
 	};
 }
 
-export function moveBlockUp(index, hasParent, parentId = null) {
+export function moveBlockUp(index, blockId, hasParent, parentId = null) {
 	return {
 		type: MOVE_BLOCK_UP,
-		payload: { index, hasParent, parentId }
+		payload: { index, blockId, hasParent, parentId }
 	};
 }
 
-export function moveBlockDown(index, hasParent, parentId = null) {
+export function moveBlockDown(index, blockId, hasParent, parentId = null) {
 	return {
 		type: MOVE_BLOCK_DOWN,
-		payload: { index, hasParent, parentId }
+		payload: { index, blockId, hasParent, parentId }
 	};
 }
 
@@ -86,6 +88,20 @@ export function setBlockContent(content) {
 export function setBlockStyle(property, value) {
 	return {
 		type: SET_BLOCK_STYLE,
+		payload: { property, value }
+	};
+}
+
+export function addNewBlock(blockType) {
+	return {
+		type: ADD_NEW_BLOCK,
+		payload: { blockType }
+	};
+}
+
+export function setBlockProperty(property, value) {
+	return {
+		type: SET_BLOCK_PROPERTY,
 		payload: { property, value }
 	};
 }

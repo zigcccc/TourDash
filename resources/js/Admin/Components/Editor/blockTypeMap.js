@@ -1,10 +1,14 @@
 export default {
 	typography: "Tipografija",
-	layout: "Struktura",
 	columns: "Stolpci",
-	media: "Media",
-	interactive: "Interkativni elementi",
-	dynamic: "Dinamična vsebina",
-	links: "Povezave",
-	other: "Ostalo"
+	card: "Kartica",
+	image: "Fotografija",
+	button: "Gumb",
+	contactForm: "Kontaktni obrazec",
+	latestPosts: "Zadnje objave",
+	accommodations: "Nastanitve",
+	googleMaps: "Google zemljevid",
+	reviews: "Mnenja gostov",
+	customHtml: "HTML koda",
+	spacer: "Prazen prostor"
 };
