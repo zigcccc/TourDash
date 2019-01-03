@@ -51,6 +51,7 @@
         "react-apexcharts": "^1.1.0",
         "react-color": "^2.17.0",
         "react-cookie": "^3.0.8",
+        "react-html-parser": "^2.0.2",
         "react-placeholder": "^3.0.1",
         "react-redux": "^5.0.7",
         "react-router": "^4.3.1",
