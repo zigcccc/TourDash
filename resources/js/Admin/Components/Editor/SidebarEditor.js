@@ -12,7 +12,6 @@ import SidebarEditorGoogleMaps from "./SidebarEditorGoogleMaps";
 import blockTypeMap from "./blockTypeMap";
 import { Spacer } from "../Helpers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import SidebarEditorCustomHtml from "./SidebarEditorCustomHtml";
 
 const SidebarEditor = ({
 	editingBlock,
@@ -50,9 +49,6 @@ const SidebarEditor = ({
 								}
 								case "googleMaps": {
 									return <SidebarEditorGoogleMaps />;
-								}
-								case "customHtml": {
-									return <SidebarEditorCustomHtml />;
 								}
 								default: {
 									return null;

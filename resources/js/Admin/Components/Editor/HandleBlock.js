@@ -17,7 +17,6 @@ import swal from "sweetalert";
 import HandleButton from "./HandleButton";
 import HandleSpacer from "./HandleSpacer";
 import HandleGoogleMaps from "./HandlegoogleMaps";
-import HandleCustomHtml from "./HandleCustomHtml";
 
 class BlockContainer extends Component {
 	render() {
@@ -123,9 +122,6 @@ class HandleBlock extends Component {
 						}
 						case "googleMaps": {
 							return <HandleGoogleMaps {...this.props} />;
-						}
-						case "customHtml": {
-							return <HandleCustomHtml {...this.props} />;
 						}
 						default: {
 							return null;
