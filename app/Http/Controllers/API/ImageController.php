@@ -76,9 +76,9 @@ class ImageController extends Controller
 
         // Return success response with image urls
         $imageUrls = [
-            'fullsize' => $originalPath . $filename,
-            'medium' => $mediumPath . $filename,
-            'thumbnail' => $thumbnailPath . $filename
+            'fullsize' => $this->imageDirectoryBase . '/original/' . $filename,
+            'medium' => $this->imageDirectoryBase . '/medium/' . $filename,
+            'thumbnail' => $this->imageDirectoryBase . '/thumbnail/' . $filename
         ];
         return response()->json(['success' => 'Slika uspešno naložena.', 'data' => $imageUrls], 200);
 
