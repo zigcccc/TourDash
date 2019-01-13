@@ -6,6 +6,7 @@ import {
 	setBlockProperty
 } from "../../Store/Actions/EditingPageActions";
 import _throttle from "lodash/throttle";
+import _debounce from "lodash/debounce";
 import { Group, GroupItem } from "./SidebarEditor";
 import MarginSetter from "./MarginSetter";
 import TwitterPicker from "react-color/lib/Twitter";
@@ -25,7 +26,10 @@ class SidebarEditorButton extends Component {
 		this.setBlockStyle = this.setBlockStyle.bind(this);
 		this.toggleFluidBlock = this.toggleFluidBlock.bind(this);
 		this.setButtonType = this.setButtonType.bind(this);
-		this.throttledSubmit = _throttle(this.submitDataChange.bind(this), 500);
+		this.throttledSubmit = _debounce(this.submitDataChange.bind(this), 500, {
+			leading: true,
+			trailing: true
+		});
 		this.setTextDataChange = this.setTextDataChange.bind(this);
 		this.setButtonTarget = this.setButtonTarget.bind(this);
 		this.setButtonColor = this.setButtonColor.bind(this);
