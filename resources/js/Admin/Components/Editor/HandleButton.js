@@ -16,7 +16,8 @@ const HandleButton = ({ block }) => (
 			style={block.options ? block.options.style : null}
 			data-color={block.data.buttonColor}
 			target={block.data.buttonTarget ? block.data.buttonTarget : "_self"}
-			href="#"
+			onClick={event => event.preventDefault()}
+			href={block.data.href}
 			className={classNames({
 				outlined: block.data.buttonType === "outlined",
 				minimal: block.data.buttonType === "minimal"

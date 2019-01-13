@@ -42,4 +42,9 @@ Route::group(['middleware' => 'auth:api'], function() {
 
     // Search for users
     Route::get('users/search', 'API\UserController@searchUsers');
+
+
+    // Images actions
+    Route::post('image/add-new', 'API\ImageController@store');
+
 });
