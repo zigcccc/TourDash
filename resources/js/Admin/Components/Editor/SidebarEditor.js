@@ -9,6 +9,7 @@ import SidebarEditorColumns from "./SidebarEditorColumns";
 import SidebarEditorButton from "./SidebarEditorButton";
 import SidebarEditorSpacer from "./SidebarEditorSpacer";
 import SidebarEditorGoogleMaps from "./SidebarEditorGoogleMaps";
+import SidebarEditorImage from "./SidebarEditorImage";
 import blockTypeMap from "./blockTypeMap";
 import { Spacer } from "../Helpers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -49,6 +50,9 @@ const SidebarEditor = ({
 								}
 								case "googleMaps": {
 									return <SidebarEditorGoogleMaps />;
+								}
+								case "image": {
+									return <SidebarEditorImage />;
 								}
 								default: {
 									return null;

@@ -7,6 +7,7 @@ import {
 	setBlockContent
 } from "../../Store/Actions/EditingPageActions";
 import _throttle from "lodash/throttle";
+import _debounce from "lodash/debounce";
 import possibleTypographyElements from "./possibleTypographyElements";
 import { defaultPickerColors } from "../../../Shared/Theme";
 import MarginSetter from "./MarginSetter";
@@ -29,9 +30,14 @@ class SidebarEditorTypography extends Component {
 		this.handleFontColor = this.handleFontColor.bind(this);
 		this.handleTextDataChange = this.handleTextDataChange.bind(this);
 		this.submitTextDataChange = this.submitTextDataChange.bind(this);
-		this.throttledTextSubmit = _throttle(
+		this.throttledTextSubmit = _debounce(
 			this.submitTextDataChange.bind(this),
-			2500
+			500,
+			{
+				leading: true,
+				trailing: true,
+				maxWait: 500
+			}
 		);
 	}
 

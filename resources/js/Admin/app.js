@@ -37,6 +37,10 @@ const client = axios.create({
 	}
 });
 
+axios.defaults.headers.common["_token"] = csrf_token;
+axios.defaults.headers.common["X-XSRF-TOKEN"] = window.xsrf_token;
+axios.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
+
 const store = createStore(
 	rootReducer,
 	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),

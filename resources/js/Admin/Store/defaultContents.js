@@ -27,9 +27,11 @@ export const contentBlocksDefaultContent = {
 	},
 	image: {
 		data: {
-			imageUrl: null,
+			imageUrl: {},
 			imageAlt: "Opis slike",
-			options: { hasShadow: false, isRounded: false }
+			hasShadow: false,
+			isRounded: false,
+			doesCover: false
 		}
 	},
 	columns: {

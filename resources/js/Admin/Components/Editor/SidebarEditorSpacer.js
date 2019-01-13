@@ -5,7 +5,7 @@ import { Group } from "./SidebarEditor";
 import InputField from "./InputField";
 import Switch from "../Switch";
 
-class SidebarEditorButton extends Component {
+class SidebarEditorSpacer extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -66,4 +66,4 @@ const mapDispatchToProps = {
 export default connect(
 	mapStateToProps,
 	mapDispatchToProps
-)(SidebarEditorButton);
+)(SidebarEditorSpacer);

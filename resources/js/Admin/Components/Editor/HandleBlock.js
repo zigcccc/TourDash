@@ -17,6 +17,7 @@ import swal from "sweetalert";
 import HandleButton from "./HandleButton";
 import HandleSpacer from "./HandleSpacer";
 import HandleGoogleMaps from "./HandlegoogleMaps";
+import HandleImage from "./HandleImage";
 
 class BlockContainer extends Component {
 	render() {
@@ -122,6 +123,9 @@ class HandleBlock extends Component {
 						}
 						case "googleMaps": {
 							return <HandleGoogleMaps {...this.props} />;
+						}
+						case "image": {
+							return <HandleImage {...this.props} />;
 						}
 						default: {
 							return null;
