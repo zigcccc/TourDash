@@ -6,6 +6,7 @@ import {
 	setBlockStyle,
 	setBlockContent
 } from "../../Store/Actions/EditingPageActions";
+import _throttle from "lodash/throttle";
 import possibleTypographyElements from "./possibleTypographyElements";
 import { defaultPickerColors } from "../../../Shared/Theme";
 import MarginSetter from "./MarginSetter";
@@ -19,11 +20,19 @@ import Switch from "../Switch";
 class SidebarEditorTypography extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			text: ""
+		};
 		this.setTypographyBlockType = this.setTypographyBlockType.bind(this);
 		this.toggleFluidBlock = this.toggleFluidBlock.bind(this);
 		this.setBlockStyle = this.setBlockStyle.bind(this);
 		this.handleFontColor = this.handleFontColor.bind(this);
 		this.handleTextDataChange = this.handleTextDataChange.bind(this);
+		this.submitTextDataChange = this.submitTextDataChange.bind(this);
+		this.throttledTextSubmit = _throttle(
+			this.submitTextDataChange.bind(this),
+			2500
+		);
 	}
 
 	setTypographyBlockType(tag) {
@@ -45,8 +54,29 @@ class SidebarEditorTypography extends Component {
 	}
 
 	handleTextDataChange(e) {
+		this.setState({
+			text: e.target.value
+		});
+		this.throttledTextSubmit(e.target.value);
+	}
+
+	submitTextDataChange() {
 		const { setBlockContent } = this.props;
-		setBlockContent(e.target.value);
+		setBlockContent(this.state.text);
+	}
+
+	componentDidMount() {
+		this.setState({
+			text: this.props.editingBlock.data
+		});
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (prevProps.editingBlock.uid !== this.props.editingBlock.uid) {
+			this.setState({
+				text: this.props.editingBlock.data
+			});
+		}
 	}
 
 	render() {
@@ -57,7 +87,11 @@ class SidebarEditorTypography extends Component {
 				<Group>
 					<h3>Vsebina</h3>
 					<Field>
-						<TextArea onChange={this.handleTextDataChange} value={data} />
+						<TextArea
+							onChange={this.handleTextDataChange}
+							onBlur={this.submitTextDataChange}
+							value={this.state.text}
+						/>
 					</Field>
 				</Group>
 				<Group>

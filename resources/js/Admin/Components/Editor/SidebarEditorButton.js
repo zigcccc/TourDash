@@ -5,6 +5,7 @@ import {
 	toggleFluidBlock,
 	setBlockProperty
 } from "../../Store/Actions/EditingPageActions";
+import _throttle from "lodash/throttle";
 import { Group, GroupItem } from "./SidebarEditor";
 import MarginSetter from "./MarginSetter";
 import TwitterPicker from "react-color/lib/Twitter";
@@ -17,11 +18,15 @@ import TextAlignment from "./TextAlignment";
 class SidebarEditorButton extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			text: "",
+			href: ""
+		};
 		this.setBlockStyle = this.setBlockStyle.bind(this);
 		this.toggleFluidBlock = this.toggleFluidBlock.bind(this);
 		this.setButtonType = this.setButtonType.bind(this);
-		this.setButtonText = this.setButtonText.bind(this);
-		this.setButtonHref = this.setButtonHref.bind(this);
+		this.throttledSubmit = _throttle(this.submitDataChange.bind(this), 500);
+		this.setTextDataChange = this.setTextDataChange.bind(this);
 		this.setButtonTarget = this.setButtonTarget.bind(this);
 		this.setButtonColor = this.setButtonColor.bind(this);
 		this.setButtonAlignment = this.setButtonAlignment.bind(this);
@@ -39,12 +44,16 @@ class SidebarEditorButton extends Component {
 		this.props.setBlockProperty("buttonType", type);
 	}
 
-	setButtonText({ target }) {
-		this.props.setBlockProperty("text", target.value);
+	submitDataChange(property) {
+		const { setBlockProperty } = this.props;
+		setBlockProperty(property, this.state[property]);
 	}
 
-	setButtonHref({ target }) {
-		this.props.setBlockProperty("href", target.value);
+	setTextDataChange({ target }) {
+		this.setState({
+			[target.name]: target.value
+		});
+		this.throttledSubmit(target.name);
 	}
 
 	setButtonTarget({ target }) {
@@ -60,23 +69,42 @@ class SidebarEditorButton extends Component {
 		this.props.setBlockProperty("buttonAlignment", value);
 	}
 
+	componentDidMount() {
+		this.setState({
+			text: this.props.editingBlock.data.text,
+			href: this.props.editingBlock.data.href
+		});
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (prevProps.editingBlock.uid !== this.props.editingBlock.uid) {
+			this.setState({
+				text: this.props.editingBlock.data.text,
+				href: this.props.editingBlock.data.href
+			});
+		}
+	}
+
 	render() {
 		const { editingBlock } = this.props;
+		const { text, href } = this.state;
 		const hasStyles = editingBlock.options && editingBlock.options.style;
 		return (
 			<Fragment>
 				<Group>
 					<h3>Tekst gumba</h3>
 					<InputField
-						value={editingBlock.data.text}
-						onChange={this.setButtonText}
+						name="text"
+						value={text}
+						onChange={this.setTextDataChange}
 					/>
 				</Group>
 				<Group>
 					<h3>Povezava</h3>
 					<InputField
-						value={editingBlock.data.href}
-						onChange={this.setButtonHref}
+						name="href"
+						value={href}
+						onChange={this.setTextDataChange}
 					/>
 					<GroupItem>
 						<h5>Povezava se odpre v novem oknu?</h5>

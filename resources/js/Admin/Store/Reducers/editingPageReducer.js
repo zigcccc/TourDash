@@ -214,7 +214,7 @@ const editingPageReducer = (state = initialState, action) => {
 		// Set block property
 		case SET_BLOCK_PROPERTY: {
 			let { property, value } = action.payload;
-			let { hasParent, parentBlockUid } = action.payload;
+			let { hasParent, parentBlockUid } = state.editingBlock;
 			let newValue = { [property]: value };
 
 			if (hasParent) {
@@ -222,14 +222,12 @@ const editingPageReducer = (state = initialState, action) => {
 				return produce(state, draft => {
 					let oldData =
 						draft.content[parentIndex].data[draft.editingBlockIndex].data;
+
 					draft.content[parentIndex].data[draft.editingBlockIndex].data = {
 						...oldData,
 						...newValue
 					};
-					draft.editingBlock.data = {
-						...oldData,
-						...newValue
-					};
+					draft.editingBlock.data = { ...oldData, ...newValue };
 				});
 			} else {
 				return produce(state, draft => {
