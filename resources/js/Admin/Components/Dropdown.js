@@ -2,6 +2,7 @@ import React, { Component, Fragment } from "react";
 import styled from "styled-components";
 import classNames from "classnames";
 import PropTypes from "prop-types";
+import _isArray from "lodash/isArray";
 import {
 	Button,
 	Dropdown as BloomerDropdown,
@@ -61,35 +62,61 @@ class Dropdown extends Component {
 							dark: color === "dark"
 						})}
 					>
-						<span>{current}</span>
+						<span>
+							{_isArray(possibilities) ? current : possibilities[current]}
+						</span>
 						<FontAwesomeIcon icon={icon} size="1x" />
 					</DropdownButton>
 				</DropdownTrigger>
 				<DropdownMenu>
 					<DropdownContent>
-						{possibilities.map((type, i) => (
-							<Fragment key={type}>
-								<DropdownItem
-									isActive={type === current}
-									className={classNames({
-										"is-disabled": type === current
-									})}
-									onClick={() => this.selectType(type)}
-								>
-									{type}
-									{type === current && (
-										<FontAwesomeIcon icon="check" size="xs" />
-									)}
-								</DropdownItem>
-								{i !== possibilities.length - 1 && (
-									<DropdownDivider
-										className={classNames({
-											"is-condensed": condensed
-										})}
-									/>
-								)}
-							</Fragment>
-						))}
+						{_isArray(possibilities)
+							? possibilities.map((type, i) => (
+									<Fragment key={type}>
+										<DropdownItem
+											isActive={type === current}
+											className={classNames({
+												"is-disabled": type === current
+											})}
+											onClick={() => this.selectType(type)}
+										>
+											{type}
+											{type === current && (
+												<FontAwesomeIcon icon="check" size="xs" />
+											)}
+										</DropdownItem>
+										{i !== possibilities.length - 1 && (
+											<DropdownDivider
+												className={classNames({
+													"is-condensed": condensed
+												})}
+											/>
+										)}
+									</Fragment>
+							  ))
+							: Object.keys(possibilities).map((type, i) => (
+									<Fragment key={type}>
+										<DropdownItem
+											isActive={type === current}
+											className={classNames({
+												"is-disabled": type === current
+											})}
+											onClick={() => this.selectType(type)}
+										>
+											{possibilities[type]}
+											{type === current && (
+												<FontAwesomeIcon icon="check" size="xs" />
+											)}
+										</DropdownItem>
+										{i !== Object.keys(possibilities).length - 1 && (
+											<DropdownDivider
+												className={classNames({
+													"is-condensed": condensed
+												})}
+											/>
+										)}
+									</Fragment>
+							  ))}
 					</DropdownContent>
 				</DropdownMenu>
 			</RoleDropdown>
@@ -100,7 +127,8 @@ class Dropdown extends Component {
 Dropdown.propTypes = {
 	handleClick: PropTypes.func.isRequired,
 	icon: PropTypes.string.isRequired,
-	possibilities: PropTypes.array.isRequired,
+	possibilities: PropTypes.oneOfType([PropTypes.array, PropTypes.object])
+		.isRequired,
 	color: PropTypes.string,
 	fullWidth: PropTypes.bool.isRequired,
 	condensed: PropTypes.bool.isRequired
