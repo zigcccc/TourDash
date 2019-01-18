@@ -19,7 +19,8 @@ import {
 	SET_BLOCK_CONTENT,
 	ADD_NEW_BLOCK,
 	SET_BLOCK_PROPERTY,
-	CLEAR_EDITING_BLOCK
+	CLEAR_EDITING_BLOCK,
+	SET_PAGE_SETTING
 } from "../Actions/EditingPageActions";
 
 const initialState = {
@@ -38,6 +39,14 @@ const initialState = {
 
 const editingPageReducer = (state = initialState, action) => {
 	switch (action.type) {
+		// Set page setting
+		case SET_PAGE_SETTING: {
+			let { property, value } = action.payload;
+			return produce(state, draft => {
+				draft[property] = value;
+			});
+		}
+
 		// Set page meta
 		case SET_PAGE_TYPE: {
 			return produce(state, draft => {

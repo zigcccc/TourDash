@@ -6,14 +6,11 @@ import {
 	setBlockStyle,
 	setBlockContent
 } from "../../Store/Actions/EditingPageActions";
-import _throttle from "lodash/throttle";
-import _debounce from "lodash/debounce";
 import possibleTypographyElements from "./possibleTypographyElements";
 import { defaultPickerColors } from "../../../Shared/Theme";
 import MarginSetter from "./MarginSetter";
 import TextAlignment from "./TextAlignment";
 import TwitterPicker from "react-color/lib/Twitter";
-import { Field, TextArea } from "bloomer";
 import Dropdown from "../Dropdown";
 import { Group, GroupItem } from "./SidebarEditor";
 import Switch from "../Switch";

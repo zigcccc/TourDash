@@ -13,6 +13,9 @@ import SidebarEditorImage from "./SidebarEditorImage";
 import blockTypeMap from "./blockTypeMap";
 import { Spacer } from "../Helpers";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import SidebarEditorLatestPosts from "./SidebarEditorLatestPosts";
+import SidebarEditorAccommodations from "./SidebarEditorAccommodations";
+import SidebarEditorReviews from "./SidebarEditorReviews";
 
 const SidebarEditor = ({
 	editingBlock,
@@ -53,6 +56,15 @@ const SidebarEditor = ({
 								}
 								case "image": {
 									return <SidebarEditorImage />;
+								}
+								case "latestPosts": {
+									return <SidebarEditorLatestPosts />;
+								}
+								case "accommodations": {
+									return <SidebarEditorAccommodations />;
+								}
+								case "reviews": {
+									return <SidebarEditorReviews />;
 								}
 								default: {
 									return null;

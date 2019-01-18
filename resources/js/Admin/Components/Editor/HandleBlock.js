@@ -19,6 +19,9 @@ import HandleButton from "./HandleButton";
 import HandleSpacer from "./HandleSpacer";
 import HandleGoogleMaps from "./HandlegoogleMaps";
 import HandleImage from "./HandleImage";
+import HandleLatestPosts from "./HandleLatestPosts";
+import HandleAccommodations from "./HandleAccommodations";
+import HandleReviews from "./HandleReviews";
 
 class BlockContainer extends Component {
 	render() {
@@ -127,6 +130,15 @@ class HandleBlock extends Component {
 						}
 						case "image": {
 							return <HandleImage {...this.props} />;
+						}
+						case "latestPosts": {
+							return <HandleLatestPosts {...this.props} />;
+						}
+						case "accommodations": {
+							return <HandleAccommodations {...this.props} />;
+						}
+						case "reviews": {
+							return <HandleReviews {...this.props} />;
 						}
 						default: {
 							return null;

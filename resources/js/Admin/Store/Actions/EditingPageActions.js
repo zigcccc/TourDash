@@ -4,6 +4,7 @@ export const MOVE_BLOCK_UP = "MOVE_BLOCK_UP";
 export const MOVE_BLOCK_DOWN = "MOVE_BLOCK_DOWN";
 export const DELETE_BLOCK = "DELETE_BLOCK";
 export const SET_PAGE_TYPE = "SET_PAGE_TYPE";
+export const SET_PAGE_SETTING = "SET_PAGE_SETTING";
 export const SET_PAGE_UPDATE_STATUS = "SET_PAGE_UPDATE_STATUS";
 export const SET_TYPOGRAPHY_BLOCK_TAG = "SET_TYPOGRAPHY_BLOCK_TAG";
 export const SET_BLOCK_CONTENT = "SET_BLOCK_CONTENT";
@@ -48,6 +49,13 @@ export function deleteBlock(blockId, hasParent = false, parentUid = null) {
 	return {
 		type: DELETE_BLOCK,
 		payload: { blockId, hasParent, parentUid }
+	};
+}
+
+export function setPageSetting(property, value) {
+	return {
+		type: SET_PAGE_SETTING,
+		payload: { property, value }
 	};
 }
 

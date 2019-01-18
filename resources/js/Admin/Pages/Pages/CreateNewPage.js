@@ -1,6 +1,5 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import styled from "styled-components";
-import { produce } from "immer";
 import classNames from "classnames";
 import { connect } from "react-redux";
 import {
@@ -8,7 +7,8 @@ import {
 	unsetActiveBlock,
 	setPageType,
 	setPageUpdateStatus,
-	clearEditingBlock
+	clearEditingBlock,
+	setPageSetting
 } from "../../Store/Actions/EditingPageActions";
 import _isEqual from "lodash/isEqual";
 import _remove from "lodash/remove";
@@ -19,7 +19,6 @@ import SidebarEditor from "../../Components/Editor/SidebarEditor";
 import { Spacer } from "../../Components/Helpers";
 import Dropdown from "../../Components/Dropdown";
 import HandleBlock from "../../Components/Editor/HandleBlock";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class CreateNewPage extends Component {
 	constructor(props) {
@@ -36,22 +35,19 @@ class CreateNewPage extends Component {
 	}
 
 	handleInputChange(e) {
-		this.setState({
-			[e.target.name]: e.target.value
-		});
+		const { setPageSetting } = this.props;
+		setPageSetting(e.target.name, e.target.value);
 	}
 
 	correctSlug() {
-		this.setState({
-			slug: slugify(this.state.slug),
-			slugOverriden: true
-		});
+		const { setPageSetting, editingPage } = this.props;
+		setPageSetting("slug", slugify(editingPage.slug, { lower: true }));
+		setPageSetting("slugOverriden", true);
 	}
 
 	autoSlug() {
-		this.setState({
-			slug: slugify(this.state.pageTitle, { lower: true })
-		});
+		const { setPageSetting, editingPage } = this.props;
+		setPageSetting("slug", slugify(editingPage.pageTitle, { lower: true }));
 	}
 
 	setPageType(type) {
@@ -83,16 +79,6 @@ class CreateNewPage extends Component {
 					slug: this.state.slug,
 					content: this.state.content
 				})
-		);
-	}
-
-	handleTextDataChange(e) {
-		e.persist();
-		this.setState(
-			produce(draft => {
-				draft.content[draft.editingBlock.index].data = e.target.value;
-				draft.editingBlock.data = e.target.value;
-			})
 		);
 	}
 
@@ -268,7 +254,8 @@ const mapDispatchToProps = {
 	unsetActiveBlock,
 	setPageType,
 	setPageUpdateStatus,
-	clearEditingBlock
+	clearEditingBlock,
+	setPageSetting
 };
 
 export default connect(

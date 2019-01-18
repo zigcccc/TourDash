@@ -47,15 +47,12 @@ export const contentBlocksDefaultContent = {
 		data: { totalAmount: -1, amountPerSlide: 3, sortBy: "date" }
 	},
 	accommodations: {
-		data: { amountPerSlide: 3, sortBy: "numOfBeds" }
+		data: { totalAmount: -1, amountPerSlide: 3, sortBy: "numOfBeds" }
 	},
 	googleMaps: {
 		data: { center: { lat: 46.436659, lng: 14.049489 }, zoom: 11, height: 450 }
 	},
 	reviews: {
-		data: { amountPerSlide: 1, sortBy: "date" }
-	},
-	customHtml: {
-		data: "<b>Vstavite</b> svojo <code>html</code> kodo."
+		data: { totalAmount: -1, amountPerSlide: 1, sortBy: "date" }
 	}
 };

@@ -9,6 +9,5 @@ export default [
 	{ id: 11, type: "latestPosts", icon: "list-alt", onlyParent: false },
 	{ id: 6, type: "accommodations", icon: "home", onlyParent: false },
 	{ id: 7, type: "googleMaps", icon: "map", onlyParent: false },
-	{ id: 9, type: "reviews", icon: "comments", onlyParent: false },
-	{ id: 10, type: "customHtml", icon: "code", onlyParent: false }
+	{ id: 9, type: "reviews", icon: "comments", onlyParent: false }
 ];
