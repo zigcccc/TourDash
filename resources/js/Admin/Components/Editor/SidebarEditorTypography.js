@@ -28,17 +28,6 @@ class SidebarEditorTypography extends Component {
 		this.toggleFluidBlock = this.toggleFluidBlock.bind(this);
 		this.setBlockStyle = this.setBlockStyle.bind(this);
 		this.handleFontColor = this.handleFontColor.bind(this);
-		this.handleTextDataChange = this.handleTextDataChange.bind(this);
-		this.submitTextDataChange = this.submitTextDataChange.bind(this);
-		this.throttledTextSubmit = _debounce(
-			this.submitTextDataChange.bind(this),
-			500,
-			{
-				leading: true,
-				trailing: true,
-				maxWait: 500
-			}
-		);
 	}
 
 	setTypographyBlockType(tag) {
@@ -59,18 +48,6 @@ class SidebarEditorTypography extends Component {
 		this.props.setBlockStyle(property, value);
 	}
 
-	handleTextDataChange(e) {
-		this.setState({
-			text: e.target.value
-		});
-		this.throttledTextSubmit(e.target.value);
-	}
-
-	submitTextDataChange() {
-		const { setBlockContent } = this.props;
-		setBlockContent(this.state.text);
-	}
-
 	componentDidMount() {
 		this.setState({
 			text: this.props.editingBlock.data
@@ -86,20 +63,10 @@ class SidebarEditorTypography extends Component {
 	}
 
 	render() {
-		const { data, options } = this.props.editingBlock;
+		const { options } = this.props.editingBlock;
 		const { editingBlock } = this.props;
 		return (
 			<Fragment>
-				<Group>
-					<h3>Vsebina</h3>
-					<Field>
-						<TextArea
-							onChange={this.handleTextDataChange}
-							onBlur={this.submitTextDataChange}
-							value={this.state.text}
-						/>
-					</Field>
-				</Group>
 				<Group>
 					<h3>Dodatne nastavitve</h3>
 					<GroupItem>

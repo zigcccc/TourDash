@@ -32,7 +32,9 @@ const HandleImage = ({ block }) => {
 };
 
 const ImageContainer = styled.div`
-	height: ${props => (props.height ? `${props.height}px` : "auto")};
+	&.image-cover {
+		height: ${props => (props.height ? `${props.height}px` : "auto")};
+	}
 `;
 
 const Figure = styled.figure`

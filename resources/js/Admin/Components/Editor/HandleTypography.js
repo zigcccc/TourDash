@@ -1,40 +1,69 @@
 import React, { Component } from "react";
 import styled from "styled-components";
+import _empty from "lodash/isEmpty";
+import _debounce from "lodash/debounce";
 import { Title as BloomerTitle } from "bloomer";
 import PropTypes from "prop-types";
+import ContentEditable from "react-sane-contenteditable";
 
 class HandleTypography extends Component {
+	constructor(props) {
+		super(props);
+		this.onBlur = this.onBlur.bind(this);
+		this.debouncedChanged = _debounce(this.onChange.bind(this), 250, {
+			trailing: true,
+			leading: true
+		});
+	}
+
+	onBlur({ target }) {
+		const { setBlockContent, editingPage } = this.props;
+		console.log(_empty(editingPage.editingBlock));
+		if (!_empty(editingPage.editingBlock)) {
+			setBlockContent(target.innerText);
+		}
+	}
+
+	onChange(event, value) {
+		const { setBlockContent, editingPage } = this.props;
+		if (!_empty(editingPage.editingBlock)) {
+			setBlockContent(value);
+		}
+	}
+
 	render() {
 		const { options, data } = this.props.block;
-		switch (options.tag) {
-			case "p": {
-				return <p style={options.style}>{data}</p>;
-			}
-			case "small": {
-				return <small style={options.style}>{data}</small>;
-			}
-			case "quote": {
-				return <blockquote style={options.style}>{data}</blockquote>;
-			}
-			default: {
-				return (
-					<Title
-						style={options.style}
-						tag={options.tag}
-						isSize={options.tag.substr(-1, 1)}
-					>
-						{data}
-					</Title>
-				);
-			}
-		}
+		return (
+			<Editable
+				tagName={options.tag}
+				className="no-margin"
+				content={data}
+				multiLine={true}
+				style={options.style}
+				onBlur={this.onBlur}
+				onChange={this.debouncedChanged}
+			/>
+		);
 	}
 }
 
 HandleTypography.propTypes = {
-	options: PropTypes.object
-	//data: PropTypes.string.isRequired
+	options: PropTypes.object,
+	data: PropTypes.string
 };
+
+const Editable = styled(ContentEditable)`
+	outline: none;
+	&:focus {
+		outline: none;
+	}
+	&:active {
+		outline: none;
+	}
+	&.no-margin {
+		margin-bottom: 0;
+	}
+`;
 
 const Title = styled(BloomerTitle)`
 	&:not(:last-child) {

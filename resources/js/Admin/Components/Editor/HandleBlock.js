@@ -5,7 +5,8 @@ import {
 	setActiveBlock,
 	moveBlockUp,
 	moveBlockDown,
-	deleteBlock
+	deleteBlock,
+	setBlockContent
 } from "../../Store/Actions/EditingPageActions";
 import PropTypes from "prop-types";
 import classNames from "classnames";
@@ -271,7 +272,8 @@ const mapDispatchToProps = {
 	setActiveBlock,
 	moveBlockDown,
 	moveBlockUp,
-	deleteBlock
+	deleteBlock,
+	setBlockContent
 };
 
 export default connect(
