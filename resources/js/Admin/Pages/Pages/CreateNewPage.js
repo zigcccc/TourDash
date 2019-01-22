@@ -51,14 +51,16 @@ class CreateNewPage extends Component {
 	}
 
 	setPageType(type) {
-		this.props.setPageType(type);
+		const { setPageType } = this.props;
+		setPageType(type);
 	}
 
 	unsetActiveBlock(e) {
+		const { unsetActiveBlock } = this.props;
 		if (e.target !== e.currentTarget) {
 			return;
 		}
-		this.props.unsetActiveBlock();
+		unsetActiveBlock();
 	}
 
 	getDiff() {
@@ -225,8 +227,6 @@ const PageSlug = styled.input`
 		border-color: ${props => props.theme.mainColor};
 	}
 `;
-
-const AddNewContent = styled.div``;
 
 const SidebarArea = styled.div`
 	width: 300px;

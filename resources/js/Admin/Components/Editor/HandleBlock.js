@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import {
 	setActiveBlock,
+	setBlockProperty,
 	moveBlockUp,
 	moveBlockDown,
 	deleteBlock,
@@ -22,6 +23,7 @@ import HandleImage from "./HandleImage";
 import HandleLatestPosts from "./HandleLatestPosts";
 import HandleAccommodations from "./HandleAccommodations";
 import HandleReviews from "./HandleReviews";
+import HandleCard from "./HandleCard";
 
 class BlockContainer extends Component {
 	render() {
@@ -139,6 +141,9 @@ class HandleBlock extends Component {
 						}
 						case "reviews": {
 							return <HandleReviews {...this.props} />;
+						}
+						case "card": {
+							return <HandleCard {...this.props} />;
 						}
 						default: {
 							return null;
@@ -285,7 +290,8 @@ const mapDispatchToProps = {
 	moveBlockDown,
 	moveBlockUp,
 	deleteBlock,
-	setBlockContent
+	setBlockContent,
+	setBlockProperty
 };
 
 export default connect(

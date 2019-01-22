@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import _empty from "lodash/isEmpty";
 import _debounce from "lodash/debounce";
-import { Title as BloomerTitle } from "bloomer";
 import PropTypes from "prop-types";
 import ContentEditable from "react-sane-contenteditable";
 
@@ -18,7 +17,6 @@ class HandleTypography extends Component {
 
 	onBlur({ target }) {
 		const { setBlockContent, editingPage } = this.props;
-		console.log(_empty(editingPage.editingBlock));
 		if (!_empty(editingPage.editingBlock)) {
 			setBlockContent(target.innerText);
 		}
@@ -62,18 +60,6 @@ const Editable = styled(ContentEditable)`
 	}
 	&.no-margin {
 		margin-bottom: 0;
-	}
-`;
-
-const Title = styled(BloomerTitle)`
-	&:not(:last-child) {
-		margin-bottom: 0;
-	}
-	&:active {
-		outline: none;
-	}
-	&:focus {
-		outline: none;
 	}
 `;
 

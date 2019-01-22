@@ -16,6 +16,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import SidebarEditorLatestPosts from "./SidebarEditorLatestPosts";
 import SidebarEditorAccommodations from "./SidebarEditorAccommodations";
 import SidebarEditorReviews from "./SidebarEditorReviews";
+import SidebarEditorCard from "./SidebarEditorCard";
 
 const SidebarEditor = ({
 	editingBlock,
@@ -65,6 +66,9 @@ const SidebarEditor = ({
 								}
 								case "reviews": {
 									return <SidebarEditorReviews />;
+								}
+								case "card": {
+									return <SidebarEditorCard />;
 								}
 								default: {
 									return null;
