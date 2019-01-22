@@ -39,8 +39,9 @@ export const contentBlocksDefaultContent = {
 	},
 	contactForm: {
 		data: {
-			fields: [{ email: true, subject: true, name: false, message: true }],
-			recievers: ["info@tourdash.app"]
+			fields: { name: false, email: true, subject: true, message: true },
+			receiver: "info@tourdash.app",
+			sendText: "pošlji"
 		}
 	},
 	latestPosts: {

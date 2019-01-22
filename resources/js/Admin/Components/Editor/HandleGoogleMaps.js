@@ -27,7 +27,6 @@ class HandleGoogleMaps extends Component {
 
 	render() {
 		const { block } = this.props;
-		const { defaultCenter, defaultZoom } = this.state;
 		return (
 			<MapContainer data-height={block.data.height}>
 				<GoogleMapReact

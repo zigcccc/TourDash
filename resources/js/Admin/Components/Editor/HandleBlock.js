@@ -24,6 +24,7 @@ import HandleLatestPosts from "./HandleLatestPosts";
 import HandleAccommodations from "./HandleAccommodations";
 import HandleReviews from "./HandleReviews";
 import HandleCard from "./HandleCard";
+import HandleContactForm from "./HandleContactForm";
 
 class BlockContainer extends Component {
 	render() {
@@ -144,6 +145,9 @@ class HandleBlock extends Component {
 						}
 						case "card": {
 							return <HandleCard {...this.props} />;
+						}
+						case "contactForm": {
+							return <HandleContactForm {...this.props} />;
 						}
 						default: {
 							return null;

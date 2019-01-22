@@ -17,6 +17,7 @@ import SidebarEditorLatestPosts from "./SidebarEditorLatestPosts";
 import SidebarEditorAccommodations from "./SidebarEditorAccommodations";
 import SidebarEditorReviews from "./SidebarEditorReviews";
 import SidebarEditorCard from "./SidebarEditorCard";
+import SidebarEditorContactForm from "./SidebarEditorContactForm";
 
 const SidebarEditor = ({
 	editingBlock,
@@ -69,6 +70,9 @@ const SidebarEditor = ({
 								}
 								case "card": {
 									return <SidebarEditorCard />;
+								}
+								case "contactForm": {
+									return <SidebarEditorContactForm />;
 								}
 								default: {
 									return null;
@@ -160,10 +164,6 @@ export const GroupItem = styled.div`
 		font-size: 12px;
 		margin-bottom: 3px;
 	}
-`;
-
-const SidebarEditorNoContentSelected = styled.p`
-	text-align: center;
 `;
 
 const SavePage = styled.button`
