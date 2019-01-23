@@ -4,7 +4,7 @@ import _isEmpty from "lodash/isEmpty";
 import _findIndex from "lodash/findIndex";
 import _flattenDeep from "lodash/flattenDeep";
 import { contentBlocksDefaultContent } from "../defaultContents";
-import { editingPageDummyContent } from "../dummyContents";
+
 import {
 	SET_ACTIVE_BLOCK,
 	UNSET_ACTIVE_BLOCK,
@@ -20,7 +20,11 @@ import {
 	ADD_NEW_BLOCK,
 	SET_BLOCK_PROPERTY,
 	CLEAR_EDITING_BLOCK,
-	SET_PAGE_SETTING
+	SET_PAGE_SETTING,
+	CREATE_PAGE,
+	CREATE_PAGE_SUCCESS,
+	CREATE_PAGE_FAIL,
+	CLEAR_ERRORS
 } from "../Actions/EditingPageActions";
 
 const initialState = {
@@ -32,9 +36,12 @@ const initialState = {
 	hasBeenUpdated: false,
 	type: "vsebinska",
 	savingPage: false,
+	successMessage: "",
+	errorMessage: "",
+	savingPage: false,
 	contentBlocksCount: 5,
 	contentBlocksUsed: 5,
-	content: editingPageDummyContent
+	content: []
 };
 
 const editingPageReducer = (state = initialState, action) => {
@@ -328,6 +335,30 @@ const editingPageReducer = (state = initialState, action) => {
 				draft.editingBlock = {};
 				draft.editingBlockIndex = null;
 			});
+		}
+
+		// API actions
+		case CREATE_PAGE: {
+			return { ...state, savingPage: true };
+		}
+		case CREATE_PAGE_SUCCESS: {
+			return {
+				...state,
+				savingPage: false,
+				successMessage: "Stran je bila uspešno objavljena!"
+			};
+		}
+		case CREATE_PAGE_FAIL: {
+			let { error } = action.error.response.data;
+			return {
+				...state,
+				savingPage: false,
+				errorMessage: error[Object.keys(error)[0]][0]
+			};
+		}
+
+		case CLEAR_ERRORS: {
+			return { ...state, errorMessage: "" };
 		}
 
 		default: {

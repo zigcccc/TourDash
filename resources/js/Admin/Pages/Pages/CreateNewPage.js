@@ -1,6 +1,7 @@
-import React, { Component } from "react";
-import styled from "styled-components";
+import React, { Component, Fragment } from "react";
+import styled, { keyframes } from "styled-components";
 import classNames from "classnames";
+import { withRouter } from "react-router";
 import { connect } from "react-redux";
 import {
 	setActiveBlock,
@@ -8,7 +9,9 @@ import {
 	setPageType,
 	setPageUpdateStatus,
 	clearEditingBlock,
-	setPageSetting
+	setPageSetting,
+	createNewPage,
+	clearErrors
 } from "../../Store/Actions/EditingPageActions";
 import _isEqual from "lodash/isEqual";
 import _remove from "lodash/remove";
@@ -19,6 +22,7 @@ import SidebarEditor from "../../Components/Editor/SidebarEditor";
 import { Spacer } from "../../Components/Helpers";
 import Dropdown from "../../Components/Dropdown";
 import HandleBlock from "../../Components/Editor/HandleBlock";
+import Snackbar from "../../../Shared/Components/Snackbar";
 
 class CreateNewPage extends Component {
 	constructor(props) {
@@ -70,18 +74,22 @@ class CreateNewPage extends Component {
 	}
 
 	savePage() {
-		this.setState(
-			{
-				savingPage: true
-			},
-			() =>
-				console.log({
-					type: this.state.type,
-					title: this.state.pageTitle,
-					slug: this.state.slug,
-					content: this.state.content
-				})
-		);
+		const { editingPage, user, createNewPage, history } = this.props;
+		if (editingPage.content.length > 0) {
+			createNewPage(
+				editingPage.pageTitle,
+				editingPage.slug,
+				editingPage.type,
+				editingPage.content,
+				user.id
+			).then(res => {
+				if (res.type === "CREATE_PAGE_SUCCESS") {
+					history.push("/pages/", {
+						success: `Stran "${editingPage.pageTitle}" uspešno objavljena!`
+					});
+				}
+			});
+		}
 	}
 
 	componentDidMount() {
@@ -111,64 +119,80 @@ class CreateNewPage extends Component {
 			type,
 			content,
 			hasBeenUpdated,
-			savingPage
+			savingPage,
+			errorMessage,
+			successMessage
 		} = this.props.editingPage;
 		return (
-			<CreatePageContainer>
-				<EditorArea onClick={this.unsetActiveBlock}>
-					<EditorActionBar>
-						<PageTitle
-							onChange={this.handleInputChange}
-							onBlur={!slugOverriden ? this.autoSlug : null}
-							name="pageTitle"
-							value={pageTitle}
-						/>
-						<PageSlugContainer>
-							<span>https://localhost:8000/</span>
-							<PageSlug
-								className={classNames({
-									empty: slug.length === 0
-								})}
+			<Fragment>
+				<Snackbar
+					isOpen={errorMessage.length > 0}
+					hasDissmissAction={true}
+					dissmissAction={() => this.props.clearErrors()}
+					purpose="error"
+					position="bottom"
+					message={errorMessage}
+				/>
+				<div>
+					<EditorArea onClick={this.unsetActiveBlock}>
+						<EditorActionBar>
+							<PageTitle
 								onChange={this.handleInputChange}
-								onBlur={this.correctSlug}
-								name="slug"
-								value={slug}
+								onBlur={!slugOverriden ? this.autoSlug : null}
+								name="pageTitle"
+								value={pageTitle}
 							/>
-						</PageSlugContainer>
-						<Spacer />
-						<Dropdown
-							current={type}
-							handleClick={this.setPageType}
-							possibilities={[
-								"naslovnica",
-								"vsebinska",
-								"nastanitve",
-								"kontakt"
-							]}
-							icon="chevron-down"
+							<PageSlugContainer>
+								<span>https://localhost:8000/</span>
+								<PageSlug
+									className={classNames({
+										empty: slug.length === 0
+									})}
+									onChange={this.handleInputChange}
+									onBlur={this.correctSlug}
+									name="slug"
+									value={slug}
+								/>
+							</PageSlugContainer>
+							<Spacer />
+							<Dropdown
+								current={type}
+								handleClick={this.setPageType}
+								possibilities={["naslovnica", "vsebinska"]}
+								icon="chevron-down"
+							/>
+						</EditorActionBar>
+						<EditorContainer
+							className={classNames({ empty: content.length === 0 })}
+						>
+							{content.map((block, i) => (
+								<HandleBlock key={block.uid} block={block} blockIndex={i} />
+							))}
+							{content.length === 0 && (
+								<IconContainer>
+									<img src="/images/start.svg" alt="Ustvari novo stran" />
+									<h4>Začnite dodajati elemente iz desnega menija</h4>
+									<p>
+										<strong>Ustvarite nekaj čudovitega</strong>
+									</p>
+								</IconContainer>
+							)}
+						</EditorContainer>
+					</EditorArea>
+					<SidebarArea>
+						<SidebarEditor
+							editingBlock={editingBlock}
+							pageUpdated={hasBeenUpdated}
+							savingPage={savingPage}
+							onSavePage={this.savePage}
+							clearEditingBlock={this.props.clearEditingBlock}
 						/>
-					</EditorActionBar>
-					<EditorContent>
-						{content.map((block, i) => (
-							<HandleBlock key={block.uid} block={block} blockIndex={i} />
-						))}
-					</EditorContent>
-				</EditorArea>
-				<SidebarArea>
-					<SidebarEditor
-						editingBlock={editingBlock}
-						pageUpdated={hasBeenUpdated}
-						savingPage={savingPage}
-						onSavePage={this.savePage}
-						clearEditingBlock={this.props.clearEditingBlock}
-					/>
-				</SidebarArea>
-			</CreatePageContainer>
+					</SidebarArea>
+				</div>
+			</Fragment>
 		);
 	}
 }
-
-const CreatePageContainer = styled.div``;
 
 const EditorArea = styled.div`
 	padding-right: 300px;
@@ -184,7 +208,43 @@ const EditorActionBar = styled.div`
 	align-items: center;
 `;
 
-const EditorContent = styled.div``;
+const rocketAnimation = keyframes`
+	0% {
+		transform: translate(0, 0) rotate(0);
+	}
+	45% {
+		transform: translate(20px, -150px) rotate(35deg);
+	}
+	55% {
+		transform: translate(20px, -150px) rotate(35deg);
+	}
+	100% {
+		transform: translate(0, 0) rotate(0);
+	}
+`;
+
+const EditorContainer = styled.div`
+	min-height: calc(100vh - 150px);
+	&.empty {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		img {
+			width: 125px;
+			transform: rotate(15deg);
+			animation: 5s ${rocketAnimation} ease-in-out infinite;
+		}
+
+		h4 {
+			font-size: 1.35rem;
+			text-align: center;
+		}
+		p {
+			text-align: center;
+		}
+	}
+`;
 
 const PageTitle = styled.input`
 	font-size: 22px;
@@ -245,8 +305,15 @@ const SidebarArea = styled.div`
 	}
 `;
 
+const IconContainer = styled.div`
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+`;
+
 const mapStateToProps = state => ({
-	editingPage: state.editingPage
+	editingPage: state.editingPage,
+	user: state.user.user
 });
 
 const mapDispatchToProps = {
@@ -255,10 +322,14 @@ const mapDispatchToProps = {
 	setPageType,
 	setPageUpdateStatus,
 	clearEditingBlock,
-	setPageSetting
+	setPageSetting,
+	createNewPage,
+	clearErrors
 };
 
-export default connect(
-	mapStateToProps,
-	mapDispatchToProps
-)(CreateNewPage);
+export default withRouter(
+	connect(
+		mapStateToProps,
+		mapDispatchToProps
+	)(CreateNewPage)
+);

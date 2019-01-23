@@ -13,6 +13,10 @@ export const SET_BLOCK_STYLE = "SET_BLOCK_STYLE";
 export const ADD_NEW_BLOCK = "ADD_NEW_BLOCK";
 export const SET_BLOCK_PROPERTY = "SET_BLOCK_PROPERTY";
 export const CLEAR_EDITING_BLOCK = "CLEAR_EDITING_BLOCK";
+export const CREATE_PAGE = "CREATE_PAGE";
+export const CREATE_PAGE_SUCCESS = "CREATE_PAGE_SUCCESS";
+export const CREATE_PAGE_FAIL = "CREATE_PAGE_FAIL";
+export const CLEAR_ERRORS = "CLEAR_ERRORS";
 
 export function setActiveBlock(block, index, blockRelation = "parent") {
 	return {
@@ -118,5 +122,24 @@ export function setBlockProperty(property, value) {
 export function clearEditingBlock() {
 	return {
 		type: CLEAR_EDITING_BLOCK
+	};
+}
+
+export function createNewPage(title, slug, type, content, user_id) {
+	return {
+		type: CREATE_PAGE,
+		payload: {
+			request: {
+				url: "/pages",
+				method: "POST",
+				data: { title, slug, type, content, user_id }
+			}
+		}
+	};
+}
+
+export function clearErrors() {
+	return {
+		type: CLEAR_ERRORS
 	};
 }
