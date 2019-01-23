@@ -13,11 +13,15 @@ class Page extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'slug', 'type', 'description', 'content', 'featuredImage', 'options'
+        'title', 'slug', 'type', 'user_id', 'content'
     ];
 
-    public function lastEditedBy()
+    protected $casts = [
+        'content' => 'array'
+    ];
+
+    public function author()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo('App\User', 'user_id', 'id');
     }
 }

@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Page;
 use Illuminate\Http\Request;
 use App\Http\Resources\Page as PageResource;
+use Validator;
+use Illuminate\Validation\Rule;
 use Debugbar;
 
 class PageController extends Controller
@@ -27,7 +29,33 @@ class PageController extends Controller
      */
     public function create(Request $request)
     {
-        $input = $request->except('id', 'user_id');
+        $input = $request->all();
+        $validator = Validator::make($input, [
+            'title' => 'required|unique:pages',
+            'slug' => 'unique:pages',
+            'user_id' => 'required|numeric',
+            'content' => 'required|array',
+            'type' => ['required', Rule::in(['vsebinska', 'naslovnica'])]
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+        Debugbar::info($input);
+        try {
+            $page = Page::create($input);
+            return response()->json(['success' => 'Stran je bila uspešno objavljena!', 'data' => $page]);
+
+        } catch(Exception $e) {
+            Debugbar::info($e);
+            return response()->json(['error' => $e->getMessage()], 400);
+        } catch(Throwable $e) {
+            Debugbar::info($e);
+            return response()->json(['error' => $e->getMessage()], 400);
+        }
+
+        return response()->json(['success' => 'do sm je pršlo!']);
+
     }
 
     /**

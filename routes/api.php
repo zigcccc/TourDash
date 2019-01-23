@@ -47,4 +47,7 @@ Route::group(['middleware' => 'auth:api'], function() {
     // Images actions
     Route::post('image/add-new', 'API\ImageController@store');
 
+    // Pages CRUD
+    Route::post('pages', 'API\PageController@create');
+
 });

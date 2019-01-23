@@ -19,10 +19,7 @@ class CreatePagesTable extends Migration
             $table->string('title')->unique();
             $table->string('slug')->unique();
             $table->string('type')->default('vsebinska');
-            $table->text('description')->nullable();
-            $table->string('featuredImage')->nullable();
-            $table->json('content')->nullable();
-            $table->json('options')->nullable();
+            $table->json('content');
             $table->timestamps();
         });
     }
