@@ -30,7 +30,8 @@ class Snackbar extends Component {
 			purpose,
 			message,
 			hasDissmissAction,
-			dissmissAction
+			dissmissAction,
+			style
 		} = this.props;
 		const { dissmissed } = this.state;
 		return (
@@ -41,6 +42,7 @@ class Snackbar extends Component {
 					"has-dissmiss": hasDissmissAction
 				})}
 				purpose={purpose}
+				style={style}
 			>
 				{typeof message === "string" && <span>{message}</span>}
 				{typeof message === "object" && (
@@ -97,6 +99,7 @@ const SnackBarContainer = styled.div`
 	transition: ${props => props.theme.easeTransition};
 	&.top {
 		top: 10px;
+		transform: translate(-50%, ${props => (props.open ? "0" : "-100%")});
 	}
 	&.bottom {
 		bottom: 10px;
