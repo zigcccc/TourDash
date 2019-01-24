@@ -1,9 +1,7 @@
-import React, { Component, Fragment } from "react";
+import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styled from "styled-components";
-import classNames from "classnames";
 import { connect } from "react-redux";
-import _times from "lodash/times";
 import {
 	getUsers,
 	updateUserRole,
@@ -11,19 +9,12 @@ import {
 	searchUsers
 } from "../../Store/Actions/UserActions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-	Table,
-	Button as BloomerButton,
-	Pagination,
-	PageList,
-	Page,
-	PageLink,
-	PageControl as BloomerPageControl
-} from "bloomer";
+import { Table, Button as BloomerButton } from "bloomer";
 import { PageWrapper, CenteredItem } from "../../Components/Layout";
 import RolesDropdown from "../../Components/RolesDropdown";
 import CardBase from "../../Components/Card";
 import Snackbar from "../../../Shared/Components/Snackbar";
+import Pagination from "../../Components/Pagination";
 import { Spacer } from "../../Components/Helpers";
 
 class UsersOverview extends Component {
@@ -37,6 +28,7 @@ class UsersOverview extends Component {
 				loading: false
 			}
 		};
+		this.fetchUsersPage = this.fetchUsersPage.bind(this);
 		this.clearSuccess = this.clearSuccess.bind(this);
 		this.fetchNextPage = this.fetchNextPage.bind(this);
 		this.fetchPrevPage = this.fetchPrevPage.bind(this);
@@ -189,42 +181,14 @@ class UsersOverview extends Component {
 						</ResultsNotFound>
 					)}
 					<Spacer />
-					{users.totalPages !== 1 && (
-						<Pagination>
-							<PageControl
-								onClick={this.fetchPrevPage}
-								className={classNames({
-									disabled: users.isFirstPage
-								})}
-							>
-								<FontAwesomeIcon icon="chevron-left" size="1x" />
-							</PageControl>
-							<PageControl
-								onClick={this.fetchNextPage}
-								isNext
-								className={classNames({
-									disabled: users.isLastPage
-								})}
-							>
-								<FontAwesomeIcon icon="chevron-right" size="1x" />
-							</PageControl>
-							<PageList>
-								{_times(users.totalPages).map(i => (
-									<Page key={i}>
-										<PageLink
-											onClick={
-												i + 1 !== users.currentPage
-													? this.fetchUsersPage.bind(this, i + 1)
-													: null
-											}
-											isCurrent={i + 1 === users.currentPage}
-										>
-											{i + 1}
-										</PageLink>
-									</Page>
-								))}
-							</PageList>
-						</Pagination>
+					{users.totalPages > 1 && (
+						<Pagination
+							isFirstPage={users.isFirstPage}
+							isLastPage={users.isLastPage}
+							currentPage={users.currentPage}
+							fetchNewPage={this.fetchUsersPage}
+							totalPages={users.totalPages}
+						/>
 					)}
 				</Card>
 			</PageWrapper>
@@ -306,21 +270,6 @@ const AvatarContainerPlaceholder = styled(AvatarContainer)`
 	color: ${props => props.theme.darkGray};
 `;
 
-const PageControl = styled(BloomerPageControl)`
-	&.disabled {
-		pointer-events: none;
-		opacity: 0.5;
-	}
-	svg {
-		color: ${props => props.theme.darkPrimary};
-	}
-	&:hover {
-		border-color: ${props => props.theme.mainColor};
-		svg {
-			color: ${props => props.theme.mainColor};
-		}
-	}
-`;
 const DeleteButton = styled(BloomerButton)`
 	margin-right: auto;
   border-color: ${props => props.theme.colorError};
