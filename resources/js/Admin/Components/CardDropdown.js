@@ -2,7 +2,52 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import classNames from "classnames";
-import { Spacer, OutsideHandler } from "./Helpers";
+import { OutsideHandler } from "./Helpers";
+
+class CardDropdown extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			open: false
+		};
+	}
+
+	_toggleState() {
+		this.setState({
+			open: !this.state.open
+		});
+	}
+
+	_closeDropdown() {
+		this.setState({
+			open: false
+		});
+	}
+	render() {
+		return (
+			<OutsideHandler handleClickOutside={this._closeDropdown.bind(this)}>
+				<CardDropdownContainer>
+					<DropdownTrigger
+						className={classNames({
+							"is-active": this.state.open
+						})}
+						onClick={this._toggleState.bind(this)}
+					>
+						<FontAwesomeIcon icon="ellipsis-v" />
+					</DropdownTrigger>
+					<DropdownContent
+						minWidth={this.props.minWidth}
+						className={classNames({
+							"is-active": this.state.open
+						})}
+					>
+						{this.props.children}
+					</DropdownContent>
+				</CardDropdownContainer>
+			</OutsideHandler>
+		);
+	}
+}
 
 const CardDropdownContainer = styled.div`
 	position: absolute;
@@ -36,7 +81,7 @@ const DropdownContent = styled.div`
 	top: 30px;
 	right: 0;
 	width: auto;
-	min-width: 150px;
+	min-width: ${props => props.minWidth || "150px"};
 	height: auto;
 	background: ${props => props.theme.white};
 	color: ${props => props.theme.darkHeavy};
@@ -80,49 +125,5 @@ const DropdownContent = styled.div`
 		}
 	}
 `;
-
-class CardDropdown extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			open: false
-		};
-	}
-
-	_toggleState() {
-		this.setState({
-			open: !this.state.open
-		});
-	}
-
-	_closeDropdown() {
-		this.setState({
-			open: false
-		});
-	}
-	render() {
-		return (
-			<OutsideHandler handleClickOutside={this._closeDropdown.bind(this)}>
-				<CardDropdownContainer>
-					<DropdownTrigger
-						className={classNames({
-							"is-active": this.state.open
-						})}
-						onClick={this._toggleState.bind(this)}
-					>
-						<FontAwesomeIcon icon="ellipsis-v" />
-					</DropdownTrigger>
-					<DropdownContent
-						className={classNames({
-							"is-active": this.state.open
-						})}
-					>
-						{this.props.children}
-					</DropdownContent>
-				</CardDropdownContainer>
-			</OutsideHandler>
-		);
-	}
-}
 
 export default CardDropdown;
