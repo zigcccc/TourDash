@@ -3,6 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
+use Debugbar;
 
 class Page extends JsonResource
 {
@@ -14,6 +15,10 @@ class Page extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $allData = parent::toArray($request);
+        unset($allData['user_id']);
+        $allData['author'] = $this->author()->first()->toArray();
+        
+        return $allData;
     }
 }

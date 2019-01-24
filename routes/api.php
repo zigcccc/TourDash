@@ -15,11 +15,12 @@ use Illuminate\Http\Request;
 
 Route::post('/login', 'API\PassportController@login');
 
-// Get all pages
+// Pages
 Route::get('/pages', 'API\PageController@index');
-
-// Get specific page
 Route::get('/pages/{id}', 'API\PageController@show');
+Route::post('/pages/search', 'API\PageController@search');
+
+
 
 Route::group(['middleware' => 'auth:api'], function() {
     // User CRUD
@@ -49,5 +50,7 @@ Route::group(['middleware' => 'auth:api'], function() {
 
     // Pages CRUD
     Route::post('pages', 'API\PageController@create');
+    Route::delete('pages/{id}', 'API\PageController@destroy');
+    Route::put('pages/{id}', 'API\PageController@update');
 
 });
