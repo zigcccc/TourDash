@@ -64,8 +64,6 @@ class ImageController extends Controller
         $thumbnailImage = $editingImage->fit(300);
         $thumbnailImage->save($thumbnailPath . $filename);
 
-        Debugbar::info($originalPath);
-
         // Save reference to the database
         $imagemodel = new ImageModel();
         $imagemodel->filename = $filename;
