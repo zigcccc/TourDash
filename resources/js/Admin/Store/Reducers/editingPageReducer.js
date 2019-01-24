@@ -24,7 +24,12 @@ import {
 	CREATE_PAGE,
 	CREATE_PAGE_SUCCESS,
 	CREATE_PAGE_FAIL,
-	CLEAR_ERRORS
+	UPDATE_PAGE,
+	UPDATE_PAGE_SUCCESS,
+	UPDATE_PAGE_FAIL,
+	CLEAR_ERRORS,
+	SET_ORIGINAL_STATE,
+	POPULATE_EDITING_PAGE
 } from "../Actions/EditingPageActions";
 
 const initialState = {
@@ -39,8 +44,8 @@ const initialState = {
 	successMessage: "",
 	errorMessage: "",
 	savingPage: false,
-	contentBlocksCount: 5,
-	contentBlocksUsed: 5,
+	contentBlocksCount: 0,
+	contentBlocksUsed: 0,
 	content: []
 };
 
@@ -357,8 +362,45 @@ const editingPageReducer = (state = initialState, action) => {
 			};
 		}
 
+		case UPDATE_PAGE: {
+			return { ...state, savingPage: true };
+		}
+		case UPDATE_PAGE_SUCCESS: {
+			return {
+				...state,
+				savingPage: false,
+				successMessage: action.payload.data.success
+			};
+		}
+		case UPDATE_PAGE_FAIL: {
+			return {
+				...state,
+				savingPage: false,
+				errorMessage: action.payload
+					? action.payload.data.error
+					: "Pri posodabljanju strani je prišlo do napake..."
+			};
+		}
+
 		case CLEAR_ERRORS: {
 			return { ...state, errorMessage: "" };
+		}
+
+		case SET_ORIGINAL_STATE: {
+			return {
+				...initialState
+			};
+		}
+
+		case POPULATE_EDITING_PAGE: {
+			return {
+				...initialState,
+				pageTitle: action.payload.title,
+				slug: action.payload.slug,
+				type: action.payload.type,
+				content: action.payload.content,
+				contentBlocksUsed: sumUp(action.payload.content)
+			};
 		}
 
 		default: {
@@ -370,5 +412,8 @@ const editingPageReducer = (state = initialState, action) => {
 function getParentIndex(state, id) {
 	return _findIndex(state, ["uid", id]);
 }
+
+const sumUp = array =>
+	array.reduce((sum, el) => sum + (Array.isArray(el) ? sumUp(el) : +el), 0);
 
 export default editingPageReducer;

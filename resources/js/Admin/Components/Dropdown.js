@@ -44,7 +44,8 @@ class Dropdown extends Component {
 			possibilities,
 			color,
 			fullWidth,
-			condensed
+			condensed,
+			loading
 		} = this.props;
 		return (
 			<RoleDropdown
@@ -63,7 +64,13 @@ class Dropdown extends Component {
 						})}
 					>
 						<span>
-							{_isArray(possibilities) ? current : possibilities[current]}
+							{loading ? (
+								<FontAwesomeIcon icon="circle-notch" spin size="1x" />
+							) : _isArray(possibilities) ? (
+								current
+							) : (
+								possibilities[current]
+							)}
 						</span>
 						<FontAwesomeIcon icon={icon} size="1x" />
 					</DropdownButton>
@@ -131,14 +138,16 @@ Dropdown.propTypes = {
 		.isRequired,
 	color: PropTypes.string,
 	fullWidth: PropTypes.bool.isRequired,
-	condensed: PropTypes.bool.isRequired
+	condensed: PropTypes.bool.isRequired,
+	loading: PropTypes.bool.isRequired
 };
 
 Dropdown.defaultProps = {
 	color: "primary",
 	icon: "chevron-down",
 	fullWidth: false,
-	condensed: false
+	condensed: false,
+	loading: false
 };
 
 const RoleDropdown = styled(BloomerDropdown)`

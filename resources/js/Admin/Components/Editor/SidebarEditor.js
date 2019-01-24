@@ -24,7 +24,8 @@ const SidebarEditor = ({
 	pageUpdated,
 	savingPage,
 	onSavePage,
-	clearEditingBlock
+	clearEditingBlock,
+	ctaText
 }) => {
 	return (
 		<SiderbarPlaceholder>
@@ -99,7 +100,7 @@ const SidebarEditor = ({
 				{savingPage ? (
 					<FontAwesomeIcon icon="circle-notch" spin size="1x" />
 				) : (
-					"Shrani stran"
+					ctaText
 				)}
 			</SavePage>
 		</SiderbarPlaceholder>

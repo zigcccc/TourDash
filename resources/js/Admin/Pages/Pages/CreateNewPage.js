@@ -11,14 +11,19 @@ import {
 	clearEditingBlock,
 	setPageSetting,
 	createNewPage,
-	clearErrors
+	clearErrors,
+	setOriginalState,
+	populateEditingPage,
+	updatePage
 } from "../../Store/Actions/EditingPageActions";
+import { getPage } from "../../Store/Actions/PagesActions";
 import _isEqual from "lodash/isEqual";
 import _remove from "lodash/remove";
 import _findIndex from "lodash/findIndex";
 import _move from "lodash-move";
 import slugify from "slugify";
 import SidebarEditor from "../../Components/Editor/SidebarEditor";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Spacer } from "../../Components/Helpers";
 import Dropdown from "../../Components/Dropdown";
 import HandleBlock from "../../Components/Editor/HandleBlock";
@@ -28,7 +33,9 @@ class CreateNewPage extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			originalState: null
+			originalState: null,
+			pageId: null,
+			stateLoading: true
 		};
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.autoSlug = this.autoSlug.bind(this);
@@ -36,6 +43,10 @@ class CreateNewPage extends Component {
 		this.setPageType = this.setPageType.bind(this);
 		this.savePage = this.savePage.bind(this);
 		this.unsetActiveBlock = this.unsetActiveBlock.bind(this);
+		this.setDefaultState = this.setDefaultState.bind(this);
+		this.selectExistingPage = this.selectExistingPage.bind(this);
+		this.fetchExistingPage = this.fetchExistingPage.bind(this);
+		this.updatePage = this.updatePage.bind(this);
 	}
 
 	handleInputChange(e) {
@@ -92,14 +103,111 @@ class CreateNewPage extends Component {
 		}
 	}
 
+	updatePage() {
+		const { editingPage, user, updatePage, match } = this.props;
+		if (editingPage.content.length > 0) {
+			const data = {
+				title: editingPage.pageTitle,
+				slug: editingPage.slug,
+				type: editingPage.type,
+				content: editingPage.content,
+				user_id: user.id
+			};
+			updatePage(match.params.id, data).then(res => {
+				if (res.type === "UPDATE_PAGE_SUCCESS") {
+					this.setDefaultState();
+				}
+			});
+		}
+	}
+
 	componentDidMount() {
+		const { match, pages } = this.props;
+		if (match.params.id) {
+			const editingPageIndex = _findIndex(pages.pages.data, {
+				id: parseInt(match.params.id)
+			});
+			if (editingPageIndex >= 0) {
+				this.selectExistingPage(editingPageIndex);
+			} else {
+				this.fetchExistingPage();
+			}
+		} else {
+			this.setDefaultState();
+		}
+	}
+
+	selectExistingPage(pageIndex) {
+		const pageToEdit = this.props.pages.pages.data[pageIndex];
+		this.setState({
+			pageId: pageToEdit.id,
+			originalState: {
+				pageTitle: pageToEdit.title,
+				slug: pageToEdit.slug,
+				type: pageToEdit.type,
+				content: pageToEdit.content
+			},
+			stateLoading: false
+		});
+		this.props.populateEditingPage(
+			pageToEdit.title,
+			pageToEdit.slug,
+			pageToEdit.type,
+			pageToEdit.content
+		);
+	}
+
+	fetchExistingPage() {
+		this.props
+			.getPage(this.props.match.params.id)
+			.then(res => {
+				const { data } = res.payload.data;
+				this.setState({
+					pageId: data.id,
+					originalState: {
+						pageTitle: data.title,
+						slug: data.slug,
+						type: data.type,
+						content: data.content
+					},
+					stateLoading: false
+				});
+				this.props.populateEditingPage(
+					data.title,
+					data.slug,
+					data.type,
+					data.content
+				);
+			})
+			.catch(err => console.log(err));
+	}
+
+	setDefaultState() {
 		const { pageTitle, slug, type, content } = this.props.editingPage;
 		this.setState({
-			originalState: { pageTitle, slug, type, content }
+			originalState: { pageTitle, slug, type, content },
+			stateLoading: false
 		});
 	}
 
-	componentDidUpdate() {
+	componentDidUpdate(prevProps, prevState) {
+		if (prevProps.match.params.id && !this.props.match.params.id) {
+			// Changed from editing page to creating a new one
+			this.props.setOriginalState();
+			this.setState({
+				pageId: null,
+				originalState: {
+					pageTitle: "Ime strani",
+					slug: "ime-strani",
+					type: "vsebinska",
+					content: []
+				}
+			});
+		}
+		if (!prevProps.match.params.id && this.props.match.params.id) {
+			// Changed from adding a new page to editing exsiting one
+			this.fetchExistingPage();
+		}
 		const { editingPage, setPageUpdateStatus } = this.props;
 		const isEqual = this.getDiff();
 		if (!isEqual && !editingPage.hasBeenUpdated) {
@@ -108,6 +216,10 @@ class CreateNewPage extends Component {
 		if (isEqual && editingPage.hasBeenUpdated) {
 			setPageUpdateStatus(false);
 		}
+	}
+
+	componentWillUnmount() {
+		this.props.setOriginalState();
 	}
 
 	render() {
@@ -133,6 +245,12 @@ class CreateNewPage extends Component {
 					position="bottom"
 					message={errorMessage}
 				/>
+				<Snackbar
+					isOpen={successMessage.length > 0}
+					purpose="success"
+					position="bottom"
+					message={successMessage}
+				/>
 				<div>
 					<EditorArea onClick={this.unsetActiveBlock}>
 						<EditorActionBar>
@@ -140,7 +258,7 @@ class CreateNewPage extends Component {
 								onChange={this.handleInputChange}
 								onBlur={!slugOverriden ? this.autoSlug : null}
 								name="pageTitle"
-								value={pageTitle}
+								value={this.state.stateLoading ? "" : pageTitle}
 							/>
 							<PageSlugContainer>
 								<span>https://localhost:8000/</span>
@@ -151,7 +269,7 @@ class CreateNewPage extends Component {
 									onChange={this.handleInputChange}
 									onBlur={this.correctSlug}
 									name="slug"
-									value={slug}
+									value={this.state.stateLoading ? "" : slug}
 								/>
 							</PageSlugContainer>
 							<Spacer />
@@ -160,15 +278,23 @@ class CreateNewPage extends Component {
 								handleClick={this.setPageType}
 								possibilities={["naslovnica", "vsebinska"]}
 								icon="chevron-down"
+								loading={this.state.stateLoading}
 							/>
 						</EditorActionBar>
 						<EditorContainer
-							className={classNames({ empty: content.length === 0 })}
+							className={classNames({
+								empty: this.state.stateLoading || content.length === 0
+							})}
 						>
-							{content.map((block, i) => (
-								<HandleBlock key={block.uid} block={block} blockIndex={i} />
-							))}
-							{content.length === 0 && (
+							{this.state.stateLoading ? (
+								<IconContainer>
+									<LoadingIcon icon="circle-notch" spin size="4x" />
+								</IconContainer>
+							) : content.length !== 0 ? (
+								content.map((block, i) => (
+									<HandleBlock key={block.uid} block={block} blockIndex={i} />
+								))
+							) : (
 								<IconContainer>
 									<img src="/images/start.svg" alt="Ustvari novo stran" />
 									<h4>Začnite dodajati elemente iz desnega menija</h4>
@@ -184,7 +310,8 @@ class CreateNewPage extends Component {
 							editingBlock={editingBlock}
 							pageUpdated={hasBeenUpdated}
 							savingPage={savingPage}
-							onSavePage={this.savePage}
+							ctaText={this.state.pageId ? "Posodobi stran" : "Shrani stran"}
+							onSavePage={this.state.pageId ? this.updatePage : this.savePage}
 							clearEditingBlock={this.props.clearEditingBlock}
 						/>
 					</SidebarArea>
@@ -311,9 +438,14 @@ const IconContainer = styled.div`
 	align-items: center;
 `;
 
+const LoadingIcon = styled(FontAwesomeIcon)`
+	color: ${props => props.theme.mainColor};
+`;
+
 const mapStateToProps = state => ({
 	editingPage: state.editingPage,
-	user: state.user.user
+	user: state.user.user,
+	pages: state.pages
 });
 
 const mapDispatchToProps = {
@@ -324,7 +456,11 @@ const mapDispatchToProps = {
 	clearEditingBlock,
 	setPageSetting,
 	createNewPage,
-	clearErrors
+	clearErrors,
+	setOriginalState,
+	getPage,
+	populateEditingPage,
+	updatePage
 };
 
 export default withRouter(

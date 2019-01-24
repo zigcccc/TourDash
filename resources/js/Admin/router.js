@@ -8,6 +8,7 @@ import ReactPlaceholder from "react-placeholder";
 import NotFound from "./Pages/NotFound";
 import Dashboard from "./Pages/Dashboard";
 import CreateNewPage from "./Pages/Pages/CreateNewPage";
+import PagesOverview from "./Pages/Pages/PagesOverview";
 import UsersOverview from "./Pages/User/UsersOverview";
 import MyProfile from "./Pages/User/MyProfile";
 import Sidebar, { SidebarPlaceholder } from "./Components/Sidebar";
@@ -50,7 +51,9 @@ class AppRouter extends Component {
 					<MainArea>
 						<Switch>
 							<Route path="/" component={Dashboard} exact />
+							<Route path="/pages/" component={PagesOverview} exact />
 							<Route path="/pages/add/" component={CreateNewPage} exact />
+							<Route path="/pages/edit/:id" component={CreateNewPage} />
 							<Route path="/users/" component={UsersOverview} exact />
 							<Route path="/users/my-profile/" component={MyProfile} exact />
 

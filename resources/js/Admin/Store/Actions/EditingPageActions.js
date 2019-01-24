@@ -16,7 +16,12 @@ export const CLEAR_EDITING_BLOCK = "CLEAR_EDITING_BLOCK";
 export const CREATE_PAGE = "CREATE_PAGE";
 export const CREATE_PAGE_SUCCESS = "CREATE_PAGE_SUCCESS";
 export const CREATE_PAGE_FAIL = "CREATE_PAGE_FAIL";
+export const UPDATE_PAGE = "UPDATE_PAGE";
+export const UPDATE_PAGE_SUCCESS = "UPDATE_PAGE_SUCCESS";
+export const UPDATE_PAGE_FAIL = "UPDATE_PAGE_FAIL";
 export const CLEAR_ERRORS = "CLEAR_ERRORS";
+export const SET_ORIGINAL_STATE = "SET_ORIGINAL_STATE";
+export const POPULATE_EDITING_PAGE = "POPULATE_EDITING_PAGE";
 
 export function setActiveBlock(block, index, blockRelation = "parent") {
 	return {
@@ -138,8 +143,32 @@ export function createNewPage(title, slug, type, content, user_id) {
 	};
 }
 
+export function updatePage(pageId, data) {
+	return {
+		type: UPDATE_PAGE,
+		payload: {
+			request: {
+				url: `/pages/${pageId}`,
+				method: "PUT",
+				data: data
+			}
+		}
+	};
+}
+
 export function clearErrors() {
 	return {
 		type: CLEAR_ERRORS
+	};
+}
+
+export function setOriginalState() {
+	return { type: SET_ORIGINAL_STATE };
+}
+
+export function populateEditingPage(title, slug, type, content) {
+	return {
+		type: POPULATE_EDITING_PAGE,
+		payload: { title, slug, type, content }
 	};
 }

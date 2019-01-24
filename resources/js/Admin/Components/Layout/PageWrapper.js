@@ -8,7 +8,7 @@ class PageWrapper extends Component {
 	constructor(props) {
 		super(props);
 		this.handleChange = this.handleChange.bind(this);
-		this.performSearch = _debounce(this.performSearch.bind(this), 500);
+		this.performSearch = _debounce(this.performSearch.bind(this), 200);
 		this.state = {
 			searchQuery: ""
 		};
