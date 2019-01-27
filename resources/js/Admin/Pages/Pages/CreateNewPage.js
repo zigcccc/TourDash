@@ -7,6 +7,7 @@ import {
 	setActiveBlock,
 	unsetActiveBlock,
 	setPageType,
+	setPageStatus,
 	setPageUpdateStatus,
 	clearEditingBlock,
 	setPageSetting,
@@ -41,6 +42,7 @@ class CreateNewPage extends Component {
 		this.autoSlug = this.autoSlug.bind(this);
 		this.correctSlug = this.correctSlug.bind(this);
 		this.setPageType = this.setPageType.bind(this);
+		this.setPageStatus = this.setPageStatus.bind(this);
 		this.savePage = this.savePage.bind(this);
 		this.unsetActiveBlock = this.unsetActiveBlock.bind(this);
 		this.setDefaultState = this.setDefaultState.bind(this);
@@ -70,6 +72,11 @@ class CreateNewPage extends Component {
 		setPageType(type);
 	}
 
+	setPageStatus(status) {
+		const { setPageStatus } = this.props;
+		setPageStatus(status);
+	}
+
 	unsetActiveBlock(e) {
 		const { unsetActiveBlock } = this.props;
 		if (e.target !== e.currentTarget) {
@@ -80,8 +87,8 @@ class CreateNewPage extends Component {
 
 	getDiff() {
 		const { originalState } = this.state;
-		const { pageTitle, slug, type, content } = this.props.editingPage;
-		return _isEqual({ pageTitle, slug, type, content }, originalState);
+		const { pageTitle, slug, type, status, content } = this.props.editingPage;
+		return _isEqual({ pageTitle, slug, type, status, content }, originalState);
 	}
 
 	savePage() {
@@ -91,6 +98,7 @@ class CreateNewPage extends Component {
 				editingPage.pageTitle,
 				editingPage.slug,
 				editingPage.type,
+				"published",
 				editingPage.content,
 				user.id
 			).then(res => {
@@ -110,6 +118,7 @@ class CreateNewPage extends Component {
 				title: editingPage.pageTitle,
 				slug: editingPage.slug,
 				type: editingPage.type,
+				status: editingPage.status,
 				content: editingPage.content,
 				user_id: user.id
 			};
@@ -144,6 +153,7 @@ class CreateNewPage extends Component {
 			originalState: {
 				pageTitle: pageToEdit.title,
 				slug: pageToEdit.slug,
+				status: pageToEdit.status,
 				type: pageToEdit.type,
 				content: pageToEdit.content
 			},
@@ -153,6 +163,7 @@ class CreateNewPage extends Component {
 			pageToEdit.title,
 			pageToEdit.slug,
 			pageToEdit.type,
+			pageToEdit.status,
 			pageToEdit.content
 		);
 	}
@@ -168,6 +179,7 @@ class CreateNewPage extends Component {
 						pageTitle: data.title,
 						slug: data.slug,
 						type: data.type,
+						status: data.status,
 						content: data.content
 					},
 					stateLoading: false
@@ -176,6 +188,7 @@ class CreateNewPage extends Component {
 					data.title,
 					data.slug,
 					data.type,
+					data.status,
 					data.content
 				);
 			})
@@ -183,9 +196,9 @@ class CreateNewPage extends Component {
 	}
 
 	setDefaultState() {
-		const { pageTitle, slug, type, content } = this.props.editingPage;
+		const { pageTitle, slug, type, status, content } = this.props.editingPage;
 		this.setState({
-			originalState: { pageTitle, slug, type, content },
+			originalState: { pageTitle, slug, type, status, content },
 			stateLoading: false
 		});
 	}
@@ -199,6 +212,7 @@ class CreateNewPage extends Component {
 				originalState: {
 					pageTitle: "Ime strani",
 					slug: "ime-strani",
+					status: null,
 					type: "vsebinska",
 					content: []
 				}
@@ -229,6 +243,7 @@ class CreateNewPage extends Component {
 			slugOverriden,
 			slug,
 			type,
+			status,
 			content,
 			hasBeenUpdated,
 			savingPage,
@@ -280,6 +295,17 @@ class CreateNewPage extends Component {
 								icon="chevron-down"
 								loading={this.state.stateLoading}
 							/>
+							{this.state.pageId && (
+								<Dropdown
+									current={status}
+									handleClick={this.setPageStatus}
+									possibilities={{ published: "objavljeno", hidden: "skrito" }}
+									icon="chevron-down"
+									loading={this.state.stateLoading}
+									color={status === "published" ? "success" : "danger"}
+									style={{ marginLeft: 10 }}
+								/>
+							)}
 						</EditorActionBar>
 						<EditorContainer
 							className={classNames({
@@ -452,6 +478,7 @@ const mapDispatchToProps = {
 	setActiveBlock,
 	unsetActiveBlock,
 	setPageType,
+	setPageStatus,
 	setPageUpdateStatus,
 	clearEditingBlock,
 	setPageSetting,

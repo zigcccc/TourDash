@@ -14,6 +14,19 @@ export const SEARCH_PAGE = "SEARCH_PAGE";
 export const SEARCH_PAGE_SUCCESS = "SEARCH_PAGE_SUCCESS";
 export const SEARCH_PAGE_FAIL = "SEARCH_PAGE_FAIL";
 
+export const GET_MENU = "GET_MENU";
+export const GET_MENU_SUCCESS = "GET_MENU_SUCCESS";
+export const GET_MENU_FAIL = "GET_MENU_FAIL";
+
+export const REORDER_MENU = "REORDER_MENU";
+
+export const UPDATE_MENU = "UPDATE_MENU";
+export const UPDATE_MENU_SUCCESS = "UPDATE_MENU_SUCCESS";
+export const UPDATE_MENU_FAIL = "UPDATE_MENU_FAIL";
+
+export const CLEAR_SUCCESS = "CLEAR_SUCCESS";
+export const CLEAR_ERROR = "CLEAR_ERROR";
+
 export function getPages(page = 1) {
 	return {
 		type: GET_PAGES,
@@ -63,5 +76,49 @@ export function searchPage(query) {
 				}
 			}
 		}
+	};
+}
+
+export function getMenu() {
+	return {
+		type: GET_MENU,
+		payload: {
+			request: {
+				url: "/pages/menu",
+				method: "GET"
+			}
+		}
+	};
+}
+
+export function reorderMenu(menu) {
+	return {
+		type: REORDER_MENU,
+		payload: { menu }
+	};
+}
+
+export function updateMenu(menu) {
+	return {
+		type: UPDATE_MENU,
+		payload: {
+			request: {
+				url: "/pages/menu",
+				method: "PUT",
+				data: { menu }
+			}
+		}
+	};
+}
+
+export function clearSuccess() {
+	return {
+		type: CLEAR_SUCCESS
+	};
+}
+
+export function clearError() {
+	return {
+		type: CLEAR_ERROR
 	};
 }

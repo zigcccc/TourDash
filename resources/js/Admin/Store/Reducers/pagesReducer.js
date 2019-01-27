@@ -8,12 +8,23 @@ import {
 	DELETE_PAGE_FAIL,
 	SEARCH_PAGE,
 	SEARCH_PAGE_SUCCESS,
-	SEARCH_PAGE_FAIL
+	SEARCH_PAGE_FAIL,
+	GET_MENU,
+	GET_MENU_SUCCESS,
+	GET_MENU_FAIL,
+	REORDER_MENU,
+	UPDATE_MENU,
+	UPDATE_MENU_SUCCESS,
+	UPDATE_MENU_FAIL,
+	CLEAR_ERROR,
+	CLEAR_SUCCESS
 } from "../Actions/PagesActions";
 
 const initialState = {
 	loading: true,
+	hasError: false,
 	errorMessage: "",
+	hasSuccess: false,
 	successMessage: "",
 	deleteAction: {
 		loading: false,
@@ -25,6 +36,11 @@ const initialState = {
 		isFirstPage: true,
 		totalPages: 1,
 		currentPage: 1
+	},
+	menu: {
+		loading: true,
+		hasChanged: false,
+		menuItems: null
 	}
 };
 
@@ -56,6 +72,7 @@ const pagesReducer = (state = initialState, action) => {
 			return {
 				...state,
 				loading: false,
+				hasError: true,
 				errorMessage: "Pri pridobivanju strani je prišlo do težave..."
 			};
 		}
@@ -64,7 +81,9 @@ const pagesReducer = (state = initialState, action) => {
 		case DELETE_PAGE: {
 			return {
 				...state,
+				hasError: false,
 				errorMessage: null,
+				hasSuccess: false,
 				successMessage: null,
 				deleteAction: {
 					loading: true,
@@ -88,6 +107,7 @@ const pagesReducer = (state = initialState, action) => {
 					loading: false,
 					page: null
 				},
+				hasSuccess: true,
 				successMessage: "Stran uspešno izbrisana!"
 			};
 		}
@@ -98,6 +118,7 @@ const pagesReducer = (state = initialState, action) => {
 					loading: false,
 					page: null
 				},
+				hasError: true,
 				errorMessage: action.payload.data
 					? action.payload.data.error
 					: "Pri brisanju strani je prišlo do napake..."
@@ -127,9 +148,116 @@ const pagesReducer = (state = initialState, action) => {
 			return {
 				...state,
 				loading: false,
+				hasError: true,
 				errorMessage: action.payload
 					? action.payload.data.error
 					: "Pri poizvedbi je prišlo do težave..."
+			};
+		}
+
+		// Get menu
+		case GET_MENU: {
+			return {
+				...state,
+				hasError: false,
+				errorMessage: "",
+				menu: {
+					...state.menu,
+					loading: true
+				}
+			};
+		}
+		case GET_MENU_SUCCESS: {
+			return {
+				...state,
+				loading: false,
+				menu: {
+					...state.menu,
+					loading: false,
+					menuItems: action.payload.data.data
+				}
+			};
+		}
+		case GET_MENU_FAIL: {
+			return {
+				...state,
+				loading: false,
+				menu: {
+					...state.menu,
+					loading: false
+				},
+				hasError: true,
+				errorMessage: action.payload
+					? action.payload.data.error
+					: "Pri pridobivanju menija je prišlo do težave"
+			};
+		}
+
+		// Reorder items in the menu
+		case REORDER_MENU: {
+			return {
+				...state,
+				loading: false,
+				hasError: false,
+				errorMessage: "",
+				hasSuccess: false,
+				successMessage: "",
+				menu: {
+					...state.menu,
+					hasChanged: true,
+					menuItems: action.payload.menu
+				}
+			};
+		}
+
+		// Update menu
+		case UPDATE_MENU: {
+			return {
+				...state,
+				menu: { ...state.menu, loading: true },
+				hasSuccess: false,
+				successMessage: "",
+				hasError: false,
+				errorMessage: ""
+			};
+		}
+		case UPDATE_MENU_SUCCESS: {
+			return {
+				...state,
+				menu: {
+					...state.menu,
+					hasChanged: false,
+					loading: false
+				},
+				hasSuccess: true,
+				successMessage: action.payload.data.success
+			};
+		}
+		case UPDATE_MENU_FAIL: {
+			return {
+				...state,
+				menu: {
+					...state.menu,
+					loading: false
+				},
+				hasError: true,
+				errorMessage: action.payload
+					? action.payload.data.error
+					: "Pri posodabljanju menija je pršilo do težave..."
+			};
+		}
+
+		// Clear success and error messages
+		case CLEAR_ERROR: {
+			return {
+				...state,
+				hasError: false
+			};
+		}
+		case CLEAR_SUCCESS: {
+			return {
+				...state,
+				hasSuccess: false
 			};
 		}
 

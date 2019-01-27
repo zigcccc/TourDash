@@ -45,7 +45,8 @@ class Dropdown extends Component {
 			color,
 			fullWidth,
 			condensed,
-			loading
+			loading,
+			style
 		} = this.props;
 		return (
 			<RoleDropdown
@@ -54,13 +55,16 @@ class Dropdown extends Component {
 				className={classNames({
 					"full-width": fullWidth
 				})}
+				style={style}
 			>
 				<DropdownTrigger style={{ width: "100%" }}>
 					<DropdownButton
 						aria-haspopup={true}
 						onClick={this.toggleDropdown}
 						className={classNames({
-							dark: color === "dark"
+							dark: color === "dark",
+							success: color === "success",
+							danger: color === "danger"
 						})}
 					>
 						<span>
@@ -181,6 +185,26 @@ const DropdownButton = styled(Button)`
 		}
 		svg {
 			color: ${props => props.theme.darkPrimary};
+		}
+	}
+	&.success {
+		color: ${props => props.theme.colorSuccess};
+		border-color: ${props => props.theme.colorSuccess};
+		&:focus {
+			box-shadow: none;
+		}
+		svg {
+			color: ${props => props.theme.colorSuccess};
+		}
+	}
+	&.danger {
+		color: ${props => props.theme.colorError};
+		border-color: ${props => props.theme.colorError};
+		&:focus {
+			box-shadow: none;
+		}
+		svg {
+			color: ${props => props.theme.colorError};
 		}
 	}
 	span {

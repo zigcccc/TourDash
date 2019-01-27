@@ -4,6 +4,7 @@ export const MOVE_BLOCK_UP = "MOVE_BLOCK_UP";
 export const MOVE_BLOCK_DOWN = "MOVE_BLOCK_DOWN";
 export const DELETE_BLOCK = "DELETE_BLOCK";
 export const SET_PAGE_TYPE = "SET_PAGE_TYPE";
+export const SET_PAGE_STATUS = "SET_PAGE_STATUS";
 export const SET_PAGE_SETTING = "SET_PAGE_SETTING";
 export const SET_PAGE_UPDATE_STATUS = "SET_PAGE_UPDATE_STATUS";
 export const SET_TYPOGRAPHY_BLOCK_TAG = "SET_TYPOGRAPHY_BLOCK_TAG";
@@ -75,6 +76,13 @@ export function setPageType(type) {
 	};
 }
 
+export function setPageStatus(status) {
+	return {
+		type: SET_PAGE_STATUS,
+		payload: { status }
+	};
+}
+
 export function setPageUpdateStatus(status) {
 	return {
 		type: SET_PAGE_UPDATE_STATUS,
@@ -130,14 +138,14 @@ export function clearEditingBlock() {
 	};
 }
 
-export function createNewPage(title, slug, type, content, user_id) {
+export function createNewPage(title, slug, type, status, content, user_id) {
 	return {
 		type: CREATE_PAGE,
 		payload: {
 			request: {
 				url: "/pages",
 				method: "POST",
-				data: { title, slug, type, content, user_id }
+				data: { title, slug, type, status, content, user_id }
 			}
 		}
 	};
@@ -166,9 +174,9 @@ export function setOriginalState() {
 	return { type: SET_ORIGINAL_STATE };
 }
 
-export function populateEditingPage(title, slug, type, content) {
+export function populateEditingPage(title, slug, type, status, content) {
 	return {
 		type: POPULATE_EDITING_PAGE,
-		payload: { title, slug, type, content }
+		payload: { title, slug, type, status, content }
 	};
 }

@@ -29,7 +29,8 @@ import {
 	UPDATE_PAGE_FAIL,
 	CLEAR_ERRORS,
 	SET_ORIGINAL_STATE,
-	POPULATE_EDITING_PAGE
+	POPULATE_EDITING_PAGE,
+	SET_PAGE_STATUS
 } from "../Actions/EditingPageActions";
 
 const initialState = {
@@ -40,6 +41,7 @@ const initialState = {
 	slugOverriden: false,
 	hasBeenUpdated: false,
 	type: "vsebinska",
+	status: null,
 	savingPage: false,
 	successMessage: "",
 	errorMessage: "",
@@ -63,6 +65,12 @@ const editingPageReducer = (state = initialState, action) => {
 		case SET_PAGE_TYPE: {
 			return produce(state, draft => {
 				draft.type = action.payload.type;
+			});
+		}
+
+		case SET_PAGE_STATUS: {
+			return produce(state, draft => {
+				draft.status = action.payload.status;
 			});
 		}
 
@@ -398,8 +406,9 @@ const editingPageReducer = (state = initialState, action) => {
 				pageTitle: action.payload.title,
 				slug: action.payload.slug,
 				type: action.payload.type,
+				status: action.payload.status,
 				content: action.payload.content,
-				contentBlocksUsed: sumUp(action.payload.content)
+				contentBlocksUsed: action.payload.content.flat().length
 			};
 		}
 

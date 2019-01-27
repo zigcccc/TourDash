@@ -9,6 +9,132 @@ import { truncate } from "../Utils/";
 import InvertedCta from "../../Shared/Components/InvertedCta";
 import FlatCta from "../../Shared/Components/FlatCta";
 
+class DashboardActivityListItem extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			iconsMap: {
+				review: "star",
+				favorite: "heart",
+				contact: "envelope"
+			},
+			headingMap: {
+				review: "written a review",
+				favorite: "favorited an accommodation",
+				contact: "contacted you"
+			}
+		};
+	}
+
+	render() {
+		const {
+			activity,
+			deleteActivity,
+			deleteMessage,
+			replyToMessage,
+			dennyReview,
+			approveReview
+		} = this.props;
+		return (
+			<ActivityListItemContainer key={activity.id}>
+				<ActivityListItemHeader>
+					<ActivityListItemAvatar>
+						<Badge>
+							<FontAwesomeIcon icon={this.state.iconsMap[activity.type]} />
+						</Badge>
+						<img src={activity.author.avatar} alt={activity.author.name} />
+					</ActivityListItemAvatar>
+					<ActivityListItemAuthorInfo>
+						<h4>
+							<span>{activity.author.name}</span> has{" "}
+							{this.state.headingMap[activity.type]}
+						</h4>
+						{activity.type === "review" && (
+							<p>
+								Review for accommodation: <span>{activity.refersTo}</span>
+							</p>
+						)}
+						{activity.type === "favorite" && (
+							<p>
+								Accommodation: <span>{activity.refersTo}</span>
+							</p>
+						)}
+					</ActivityListItemAuthorInfo>
+					<ActivityListItemMeta>{activity.date}</ActivityListItemMeta>
+					<DeleteActivityContainer href="#" onClick={deleteActivity}>
+						<FontAwesomeIcon icon="eye-slash" />
+					</DeleteActivityContainer>
+				</ActivityListItemHeader>
+				<ActivityListItemBody>
+					{activity.type === "review" && (
+						<StarsContainer>
+							{times(Math.floor(activity.content.rating)).map((v, i) => {
+								return <FontAwesomeIcon key={i} icon="star" />;
+							})}
+							{activity.content.rating - Math.floor(activity.content.rating) !==
+							0 ? (
+								<FontAwesomeIcon icon="star-half-alt" />
+							) : null}
+							{times(5 - Math.ceil(activity.content.rating)).map((v, i) => {
+								return (
+									<FontAwesomeIcon key={i} icon="star" className="disabled" />
+								);
+							})}
+						</StarsContainer>
+					)}
+					{activity.type === "contact" && (
+						<h4>Subject: {activity.content.subject}</h4>
+					)}
+					{!isEmpty(activity.content) && (
+						<p
+							className={classNames({
+								"little-margin": activity.type === "contact"
+							})}
+						>
+							{truncate(activity.content.message, 140)}
+						</p>
+					)}
+					{activity.type === "review" && (
+						<React.Fragment>
+							<ActivityCta
+								fontSize={12}
+								handleClick={approveReview}
+								text="odobri"
+							/>
+							<ActivityFlatCta
+								handleClick={dennyReview}
+								fontSize={12}
+								text="zavrni"
+							/>
+						</React.Fragment>
+					)}
+					{activity.type === "contact" && (
+						<React.Fragment>
+							<ActivityCta
+								fontSize={12}
+								handleClick={replyToMessage}
+								text={"Odgovori"}
+							/>
+							<ActivityFlatCta
+								handleClick={deleteMessage}
+								fontSize={12}
+								text="izbriši"
+							/>
+						</React.Fragment>
+					)}
+				</ActivityListItemBody>
+			</ActivityListItemContainer>
+		);
+	}
+}
+
+DashboardActivityListItem.propTypes = {
+	activity: PropTypes.shape({
+		id: PropTypes.number.isRequired,
+		type: PropTypes.string.isRequired
+	})
+};
+
 const ActivityListItemContainer = styled.div`
 	margin: 15px 0 0;
 	padding-bottom: 15px;
@@ -145,131 +271,5 @@ const ActivityFlatCta = styled(FlatCta)`
 	padding: 5px;
 	min-width: 300px;
 `;
-
-class DashboardActivityListItem extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			iconsMap: {
-				review: "star",
-				favorite: "heart",
-				contact: "envelope"
-			},
-			headingMap: {
-				review: "written a review",
-				favorite: "favorited an accommodation",
-				contact: "contacted you"
-			}
-		};
-	}
-
-	render() {
-		const {
-			activity,
-			deleteActivity,
-			deleteMessage,
-			replyToMessage,
-			dennyReview,
-			approveReview
-		} = this.props;
-		return (
-			<ActivityListItemContainer key={activity.id}>
-				<ActivityListItemHeader>
-					<ActivityListItemAvatar>
-						<Badge>
-							<FontAwesomeIcon icon={this.state.iconsMap[activity.type]} />
-						</Badge>
-						<img src={activity.author.avatar} alt={activity.author.name} />
-					</ActivityListItemAvatar>
-					<ActivityListItemAuthorInfo>
-						<h4>
-							<span>{activity.author.name}</span> has{" "}
-							{this.state.headingMap[activity.type]}
-						</h4>
-						{activity.type === "review" && (
-							<p>
-								Review for accommodation: <span>{activity.refersTo}</span>
-							</p>
-						)}
-						{activity.type === "favorite" && (
-							<p>
-								Accommodation: <span>{activity.refersTo}</span>
-							</p>
-						)}
-					</ActivityListItemAuthorInfo>
-					<ActivityListItemMeta>{activity.date}</ActivityListItemMeta>
-					<DeleteActivityContainer href="#" onClick={deleteActivity}>
-						<FontAwesomeIcon icon="eye-slash" />
-					</DeleteActivityContainer>
-				</ActivityListItemHeader>
-				<ActivityListItemBody>
-					{activity.type === "review" && (
-						<StarsContainer>
-							{times(Math.floor(activity.content.rating)).map((v, i) => {
-								return <FontAwesomeIcon key={i} icon="star" />;
-							})}
-							{activity.content.rating - Math.floor(activity.content.rating) !==
-							0 ? (
-								<FontAwesomeIcon icon="star-half-alt" />
-							) : null}
-							{times(5 - Math.ceil(activity.content.rating)).map((v, i) => {
-								return (
-									<FontAwesomeIcon key={i} icon="star" className="disabled" />
-								);
-							})}
-						</StarsContainer>
-					)}
-					{activity.type === "contact" && (
-						<h4>Subject: {activity.content.subject}</h4>
-					)}
-					{!isEmpty(activity.content) && (
-						<p
-							className={classNames({
-								"little-margin": activity.type === "contact"
-							})}
-						>
-							{truncate(activity.content.message, 140)}
-						</p>
-					)}
-					{activity.type === "review" && (
-						<React.Fragment>
-							<ActivityCta
-								fontSize={12}
-								handleClick={approveReview}
-								text="approve"
-							/>
-							<ActivityFlatCta
-								handleClick={dennyReview}
-								fontSize={12}
-								text="denny"
-							/>
-						</React.Fragment>
-					)}
-					{activity.type === "contact" && (
-						<React.Fragment>
-							<ActivityCta
-								fontSize={12}
-								handleClick={replyToMessage}
-								text={`Reply to ${activity.author.name.split(" ")[0]}`}
-							/>
-							<ActivityFlatCta
-								handleClick={deleteMessage}
-								fontSize={12}
-								text="delete"
-							/>
-						</React.Fragment>
-					)}
-				</ActivityListItemBody>
-			</ActivityListItemContainer>
-		);
-	}
-}
-
-DashboardActivityListItem.propTypes = {
-	activity: PropTypes.shape({
-		id: PropTypes.number.isRequired,
-		type: PropTypes.string.isRequired
-	})
-};
 
 export default DashboardActivityListItem;

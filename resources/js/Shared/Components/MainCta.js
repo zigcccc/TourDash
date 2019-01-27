@@ -1,8 +1,66 @@
 import React from "react";
+import classNames from "classnames";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import PropTypes from "prop-types";
+
+const MainCta = props => {
+	switch (typeof props.handleClick) {
+		case "function":
+			return (
+				<MainCtaButton
+					className={classNames({
+						[props.className]: true,
+						disabled: props.disabled
+					})}
+					data-size={props.fontSize}
+					onClick={!props.disabled ? props.handleClick : null}
+				>
+					{props.isLoading ? (
+						<FontAwesomeIcon icon="circle-notch" spin size="1x" />
+					) : (
+						props.text
+					)}
+				</MainCtaButton>
+			);
+		case "undefined":
+			return (
+				<MainCtaLink
+					className={classNames({
+						[props.className]: true,
+						disabled: props.disabled
+					})}
+					data-size={props.fontSize}
+					to={!props.disabled ? props.to : props.match.pathname}
+				>
+					{props.isLoading ? (
+						<FontAwesomeIcon icon="circle-notch" spin size="1x" />
+					) : (
+						props.text
+					)}
+				</MainCtaLink>
+			);
+		default:
+			new Error('Neither "handleClick" or "to" prop is provided...');
+			return <div>error</div>;
+	}
+};
+
+MainCta.propTypes = {
+	fontSize: PropTypes.number.isRequired,
+	handleClick: PropTypes.func,
+	to: PropTypes.string,
+	isLoading: PropTypes.bool,
+	text: PropTypes.string,
+	disabled: PropTypes.bool.isRequired
+};
+
+MainCta.defaultProps = {
+	fontSize: 24,
+	isLoading: false,
+	disabled: false
+};
 
 const MainCtaLink = styled(Link)`
 	background-color: ${props => props.theme.mainColor};
@@ -26,6 +84,15 @@ const MainCtaLink = styled(Link)`
 	}
 	:active {
 		transform: translate(0, -3px) scale(0.95);
+	}
+	&.disabled {
+		box-shadow: none;
+		background: ${props => props.theme.lightGray};
+		color: ${props => props.theme.whiteShade2};
+		cursor: not-allowed;
+		&:hover {
+			transform: translate(0, 0);
+		}
 	}
 `;
 
@@ -54,55 +121,15 @@ const MainCtaButton = styled.button`
 	:active {
 		transform: translate(0, -3px) scale(0.95);
 	}
-`;
-
-const MainCta = props => {
-	switch (typeof props.handleClick) {
-		case "function":
-			return (
-				<MainCtaButton
-					className={props.className}
-					data-size={props.fontSize}
-					onClick={props.handleClick}
-				>
-					{props.isLoading ? (
-						<FontAwesomeIcon icon="circle-notch" spin size="1x" />
-					) : (
-						props.text
-					)}
-				</MainCtaButton>
-			);
-		case "undefined":
-			return (
-				<MainCtaLink
-					className={props.className}
-					data-size={props.fontSize}
-					to={props.to}
-				>
-					{props.isLoading ? (
-						<FontAwesomeIcon icon="circle-notch" spin size="1x" />
-					) : (
-						props.text
-					)}
-				</MainCtaLink>
-			);
-		default:
-			new Error('Neither "handleClick" or "to" prop is provided...');
-			return <div>error</div>;
+	&.disabled {
+		box-shadow: none;
+		background: ${props => props.theme.lightGray};
+		color: ${props => props.theme.whiteShade2};
+		cursor: not-allowed;
+		&:hover {
+			transform: translate(0, 0);
+		}
 	}
-};
-
-MainCta.propTypes = {
-	fontSize: PropTypes.number.isRequired,
-	handleClick: PropTypes.func,
-	to: PropTypes.string,
-	isLoading: PropTypes.bool,
-	text: PropTypes.string
-};
-
-MainCta.defaultProps = {
-	fontSize: 24,
-	isLoading: false
-};
+`;
 
 export default MainCta;

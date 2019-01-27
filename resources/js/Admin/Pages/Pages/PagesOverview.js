@@ -18,6 +18,7 @@ import CardDropdown from "../../Components/CardDropdown";
 import Snackbar from "../../../Shared/Components/Snackbar";
 import { Spacer } from "../../Components/Helpers";
 import Pagination from "../../Components/Pagination";
+import { StatusGroup, StatusIndicator } from "../../Components/SiteStatus";
 
 class PagesOverview extends Component {
 	constructor(props) {
@@ -29,9 +30,7 @@ class PagesOverview extends Component {
 	}
 
 	componentDidMount() {
-		if (this.props.pages.pages.data.length === 0 || this.props.location.state) {
-			this.props.getPages();
-		}
+		this.props.getPages();
 	}
 
 	clearLocationSuccess() {
@@ -78,7 +77,6 @@ class PagesOverview extends Component {
 					style={{ top: "120px" }}
 					isOpen={location.state && location.state.success.length > 0}
 					message={location.state ? location.state.success : ""}
-					dissmissAction={this.clearLocationSuccess}
 				/>
 				<Card>
 					<CardDropdown minWidth="200px">
@@ -100,6 +98,7 @@ class PagesOverview extends Component {
 									<th>URL</th>
 									<th>Avtor</th>
 									<th>Datum objave</th>
+									<th>Stanje strani</th>
 									<th />
 									<th />
 								</tr>
@@ -136,6 +135,16 @@ class PagesOverview extends Component {
 											{page.author.name}
 										</NameField>
 										<td>{this.parseDate(page.created_at)}</td>
+										<td>
+											<StatusGroup>
+												<StatusIndicator
+													status={
+														page.status === "published" ? "success" : "error"
+													}
+												/>
+												{page.status === "published" ? "objavljena" : "skrita"}
+											</StatusGroup>
+										</td>
 										<ActionField>
 											<EditButton
 												onClick={() =>

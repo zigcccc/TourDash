@@ -36,7 +36,7 @@ const SiteStatusContainer = styled.div`
 	position: relative;
 `;
 
-const StatusGroup = styled.div`
+export const StatusGroup = styled.div`
 	margin-right: 20px;
 	display: flex;
 	align-items: center;
@@ -46,7 +46,7 @@ const StatusGroup = styled.div`
 	}
 `;
 
-const StatusIndicator = styled.div`
+export const StatusIndicator = styled.div`
 	width: 12px;
 	height: 12px;
 	margin-right: 5px;
