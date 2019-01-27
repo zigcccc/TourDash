@@ -13,7 +13,7 @@ class Page extends Model
      * @var array
      */
     protected $fillable = [
-        'title', 'slug', 'type', 'user_id', 'content'
+        'title', 'slug', 'type', 'user_id', 'content', 'menu_order', 'status'
     ];
 
     protected $casts = [

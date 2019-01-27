@@ -36,7 +36,8 @@ class PageController extends Controller
             'slug' => 'unique:pages',
             'user_id' => 'required|numeric',
             'content' => 'required|array',
-            'type' => ['required', Rule::in(['vsebinska', 'naslovnica'])]
+            'type' => ['required', Rule::in(['vsebinska', 'naslovnica'])],
+            'status' => ['required', Rule::in(['published', 'hidden'])]
         ]);
 
         if ($validator->fails()) {
@@ -44,6 +45,7 @@ class PageController extends Controller
         }
         
         try {
+            $input['menu_order'] = Page::count() + 1;
             $page = Page::create($input);
             return response()->json(['success' => 'Stran je bila uspešno objavljena!', 'data' => $page]);
 
@@ -136,5 +138,44 @@ class PageController extends Controller
         
         $result = Page::where('title', 'LIKE', '%' . $q . '%')->orWhere('slug', 'LIKE', '%' . $q . '%')->orderBy('title');
         return PageResource::collection($result->paginate(10));
+    }
+
+    // Get menu
+    public function getMenu()
+    {
+        try {
+            $response = Page::select('id', 'title', 'slug', 'menu_order')
+                        ->where('status', 'published')
+                        ->orderBy('menu_order')
+                        ->get();
+
+            return response()->json(["data" => $response], 200);
+        } catch (Exception $e) {
+            return response()->json(["error" => $e->getMessage()], 500);
+        }
+    }
+
+    // Update menu
+    public function updateMenu(Request $request)
+    {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+            'menu' => 'required|array'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 422);
+        }
+
+        $menu = $input['menu'];
+
+        try {
+            foreach($menu as $key => $page) {
+                Page::where('id', $page['id'])->update(['menu_order' => $key + 1]);
+            }
+            return response()->json(["success" => "Meni uspešno posodobljen!"], 200);
+        } catch (Exception $e) {
+            return response()->json(["error" => $e->getMessage()], 500);
+        }
     }
 }

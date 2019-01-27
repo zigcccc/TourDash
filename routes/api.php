@@ -13,12 +13,13 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::post('/login', 'API\PassportController@login');
+Route::post('login', 'API\PassportController@login');
 
 // Pages
-Route::get('/pages', 'API\PageController@index');
-Route::get('/pages/{id}', 'API\PageController@show');
-Route::post('/pages/search', 'API\PageController@search');
+Route::get('pages/menu', 'API\PageController@getMenu');
+Route::get('pages', 'API\PageController@index');
+Route::get('pages/{id}', 'API\PageController@show');
+Route::post('pages/search', 'API\PageController@search');
 
 
 
@@ -51,6 +52,7 @@ Route::group(['middleware' => 'auth:api'], function() {
     // Pages CRUD
     Route::post('pages', 'API\PageController@create');
     Route::delete('pages/{id}', 'API\PageController@destroy');
+    Route::put('pages/menu', 'API\PageController@updateMenu');
     Route::put('pages/{id}', 'API\PageController@update');
 
 });
