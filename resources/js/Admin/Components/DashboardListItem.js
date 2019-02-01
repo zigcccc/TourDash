@@ -1,11 +1,73 @@
-import React from "react";
+import React, { Fragment } from "react";
+import classNames from "classnames";
 import { Link as RouterLink } from "react-router-dom";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Spacer } from "./Helpers";
 
-const DashboardListItemContainer = styled(RouterLink)`
+const ListItemContainer = props => {
+	return props.link ? (
+		<DashboardLinkItemContainer to={props.link}>
+			{props.children}
+		</DashboardLinkItemContainer>
+	) : (
+		<DashboardListItemContainer>{props.children}</DashboardListItemContainer>
+	);
+};
+
+const DashboardListItem = props => {
+	return (
+		<ListItemContainer link={props.link}>
+			<IconContainer>
+				{props.icon.indexOf("image/") > -1 ? (
+					<ImageIcon src={`/images/uploads/${props.icon}`} alt={props.title} />
+				) : (
+					<FontAwesomeIcon icon={props.icon} />
+				)}
+			</IconContainer>
+			<h4 className={classNames({ "full-width": !props.link })}>
+				{props.title}
+			</h4>
+			<div className="author-container">
+				<span>{props.author}</span>
+				{props.authorAvatar && (
+					<Avatar src={props.authorAvatar} alt={props.author} />
+				)}
+			</div>
+			{props.link && (
+				<Fragment>
+					<Spacer />
+					<Link to={props.link}>
+						<FontAwesomeIcon icon="long-arrow-alt-right" />
+					</Link>
+				</Fragment>
+			)}
+		</ListItemContainer>
+	);
+};
+
+DashboardListItem.propTypes = {
+	icon: PropTypes.string.isRequired,
+	link: PropTypes.string,
+	title: PropTypes.string.isRequired,
+	author: PropTypes.string,
+	authorAvatar: PropTypes.string
+};
+
+DashboardListItem.defaultProps = {
+	icon: "file"
+};
+
+const Avatar = styled.img`
+	border-radius: 50%;
+`;
+
+const ImageIcon = styled.img`
+	border-radius: 50%;
+`;
+
+const DashboardLinkItemContainer = styled(RouterLink)`
 	border-radius: 200px;
 	background-color: ${props => props.theme.whiteShade2};
 	margin: 5px 0;
@@ -23,6 +85,49 @@ const DashboardListItemContainer = styled(RouterLink)`
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
+	}
+	.author-container {
+		display: flex;
+		align-items: center;
+		font-size: 10px;
+		margin-left: 20px;
+		span {
+			font-weight: 700;
+			width: 75px;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+		}
+		img {
+			width: 18px;
+			height: 18px;
+			object-fit: cover;
+			margin-left: 3px;
+		}
+	}
+`;
+
+const DashboardListItemContainer = styled.div`
+	border-radius: 200px;
+	background-color: ${props => props.theme.whiteShade2};
+	margin: 5px 0;
+	padding: 3px 4px;
+	display: flex;
+	align-items: center;
+	color: ${props => props.theme.darkPrimary};
+	:first-of-type {
+		margin-top: 15px;
+	}
+	h4 {
+		font-size: 14px;
+		font-weight: 900;
+		width: 150px;
+		overflow: hidden;
+		white-space: nowrap;
+		text-overflow: ellipsis;
+		&.full-width {
+			width: 250px;
+		}
 	}
 	.author-container {
 		display: flex;
@@ -71,36 +176,5 @@ const Link = styled.span`
 		transform: translate(3px, 0);
 	}
 `;
-
-const DashboardListItem = props => {
-	return (
-		<DashboardListItemContainer to={props.link}>
-			<IconContainer>
-				<FontAwesomeIcon icon={props.icon} />
-			</IconContainer>
-			<h4>{props.title}</h4>
-			<div className="author-container">
-				<span>{props.author}</span>
-				<img src={props.authorAvatar} alt={props.author} />
-			</div>
-			<Spacer />
-			<Link to={props.link}>
-				<FontAwesomeIcon icon="long-arrow-alt-right" />
-			</Link>
-		</DashboardListItemContainer>
-	);
-};
-
-DashboardListItem.propTypes = {
-	icon: PropTypes.string.isRequired,
-	link: PropTypes.string.isRequired,
-	title: PropTypes.string.isRequired,
-	author: PropTypes.string,
-	authorAvatar: PropTypes.string
-};
-
-DashboardListItem.defaultProps = {
-	icon: "file"
-};
 
 export default DashboardListItem;

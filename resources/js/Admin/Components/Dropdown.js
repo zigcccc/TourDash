@@ -14,7 +14,17 @@ import {
 } from "bloomer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
-class Dropdown extends Component {
+const Dropdown = props =>
+	props.label ? (
+		<Container>
+			<Label>{props.label}</Label>
+			<DropdownElement {...props} />
+		</Container>
+	) : (
+		<DropdownElement {...props} />
+	);
+
+class DropdownElement extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -46,7 +56,8 @@ class Dropdown extends Component {
 			fullWidth,
 			condensed,
 			loading,
-			style
+			style,
+			mimicInputField
 		} = this.props;
 		return (
 			<RoleDropdown
@@ -64,7 +75,9 @@ class Dropdown extends Component {
 						className={classNames({
 							dark: color === "dark",
 							success: color === "success",
-							danger: color === "danger"
+							danger: color === "danger",
+							"mimic-input": mimicInputField,
+							opened: active
 						})}
 					>
 						<span>
@@ -154,6 +167,18 @@ Dropdown.defaultProps = {
 	loading: false
 };
 
+const Container = styled.div`
+	margin: 10px 0;
+`;
+
+const Label = styled.label`
+	margin-left: 0.75em;
+	font-weight: 900;
+	color: ${props => props.theme.darkPrimary};
+	text-transform: uppercase;
+	font-size: 12px;
+`;
+
 const RoleDropdown = styled(BloomerDropdown)`
 	display: flex;
 	justify-content: space-between;
@@ -205,6 +230,28 @@ const DropdownButton = styled(Button)`
 		}
 		svg {
 			color: ${props => props.theme.colorError};
+		}
+	}
+	&.mimic-input {
+		border-color: ${props => props.theme.lightGray};
+		border-width: 2px;
+		border-radius: 200px;
+		svg {
+			color: ${props => props.theme.lightGray};
+		}
+		&.opened {
+			border-color: ${props => props.theme.mainColor};
+			color: ${props => props.theme.mainColor};
+			svg {
+				color: ${props => props.theme.mainColor};
+			}
+		}
+		&:hover {
+			border-color: ${props => props.theme.mainColor};
+			color: ${props => props.theme.mainColor};
+			svg {
+				color: ${props => props.theme.mainColor};
+			}
 		}
 	}
 	span {

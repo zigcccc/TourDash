@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { setBlockProperty } from "../../Store/Actions/EditingPageActions";
 import { Group, GroupItem } from "./SidebarEditor";
-import InputField from "./InputField";
+import InputField from "../InputField";
 import ImageInput from "./ImageInput";
 import Switch from "../Switch";
 import Dropdown from "../Dropdown";

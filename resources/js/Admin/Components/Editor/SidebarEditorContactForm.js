@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { connect } from "react-redux";
 import { setBlockProperty } from "../../Store/Actions/EditingPageActions";
 import { Group, GroupItem } from "./SidebarEditor";
-import InputField from "./InputField";
+import InputField from "../InputField";
 import Switch from "../Switch";
 
 class SidebarEditorContactForm extends Component {

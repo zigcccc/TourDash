@@ -16,10 +16,16 @@ class ImageInput extends Component {
 	}
 
 	render() {
-		const { onChange, selectedImagePreview, clearImage, loading } = this.props;
+		const {
+			onChange,
+			selectedImagePreview,
+			clearImage,
+			loading,
+			containerHeight
+		} = this.props;
 		if (selectedImagePreview) {
 			return (
-				<ImageContainer>
+				<ImageContainer height={containerHeight}>
 					{loading && (
 						<LoadingOverlay>
 							<FontAwesomeIcon icon="circle-notch" spin size="1x" />
@@ -38,7 +44,10 @@ class ImageInput extends Component {
 			);
 		} else {
 			return (
-				<ImageInputContainer onClick={this.triggerInput}>
+				<ImageInputContainer
+					height={containerHeight}
+					onClick={this.triggerInput}
+				>
 					<AddIcon icon="plus" />
 					<input
 						ref={this.inputField}
@@ -55,12 +64,20 @@ class ImageInput extends Component {
 
 ImageInput.propTypes = {
 	onChange: PropTypes.func.isRequired,
-	clearImage: PropTypes.func.isRequired
+	clearImage: PropTypes.func.isRequired,
+	selectedImagePreview: PropTypes.string,
+	loading: PropTypes.bool.isRequired,
+	containerHeight: PropTypes.number.isRequired
+};
+
+ImageInput.defaultProps = {
+	loading: false,
+	containerHeight: 150
 };
 
 const ImageContainer = styled.div`
 	display: flex;
-	height: 150px;
+	height: ${props => props.height + "px"};
 	position: relative;
 	img {
 		object-fit: contain;
@@ -115,7 +132,7 @@ const ClearBtn = styled.div`
 
 const ImageInputContainer = styled.div`
 	border: 2px dashed ${props => props.theme.heavyGray};
-	height: 150px;
+	height: ${props => props.height + "px"};
 	display: flex;
 	align-items: center;
 	justify-content: center;

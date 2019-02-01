@@ -130,7 +130,12 @@ class PageController extends Controller
         }
     }
 
-    // Search pages
+    /**
+     * Search for specific resource based on a request query.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function search(Request $request)
     {
         $input = $request->only('q');
@@ -140,7 +145,39 @@ class PageController extends Controller
         return PageResource::collection($result->paginate(10));
     }
 
-    // Get menu
+    /**
+     * Get subset of pages information needed to display on
+     * the dashboard preview
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function getPagesPreview()
+    {
+        try {
+            $pages = Page::join('users', 'users.id', '=', 'pages.user_id')
+                            ->select('pages.id', 'pages.title', 'pages.slug', 'users.name as author_name', 'users.avatar as author_avatar')
+                            ->orderBy('pages.created_at', 'desc')
+                            ->limit(3)
+                            ->get();
+
+            $pagesCount = Page::count();
+
+            return response()->json([
+                'success' => 'Podatki o straneh uspešno pridobljeni!',
+                'pages' => $pages,
+                'all_pages_count' => $pagesCount
+            ], 200);
+            
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Get subset of pages information needed to display and order the menu
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function getMenu()
     {
         try {
@@ -155,7 +192,12 @@ class PageController extends Controller
         }
     }
 
-    // Update menu
+    /**
+     * Update the order of items in the menu
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function updateMenu(Request $request)
     {
         $input = $request->all();

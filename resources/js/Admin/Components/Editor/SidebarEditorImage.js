@@ -7,7 +7,7 @@ import {
 import { Group, GroupItem } from "./SidebarEditor";
 import _debounce from "lodash/debounce";
 import ImageInput from "./ImageInput";
-import InputField from "./InputField";
+import InputField from "../InputField";
 import Switch from "../Switch";
 
 class SidebarEditorImage extends Component {

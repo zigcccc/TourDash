@@ -12,7 +12,7 @@ import MarginSetter from "./MarginSetter";
 import TwitterPicker from "react-color/lib/Twitter";
 import { defaultPickerColors } from "../../../Shared/Theme";
 import Dropdown from "../Dropdown";
-import InputField from "./InputField";
+import InputField from "../InputField";
 import Switch from "../Switch";
 import TextAlignment from "./TextAlignment";
 

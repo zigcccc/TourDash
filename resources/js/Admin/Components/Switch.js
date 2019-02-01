@@ -18,7 +18,9 @@ const Switch = ({ checked, name, handleChange, label }) => {
 
 Switch.propTypes = {
 	checked: PropTypes.bool,
-	handleChange: PropTypes.func.isRequired
+	handleChange: PropTypes.func.isRequired,
+	name: PropTypes.string,
+	label: PropTypes.string
 };
 
 const SwitchContainer = styled.div`

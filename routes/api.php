@@ -30,6 +30,10 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::put('user/{id}', 'API\UserController@updateUser');
     Route::delete('user/{id}', 'API\UserController@deleteUser');
 
+    // Dashboard operations
+    Route::get('dashboard/users', 'API\UserController@getUsersPreview');
+    Route::get('dashboard/pages', 'API\PageController@getPagesPreview');
+
     // Get currently signed in user info
     Route::get('auth-user', 'API\UserController@getUserDetails');
 

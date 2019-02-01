@@ -36,22 +36,6 @@ const sidebarConfig = [
 					permissions: ["admin", "superadmin"]
 				}
 			]
-		},
-		{
-			groupName: "objave",
-			groupMainUrl: "/admin/posts/",
-			groupContent: [
-				{
-					linkName: "Vse objave",
-					linkUrl: "/posts/",
-					permissions: ["admin", "superadmin"]
-				},
-				{
-					linkName: "Dodaj novo objavo",
-					linkUrl: "/pages/add/",
-					permissions: ["admin", "superadmin"]
-				}
-			]
 		}
 	],
 	[
@@ -62,12 +46,35 @@ const sidebarConfig = [
 				{
 					linkName: "Pregled uporabnikov",
 					linkUrl: "/users/",
-					permissions: ["superadmin"]
+					permissions: ["admin", "superadmin"]
 				},
 				{
 					linkName: "Moj profil",
 					linkUrl: "/users/my-profile/",
 					permissions: ["admin", "superadmin"]
+				}
+			]
+		}
+	],
+	[
+		{
+			groupName: "nastavitve",
+			groupMainUrl: "/admin/settings/",
+			groupContent: [
+				{
+					linkName: "Pregled nastavitev",
+					linkUrl: "/settings/",
+					permissions: ["admin", "superadmin"]
+				},
+				{
+					linkName: "Nastavitve portala",
+					linkUrl: "/settings/customization/",
+					permissions: ["admin", "superadmin"]
+				},
+				{
+					linkName: "Nastavitve administracije",
+					linkUrl: "/settings/administration/",
+					permissions: ["superadmin"]
 				}
 			]
 		}

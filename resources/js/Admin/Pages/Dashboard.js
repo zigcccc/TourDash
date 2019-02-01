@@ -1,5 +1,10 @@
-import React, { Component } from "react";
-import { withRouter, Link as RouterLink } from "react-router-dom";
+import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
+import {
+	getPagesPreview,
+	getUsersPreview
+} from "../Store/Actions/DashboardActions";
+import { Link as RouterLink } from "react-router-dom";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import moment from "moment";
@@ -17,62 +22,6 @@ import DashboardActivity from "../Components/DashboardActivity";
 import DashboardAnalytics from "../Components/DashboardAnalytics";
 import InvertedCtaBase from "../../Shared/Components/InvertedCta";
 import { SectionTitle } from "../Components/Typography";
-
-const DashboardOverviewColumns = styled(BloomerColumns)`
-	margin-top: 30px;
-`;
-
-const DashboardOverviewColumn = styled(BloomerColumn)`
-	display: flex;
-`;
-
-const DashboardDetailsColumns = styled(BloomerColumns)`
-	margin-top: 50px;
-`;
-
-const ActivityColumn = styled(BloomerColumn)``;
-
-const AnalyticsColumn = styled(BloomerColumn)``;
-
-const AnalyticsTile = styled(Tile)`
-	&.is-ancestor {
-		margin-left: 0;
-		margin-right: 0;
-		margin-top: 20px;
-	}
-	.tile.is-parent {
-		padding: 0 8px 0;
-		:first-of-type {
-			padding-left: 0;
-		}
-		:last-of-type {
-			padding-right: 0;
-		}
-	}
-`;
-
-const Link = styled(RouterLink)`
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-weight: 200;
-	color: ${props => props.theme.darkPrimary};
-	margin: 20px 0;
-	:hover {
-		svg {
-			transform: translate(5px, 1px);
-		}
-	}
-	svg {
-		margin-left: 0.45em;
-		transform: translate(0, 1px);
-		transition: ${props => props.theme.easeTransition};
-	}
-`;
-
-const InvertedCta = styled(InvertedCtaBase)`
-	text-transform: uppercase;
-`;
 
 class Dashboard extends Component {
 	constructor(props) {
@@ -93,28 +42,47 @@ class Dashboard extends Component {
 
 	_refreshDashboardItem(type, e) {
 		e.preventDefault();
-		console.log(`Refreshing ${type}...`);
-	}
-
-	_goToSubpage(page, e) {
-		const { history } = this.props;
-		e.preventDefault();
-		history.push(page + "/");
+		switch (type) {
+			case "pages": {
+				this.props.getPagesPreview();
+				break;
+			}
+			case "users": {
+				this.props.getUsersPreview();
+				break;
+			}
+			default: {
+				return null;
+			}
+		}
 	}
 
 	_goToAnalytics() {
 		console.log("Going to analytics...");
 	}
 
+	componentDidMount() {
+		this.props.pages.data.length === 0 && this.props.getPagesPreview();
+		this.props.users.data.length === 0 && this.props.getUsersPreview(4);
+	}
+
 	render() {
+		const {
+			pages,
+			users,
+			accommodations,
+			pagesLoading,
+			usersLoading,
+			accommodationsLoading
+		} = this.props;
 		return (
 			<PageWrapper pageTitle="Nadzorna plošča">
 				<DashboardOverviewColumns>
 					<DashboardOverviewColumn>
 						<Card
 							title="Strani"
-							subtitle="6"
-							ctaText="dodaj novo"
+							subtitle={pages.count}
+							ctaText="dodaj stran"
 							ctaAction="pages/add/"
 						>
 							<CardDropdown>
@@ -126,33 +94,24 @@ class Dashboard extends Component {
 									<Spacer />
 									<FontAwesomeIcon icon="redo-alt" />
 								</a>
-								<a href="#" onClick={this._goToSubpage.bind(this, "pages")}>
+								<RouterLink to="pages/">
 									Uredi
 									<Spacer />
 									<FontAwesomeIcon icon="pencil-alt" />
-								</a>
+								</RouterLink>
 							</CardDropdown>
-							<DashboardListItem
-								title="Home"
-								icon="file"
-								author="Peter Finch"
-								authorAvatar="/images/avatar_alt.png"
-								link="/pages/home"
-							/>
-							<DashboardListItem
-								title="About Us"
-								icon="file"
-								author="Žiga Krašovec"
-								authorAvatar="/images/avatar.png"
-								link="/pages/about-us"
-							/>
-							<DashboardListItem
-								title="Book a room"
-								icon="file"
-								author="Peter Finch"
-								authorAvatar="/images/avatar_alt.png"
-								link="/pages/book-a-room"
-							/>
+							{pagesLoading
+								? null
+								: pages.data.map((page, i) => (
+										<DashboardListItem
+											key={page.id}
+											title={page.title}
+											icon="file"
+											author={page.author_name}
+											authorAvatar={`/images/uploads/${page.author_avatar}`}
+											link={`/pages/edit/${page.id}`}
+										/>
+								  ))}
 							<Link className="minimal-cta" to="/pages/">
 								urejanje strani <FontAwesomeIcon icon="long-arrow-alt-right" />
 							</Link>
@@ -162,7 +121,7 @@ class Dashboard extends Component {
 						<Card
 							title="Nastanitve"
 							subtitle="9"
-							ctaText="dodaj novo"
+							ctaText="dodaj nastanitev"
 							ctaAction="accommodations/add/"
 						>
 							<CardDropdown>
@@ -177,14 +136,11 @@ class Dashboard extends Component {
 									<Spacer />
 									<FontAwesomeIcon icon="redo-alt" />
 								</a>
-								<a
-									href="#"
-									onClick={this._goToSubpage.bind(this, "accommodations")}
-								>
+								<RouterLink to="accommodations/">
 									Uredi
 									<Spacer />
 									<FontAwesomeIcon icon="pencil-alt" />
-								</a>
+								</RouterLink>
 							</CardDropdown>
 							<DashboardListItem
 								title="King Bed"
@@ -215,50 +171,36 @@ class Dashboard extends Component {
 					</DashboardOverviewColumn>
 					<DashboardOverviewColumn>
 						<Card
-							title="Objave"
-							subtitle="12"
-							ctaText="dodaj novo"
-							ctaAction="posts/add/"
+							title="Uporabniki"
+							subtitle={users.count}
+							ctaText="vsi uporabniki"
+							ctaAction="users/"
 						>
 							<CardDropdown>
 								<a
 									href="#"
-									onClick={this._refreshDashboardItem.bind(this, "posts")}
+									onClick={this._refreshDashboardItem.bind(this, "users")}
 								>
 									Osveži
 									<Spacer />
 									<FontAwesomeIcon icon="redo-alt" />
 								</a>
-								<a href="#" onClick={this._goToSubpage.bind(this, "posts")}>
+								<RouterLink to="users/">
 									Uredi
 									<Spacer />
 									<FontAwesomeIcon icon="pencil-alt" />
-								</a>
+								</RouterLink>
 							</CardDropdown>
-							<DashboardListItem
-								title="Novoletna zabava"
-								icon="calendar-alt"
-								author="Peter Finch"
-								authorAvatar="/images/avatar_alt.png"
-								link="/posts/novoletna-zabava"
-							/>
-							<DashboardListItem
-								title="Nasveti za izlete"
-								icon="thumbtack"
-								author="Žiga Krašovec"
-								authorAvatar="/images/avatar.png"
-								link="/posts/nasveti-za-izlete"
-							/>
-							<DashboardListItem
-								title="Koncert Siddharta"
-								icon="calendar-alt"
-								author="Peter Finch"
-								authorAvatar="/images/avatar_alt.png"
-								link="/posts/koncert-siddharta"
-							/>
-							<Link className="minimal-cta" to="/posts/">
-								urejanje objav <FontAwesomeIcon icon="long-arrow-alt-right" />
-							</Link>
+							{usersLoading
+								? null
+								: users.data.map(user => (
+										<DashboardListItem
+											key={user.id}
+											title={user.name}
+											icon={user.avatar || "user"}
+											author={user.roles[0].name}
+										/>
+								  ))}
 						</Card>
 					</DashboardOverviewColumn>
 				</DashboardOverviewColumns>
@@ -348,4 +290,75 @@ class Dashboard extends Component {
 		);
 	}
 }
-export default withRouter(Dashboard);
+
+const mapStateToProps = state => ({
+	pages: state.dashboard.pages,
+	users: state.dashboard.users,
+	accommodations: state.dashboard.accommodations,
+	pagesLoading: state.dashboard.pagesLoading,
+	usersLoading: state.dashboard.usersLoading,
+	accommodationsLoading: state.dashboard.accommodationsLoading
+});
+
+const mapDispatchToProps = { getPagesPreview, getUsersPreview };
+
+const DashboardOverviewColumns = styled(BloomerColumns)`
+	margin-top: 30px;
+`;
+
+const DashboardOverviewColumn = styled(BloomerColumn)`
+	display: flex;
+`;
+
+const DashboardDetailsColumns = styled(BloomerColumns)`
+	margin-top: 50px;
+`;
+
+const ActivityColumn = styled(BloomerColumn)``;
+
+const AnalyticsColumn = styled(BloomerColumn)``;
+
+const AnalyticsTile = styled(Tile)`
+	&.is-ancestor {
+		margin-left: 0;
+		margin-right: 0;
+		margin-top: 20px;
+	}
+	.tile.is-parent {
+		padding: 0 8px 0;
+		:first-of-type {
+			padding-left: 0;
+		}
+		:last-of-type {
+			padding-right: 0;
+		}
+	}
+`;
+
+const Link = styled(RouterLink)`
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-weight: 200;
+	color: ${props => props.theme.darkPrimary};
+	margin: 20px 0;
+	:hover {
+		svg {
+			transform: translate(5px, 1px);
+		}
+	}
+	svg {
+		margin-left: 0.45em;
+		transform: translate(0, 1px);
+		transition: ${props => props.theme.easeTransition};
+	}
+`;
+
+const InvertedCta = styled(InvertedCtaBase)`
+	text-transform: uppercase;
+`;
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Dashboard);

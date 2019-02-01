@@ -7,6 +7,94 @@ import Logo from "../../Shared/Components/Logo";
 import SidebarListItem from "./SidebarListItem";
 import { sidebarConfig } from "../Utils";
 
+const SidebarPlaceholder = () => (
+	<SidebarContainer>
+		<Link to="/" style={{ padding: "0 30px" }}>
+			<Logo.Light />
+		</Link>
+		<SidebarGroup>
+			<ListLinkPlaceholder />
+			<ListLinkPlaceholder />
+			<ListLinkPlaceholder />
+			<ListLinkPlaceholder />
+		</SidebarGroup>
+		<SidebarGroup last>
+			<ListLinkPlaceholder />
+			<ListLinkPlaceholder />
+			<ListLinkPlaceholder />
+			<ListLinkPlaceholder />
+		</SidebarGroup>
+	</SidebarContainer>
+);
+
+export { SidebarPlaceholder };
+
+class Sidebar extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			collapsed: false
+		};
+	}
+
+	_toggleCollapseSiderbar() {
+		this.setState({
+			collapsed: !this.state.collapsed
+		});
+	}
+
+	render() {
+		const { collapsed } = this.state;
+		const { match, user, activePath } = this.props;
+		return (
+			<SidebarContainer collapsed={collapsed}>
+				<Link to="/" style={{ padding: "0 30px" }}>
+					<Logo.Light />
+				</Link>
+				<SidebarGroup>
+					<ListLink to="/" className={match.isExact ? "is-active" : ""}>
+						Nadzorna plošča <FontAwesomeIcon icon="th" />
+					</ListLink>
+				</SidebarGroup>
+				{sidebarConfig.map((group, i) => (
+					<SidebarGroup last={i + 1 === sidebarConfig.length} key={i}>
+						{group.map(section => (
+							<SidebarListItem
+								heading={section.groupName}
+								key={section.groupName}
+								isOpen={activePath.indexOf(section.groupMainUrl) >= 0}
+							>
+								{section.groupContent.map(item => {
+									if (item.permissions.includes(user.role)) {
+										return (
+											<Link key={item.linkUrl} to={item.linkUrl}>
+												{item.linkName}
+											</Link>
+										);
+									} else {
+										return null;
+									}
+								})}
+							</SidebarListItem>
+						))}
+					</SidebarGroup>
+				))}
+				<Exit href="/">
+					<span>
+						<FontAwesomeIcon icon="chevron-left" />
+					</span>
+					nazaj na tourdash.app
+				</Exit>
+			</SidebarContainer>
+		);
+	}
+}
+
+Sidebar.propTypes = {
+	user: PropTypes.object.isRequired,
+	activePath: PropTypes.string.isRequired
+};
+
 const SidebarContainer = styled.div`
 	background-color: ${props => props.theme.mainColor};
 	color: ${props => props.theme.whiteShade1};
@@ -97,93 +185,5 @@ const Exit = styled.a`
 		}
 	}
 `;
-
-const SidebarPlaceholder = () => (
-	<SidebarContainer>
-		<Link to="/" style={{ padding: "0 30px" }}>
-			<Logo.Light />
-		</Link>
-		<SidebarGroup>
-			<ListLinkPlaceholder />
-			<ListLinkPlaceholder />
-			<ListLinkPlaceholder />
-			<ListLinkPlaceholder />
-		</SidebarGroup>
-		<SidebarGroup last>
-			<ListLinkPlaceholder />
-			<ListLinkPlaceholder />
-			<ListLinkPlaceholder />
-			<ListLinkPlaceholder />
-		</SidebarGroup>
-	</SidebarContainer>
-);
-
-export { SidebarPlaceholder };
-
-class Sidebar extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			collapsed: false
-		};
-	}
-
-	_toggleCollapseSiderbar() {
-		this.setState({
-			collapsed: !this.state.collapsed
-		});
-	}
-
-	render() {
-		const { collapsed } = this.state;
-		const { match, user, activePath } = this.props;
-		return (
-			<SidebarContainer collapsed={collapsed}>
-				<Link to="/" style={{ padding: "0 30px" }}>
-					<Logo.Light />
-				</Link>
-				<SidebarGroup>
-					<ListLink to="/" className={match.isExact ? "is-active" : ""}>
-						Nadzorna plošča <FontAwesomeIcon icon="th" />
-					</ListLink>
-				</SidebarGroup>
-				{sidebarConfig.map((group, i) => (
-					<SidebarGroup last={i + 1 === sidebarConfig.length} key={i}>
-						{group.map(section => (
-							<SidebarListItem
-								heading={section.groupName}
-								key={section.groupName}
-								isOpen={activePath.indexOf(section.groupMainUrl) >= 0}
-							>
-								{section.groupContent.map(item => {
-									if (item.permissions.includes(user.role)) {
-										return (
-											<Link key={item.linkUrl} to={item.linkUrl}>
-												{item.linkName}
-											</Link>
-										);
-									} else {
-										return null;
-									}
-								})}
-							</SidebarListItem>
-						))}
-					</SidebarGroup>
-				))}
-				<Exit href="/">
-					<span>
-						<FontAwesomeIcon icon="chevron-left" />
-					</span>
-					nazaj na tourdash.app
-				</Exit>
-			</SidebarContainer>
-		);
-	}
-}
-
-Sidebar.propTypes = {
-	user: PropTypes.object.isRequired,
-	activePath: PropTypes.string.isRequired
-};
 
 export default withRouter(Sidebar);

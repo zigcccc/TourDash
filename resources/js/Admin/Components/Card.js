@@ -9,6 +9,7 @@ const Card = props => {
 		<CardContainer
 			className={classNames([props.className])}
 			data-border={props.hasBorder}
+			{...props}
 		>
 			{props.title && (
 				<CardHeading>

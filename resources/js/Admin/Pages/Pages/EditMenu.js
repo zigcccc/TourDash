@@ -64,7 +64,7 @@ class EditMenu extends Component {
 		const { loading, menu, menuHasChanged, pagesLoading, pages } = this.props;
 		return (
 			<PageWrapper pageTitle="Urejanje menijev">
-				{pagesLoading ? (
+				{pagesLoading || !menu ? (
 					<LoadingContainer>
 						<FontAwesomeIcon icon="circle-notch" spin size="2x" />
 					</LoadingContainer>

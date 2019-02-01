@@ -28,11 +28,35 @@ class UserController extends Controller
     // Get all users
     public function getUsers()
     {
-        if (!Auth::user()->hasRole('superadmin')) {
-            return response()->json(['error' => 'Za ogled podatkov o vseh uporabnikih nimate zadostnih dovoljenj.']);
+        try {
+            return UserResource::collection(User::where('id', '!=', Auth::id())->orderBy('name')->paginate(10));
+        } catch (Exception $e) {
+            return response()->json(["error" => $e->getMessage()]);
         }
+    }
 
-        return UserResource::collection(User::where('id', '!=', Auth::id())->orderBy('name')->paginate(10));
+    // Get users preview
+    public function getUsersPreview(Request $request)
+    {
+        $amount = $request->amount;
+        try {
+            $users = User::where('id', '!=', Auth::id())
+                            ->with('roles')
+                            ->orderBy('created_at', 'desc')
+                            ->limit($amount ? intval($amount) : 3)
+                            ->get();
+
+            $usersCount = User::count();         
+                            
+            return response()->json([
+                'success' => 'Uporabniki uspešno pridobljeni',
+                'users' => $users,
+                'all_users_count' => $usersCount
+            ], 200);
+
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
     }
 
     // Get logged in user

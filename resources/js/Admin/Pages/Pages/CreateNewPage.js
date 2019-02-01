@@ -26,6 +26,7 @@ import slugify from "slugify";
 import SidebarEditor from "../../Components/Editor/SidebarEditor";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Spacer } from "../../Components/Helpers";
+import { Sidebar, MainArea } from "../../Components/Layout";
 import Dropdown from "../../Components/Dropdown";
 import HandleBlock from "../../Components/Editor/HandleBlock";
 import Snackbar from "../../../Shared/Components/Snackbar";
@@ -79,7 +80,7 @@ class CreateNewPage extends Component {
 
 	unsetActiveBlock(e) {
 		const { unsetActiveBlock } = this.props;
-		if (e.target !== e.currentTarget) {
+		if (!e.target.classList.contains("editor")) {
 			return;
 		}
 		unsetActiveBlock();
@@ -267,7 +268,7 @@ class CreateNewPage extends Component {
 					message={successMessage}
 				/>
 				<div>
-					<EditorArea onClick={this.unsetActiveBlock}>
+					<MainArea onClick={this.unsetActiveBlock}>
 						<EditorActionBar>
 							<PageTitle
 								onChange={this.handleInputChange}
@@ -309,6 +310,7 @@ class CreateNewPage extends Component {
 						</EditorActionBar>
 						<EditorContainer
 							className={classNames({
+								editor: true,
 								empty: this.state.stateLoading || content.length === 0
 							})}
 						>
@@ -330,8 +332,8 @@ class CreateNewPage extends Component {
 								</IconContainer>
 							)}
 						</EditorContainer>
-					</EditorArea>
-					<SidebarArea>
+					</MainArea>
+					<Sidebar>
 						<SidebarEditor
 							editingBlock={editingBlock}
 							pageUpdated={hasBeenUpdated}
@@ -340,18 +342,12 @@ class CreateNewPage extends Component {
 							onSavePage={this.state.pageId ? this.updatePage : this.savePage}
 							clearEditingBlock={this.props.clearEditingBlock}
 						/>
-					</SidebarArea>
+					</Sidebar>
 				</div>
 			</Fragment>
 		);
 	}
 }
-
-const EditorArea = styled.div`
-	padding-right: 300px;
-	width: 100%;
-	min-height: calc(100vh - 75px);
-`;
 
 const EditorActionBar = styled.div`
 	background-color: ${props => props.theme.white};
@@ -438,23 +434,6 @@ const PageSlug = styled.input`
 	&:focus {
 		outline: none;
 		border-color: ${props => props.theme.mainColor};
-	}
-`;
-
-const SidebarArea = styled.div`
-	width: 300px;
-	position: fixed;
-	top: 75px;
-	bottom: 0;
-	right: 0;
-	border-left: 1px solid ${props => props.theme.whiteShade3};
-	background: ${props => props.theme.whiteShade2};
-	display: flex;
-	flex-direction: column;
-	overflow-y: scroll;
-	padding-bottom: 75px;
-	&::-webkit-scrollbar {
-		width: 0px;
 	}
 `;
 

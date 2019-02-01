@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import classNames from "classnames";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import SearchForm from "../SearchForm";
@@ -33,13 +34,18 @@ class PageWrapper extends Component {
 		const {
 			pageTitle,
 			hasSearchForm,
+			titleHasMargin,
 			children,
 			searchPlaceholder
 		} = this.props;
 		const { searchQuery } = this.state;
 		return (
 			<PageWrapperContainer>
-				<TitleContainer>
+				<TitleContainer
+					className={classNames({
+						"has-margin": titleHasMargin
+					})}
+				>
 					<h1>{pageTitle}</h1>
 					{hasSearchForm && (
 						<SearchForm
@@ -82,14 +88,9 @@ const TitleContainer = styled.div`
 	display: flex;
 	justify-content: space-between;
 	align-items: flex-end;
-`;
-
-const SearchField = styled.input`
-	padding: 0.75em 1em;
-	border-radius: 200px;
-	background-color: ${props => props.theme.lightGray};
-	outline: none;
-	border: none;
+	&.has-margin {
+		margin-bottom: 35px;
+	}
 `;
 
 export default PageWrapper;

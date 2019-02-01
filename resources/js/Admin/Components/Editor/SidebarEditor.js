@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
 import _isEmpty from "lodash/isEmpty";
-import classNames from "classnames";
 import PropTypes from "prop-types";
 import styled from "styled-components";
 import AddContentBlock from "./AddContentBlock";
@@ -12,12 +11,14 @@ import SidebarEditorGoogleMaps from "./SidebarEditorGoogleMaps";
 import SidebarEditorImage from "./SidebarEditorImage";
 import blockTypeMap from "./blockTypeMap";
 import { Spacer } from "../Helpers";
+import { SidebarHeading } from "../Typography";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import SidebarEditorLatestPosts from "./SidebarEditorLatestPosts";
 import SidebarEditorAccommodations from "./SidebarEditorAccommodations";
 import SidebarEditorReviews from "./SidebarEditorReviews";
 import SidebarEditorCard from "./SidebarEditorCard";
 import SidebarEditorContactForm from "./SidebarEditorContactForm";
+import SidebarEditorCta from "./SidebarEditorCta";
 
 const SidebarEditor = ({
 	editingBlock,
@@ -37,7 +38,7 @@ const SidebarEditor = ({
 							<span>Vsi elementi</span>
 						</BackToAllElements>
 						<Group>
-							<h3>Tip bloka</h3>
+							<SidebarHeading>Tip bloka</SidebarHeading>
 							<p>{blockTypeMap[editingBlock.type]}</p>
 						</Group>
 						{(() => {
@@ -84,25 +85,19 @@ const SidebarEditor = ({
 				) : (
 					<Fragment>
 						<Group>
-							<h3>Dodaj nov element</h3>
+							<SidebarHeading>Dodaj nov element</SidebarHeading>
 							<AddContentBlock />
 						</Group>
 					</Fragment>
 				)}
 			</SidebarEditorContainer>
 			<Spacer />
-			<SavePage
-				onClick={pageUpdated ? onSavePage : null}
-				className={classNames({
-					disabled: !pageUpdated
-				})}
-			>
-				{savingPage ? (
-					<FontAwesomeIcon icon="circle-notch" spin size="1x" />
-				) : (
-					ctaText
-				)}
-			</SavePage>
+			<SidebarEditorCta
+				onClick={onSavePage}
+				loading={savingPage}
+				disabled={!pageUpdated}
+				text={ctaText}
+			/>
 		</SiderbarPlaceholder>
 	);
 };
@@ -164,35 +159,6 @@ export const GroupItem = styled.div`
 	h5 {
 		font-size: 12px;
 		margin-bottom: 3px;
-	}
-`;
-
-const SavePage = styled.button`
-	border: none;
-	outline: none;
-	position: fixed;
-	bottom: 0;
-	z-index: 10;
-	right: 0;
-	width: 300px;
-	background-color: ${props => props.theme.mainColor};
-	color: ${props => props.theme.white};
-	text-transform: uppercase;
-	font-weight: 900;
-	font-size: 14px;
-	padding: 1.5em 1em;
-	transition: ${props => props.theme.easeTransition};
-	&.disabled {
-		background-color: ${props => props.theme.whiteShade3};
-		color: ${props => props.theme.darkGray};
-		&:hover {
-			cursor: not-allowed;
-			background-color: ${props => props.theme.whiteShade3};
-		}
-	}
-	&:hover {
-		cursor: pointer;
-		background-color: ${props => props.theme.mainColorHover};
 	}
 `;
 

@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { setBlockProperty } from "../../Store/Actions/EditingPageActions";
 import { Group } from "./SidebarEditor";
-import InputField from "./InputField";
+import InputField from "../InputField";
 import Switch from "../Switch";
 
 class SidebarEditorSpacer extends Component {

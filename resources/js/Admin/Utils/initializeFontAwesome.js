@@ -48,7 +48,17 @@ import {
 	faClone,
 	faCode,
 	faListAlt,
-	faArrowsAltV
+	faArrowsAltV,
+	faGlassMartini,
+	faWifi,
+	faPaw,
+	faLock,
+	faSnowflake,
+	faTv,
+	faThermometerHalf,
+	faPhone,
+	faBath,
+	faHeadphones
 } from "@fortawesome/free-solid-svg-icons";
 
 const initializeFontAwesome = () =>
@@ -101,7 +111,17 @@ const initializeFontAwesome = () =>
 		faClone,
 		faCode,
 		faListAlt,
-		faArrowsAltV
+		faArrowsAltV,
+		faGlassMartini,
+		faWifi,
+		faPaw,
+		faLock,
+		faSnowflake,
+		faTv,
+		faThermometerHalf,
+		faPhone,
+		faBath,
+		faHeadphones
 	);
 
 export default initializeFontAwesome;

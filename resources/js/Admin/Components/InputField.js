@@ -11,22 +11,47 @@ const InputField = ({
 	hasErrors,
 	type,
 	min,
-	max
+	max,
+	label,
+	placeholder
 }) => {
 	const extraProps = type === "number" ? { min: min, max: max } : {};
-	return (
-		<Input
-			value={value}
-			onChange={onChange}
-			name={name}
-			type={type}
-			{...extraProps}
-			className={classNames({
-				[size]: true,
-				"has-errors": hasErrors
-			})}
-		/>
-	);
+	if (!label) {
+		return (
+			<Input
+				value={value}
+				onChange={onChange}
+				name={name}
+				type={type}
+				placeholder={placeholder || ""}
+				{...extraProps}
+				className={classNames({
+					[size]: true,
+					"number-field": type === "number",
+					"has-errors": hasErrors
+				})}
+			/>
+		);
+	} else {
+		return (
+			<InputFieldContainer>
+				<Label htmlFor={name}>{label}</Label>
+				<Input
+					value={value}
+					onChange={onChange}
+					name={name}
+					placeholder={placeholder || ""}
+					type={type}
+					{...extraProps}
+					className={classNames({
+						[size]: true,
+						"number-field": type === "number",
+						"has-errors": hasErrors
+					})}
+				/>
+			</InputFieldContainer>
+		);
+	}
 };
 
 InputField.propTypes = {
@@ -44,9 +69,12 @@ InputField.defaultProps = {
 	type: "text"
 };
 
+const InputFieldContainer = styled.div`
+	margin: 10px 0;
+`;
+
 const Input = styled.input`
 	font-size: 14px;
-	border: none;
 	outline: none;
 	display: block;
 	background: ${props => props.theme.white};
@@ -54,6 +82,9 @@ const Input = styled.input`
 	padding: 0.5em 0.75em;
 	border: 2px solid ${props => props.theme.lightGray};
 	width: 100%;
+	&.number-field {
+		text-align: right;
+	}
 	&.has-errors {
 		border-color: ${props => props.theme.errorColor};
 	}
@@ -73,6 +104,14 @@ const Input = styled.input`
 			border-color: ${props => props.theme.errorColor};
 		}
 	}
+`;
+
+const Label = styled.label`
+	margin-left: 0.75em;
+	font-weight: 900;
+	color: ${props => props.theme.darkPrimary};
+	text-transform: uppercase;
+	font-size: 12px;
 `;
 
 export default InputField;
