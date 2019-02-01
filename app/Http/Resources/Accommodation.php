@@ -14,6 +14,9 @@ class Accommodation extends JsonResource
      */
     public function toArray($request)
     {
-        return parent::toArray($request);
+        $response = parent::toArray($request);
+        $response['author'] = $this->author;
+        unset($response['author_id']);
+        return $response;
     }
 }

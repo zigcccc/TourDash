@@ -21,6 +21,9 @@ Route::get('pages', 'API\PageController@index');
 Route::get('pages/{id}', 'API\PageController@show');
 Route::post('pages/search', 'API\PageController@search');
 
+// Accommodations
+Route::get('accommodations', 'API\AccommodationController@index');
+
 
 
 Route::group(['middleware' => 'auth:api'], function() {
@@ -58,5 +61,8 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::delete('pages/{id}', 'API\PageController@destroy');
     Route::put('pages/menu', 'API\PageController@updateMenu');
     Route::put('pages/{id}', 'API\PageController@update');
+
+    // Accommodations CRUD
+    Route::post('accommodations', 'API\AccommodationController@create');
 
 });

@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\User;
 
 class Accommodation extends Model
 {
@@ -14,15 +15,26 @@ class Accommodation extends Model
         'features',
         'content',
         'description',
-        'images',
+        'gallery',
         'price',
-        'num_of_guests'
+        'num_of_guests',
+        'trending',
+        'best_seller',
+        'visible',
+        'author_id'
     ];
 
     protected $casts = [
-        'images' => 'array',
+        'gallery' => 'array',
         'features' => 'array',
         'best_seller' => 'boolean',
-        'trending' => 'boolean'
+        'trending' => 'boolean',
+        'visible' => 'boolean',
+        'featured_image' => 'array'
     ];
+
+    public function author()
+    {
+        return $this->hasOne('App\User', 'id', 'author_id');
+    }
 }

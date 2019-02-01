@@ -16,17 +16,18 @@ class CreateAccommodationsTable extends Migration
         Schema::create('accommodations', function (Blueprint $table) {
             $table->increments('id');
             $table->string('title')->unique();
-            $table->string('featured_image');
-            $table->string('description');
+            $table->json('featured_image');
+            $table->mediumText('description');
             $table->string('type');
             $table->float('price');
             $table->integer('num_of_beds');
             $table->integer('num_of_guests');
-            $table->text('content');
+            $table->longText('content');
             $table->boolean('visible')->default(true);
             $table->boolean('best_seller')->default(false);
             $table->boolean('trending')->default(false);
-            $table->json('images');
+            $table->integer('author_id');
+            $table->json('gallery');
             $table->json('features');
             $table->timestamps();
         });

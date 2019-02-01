@@ -9,6 +9,8 @@ const Textarea = props =>
 			<Label htmlFor={props.name}>{props.label}</Label>
 			<StyledTextArea
 				name={props.name}
+				value={props.value}
+				onChange={props.onChange}
 				placeholder={props.placeholder}
 				rows={props.rows}
 			/>
@@ -16,15 +18,19 @@ const Textarea = props =>
 	) : (
 		<StyledTextArea
 			placeholder={props.placeholder}
+			value={props.value}
+			onChange={props.onChange}
 			name={props.name}
 			rows={props.rows}
 		/>
 	);
 
 Textarea.propTypes = {
+	value: PropTypes.string,
 	label: PropTypes.string,
 	name: PropTypes.string.isRequired,
-	rows: PropTypes.number.isRequired
+	rows: PropTypes.number.isRequired,
+	onChange: PropTypes.func.isRequired
 };
 
 Textarea.defaultProps = {

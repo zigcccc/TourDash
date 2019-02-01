@@ -7,6 +7,10 @@ import _findIndex from "lodash/findIndex";
 import _isEqual from "lodash/isEqual";
 import _omit from "lodash/omit";
 import {
+	saveAccommodation,
+	clearMessages
+} from "../../Store/Actions/AccommodationsActions";
+import {
 	PageWrapper,
 	Sidebar as SidebarBase,
 	MainArea,
@@ -25,15 +29,16 @@ import amenetiesMap from "../../Utils/amenetiesMap";
 import IconCard from "../../Components/IconCard";
 import SortableImages from "../../Components/SortableImages";
 import UploadImageBtn from "../../Components/UploadImageBtn";
+import SnackBar from "../../../Shared/Components/Snackbar";
 
 const initialState = {
 	title: "",
 	accommodationUpdated: false,
-	featuredImage: null,
-	featuredImagePreview: "",
+	featured_image: null,
+	featured_imagePreview: "",
 	loadingGalleryImage: false,
 	imageLoading: false,
-	bestSeller: false,
+	best_seller: false,
 	trending: false,
 	visible: true,
 	description: "",
@@ -50,8 +55,8 @@ class CreateNewAccommodation extends Component {
 	constructor(props) {
 		super(props);
 		this.state = { ...initialState };
-		this.clearFeaturedImage = this.clearFeaturedImage.bind(this);
-		this.uploadFeaturedImage = this.uploadFeaturedImage.bind(this);
+		this.clearfeatured_image = this.clearfeatured_image.bind(this);
+		this.uploadfeatured_image = this.uploadfeatured_image.bind(this);
 		this.toggleInputField = this.toggleInputField.bind(this);
 		this.handleInputField = this.handleInputField.bind(this);
 		this.handleDropdownChange = this.handleDropdownChange.bind(this);
@@ -61,15 +66,15 @@ class CreateNewAccommodation extends Component {
 		this.saveAccommodation = this.saveAccommodation.bind(this);
 	}
 
-	clearFeaturedImage() {
-		this.setState({ featuredImage: null, featuredImagePreview: "" });
+	clearfeatured_image() {
+		this.setState({ featured_image: null, featured_imagePreview: "" });
 	}
 
-	uploadFeaturedImage(e) {
+	uploadfeatured_image(e) {
 		this.setState({
 			...this.state,
 			imageLoading: true,
-			featuredImagePreview: e.target.files[0]
+			featured_imagePreview: e.target.files[0]
 				? URL.createObjectURL(e.target.files[0])
 				: ""
 		});
@@ -84,8 +89,8 @@ class CreateNewAccommodation extends Component {
 				this.setState({
 					...this.state,
 					imageLoading: false,
-					featuredImagePreview: data.medium,
-					featuredImage: data
+					featured_imagePreview: data.medium,
+					featured_image: data
 				});
 			})
 			.catch(err => console.log(err));
@@ -170,6 +175,8 @@ class CreateNewAccommodation extends Component {
 	}
 
 	saveAccommodation() {
+		const { saveAccommodation, user } = this.props;
+
 		const preparedState = produce(this.state, draft => {
 			draft.gallery = draft.gallery.map(item => {
 				if (!item.hidden) {
@@ -178,40 +185,22 @@ class CreateNewAccommodation extends Component {
 				}
 			});
 		});
-		console.log(
+		saveAccommodation(
 			_omit(preparedState, [
 				"accommodationUpdated",
 				"imageLoading",
-				"featuredImagePreview",
+				"featured_image_preview",
 				"loadingGalleryImage"
-			])
+			]),
+			user.id
 		);
-	}
-
-	componentDidUpdate(prevProps, prevState) {
-		if (prevProps.match.params.id && !this.props.match.params.id) {
-			// Changed from editing page to creating a new one
-			this.props.setOriginalState();
-			this.setState({ ...initialState });
-		}
-		if (!prevProps.match.params.id && this.props.match.params.id) {
-			// Changed from adding a new page to editing exsiting one
-			this.fetchExistingPage();
-		}
-		const isEqual = this.getDiff();
-		if (!isEqual && !this.state.accommodationUpdated) {
-			this.setState({
-				accommodationUpdated: true
-			});
-		}
 	}
 
 	render() {
 		const {
-			accommodationUpdated,
 			imageLoading,
-			featuredImagePreview,
-			bestSeller,
+			featured_imagePreview,
+			best_seller,
 			trending,
 			visible,
 			title,
@@ -225,8 +214,28 @@ class CreateNewAccommodation extends Component {
 			loadingGalleryImage,
 			content
 		} = this.state;
+		const { accommodations } = this.props;
 		return (
 			<PageWrapper pageTitle="Dodaj novo namestitev">
+				<SnackBar
+					isOpen={accommodations.hasSuccess}
+					message={accommodations.successMessage}
+					purpose={"success"}
+					position="top"
+					style={{ top: "120px" }}
+					hasDissmissAction={true}
+					dissmissAction={this.props.clearMessages}
+				/>
+				<SnackBar
+					isOpen={accommodations.hasErrors}
+					message={accommodations.errorMessage}
+					purpose={"error"}
+					position="top"
+					style={{ top: "120px" }}
+					hasDissmissAction={true}
+					dissmissAction={this.props.clearMessages}
+				/>
+
 				<MainArea>
 					<section className="section">
 						<SectionTitle text="Specifikacije" />
@@ -354,9 +363,9 @@ class CreateNewAccommodation extends Component {
 				<Sidebar>
 					<SidebarGroup heading="Glavna slika namestitve">
 						<ImageInput
-							onChange={this.uploadFeaturedImage}
-							clearImage={this.clearFeaturedImage}
-							selectedImagePreview={featuredImagePreview}
+							onChange={this.uploadfeatured_image}
+							clearImage={this.clearfeatured_image}
+							selectedImagePreview={featured_imagePreview}
 							loading={imageLoading}
 							containerHeight={250}
 						/>
@@ -364,9 +373,9 @@ class CreateNewAccommodation extends Component {
 					<SidebarGroup heading="Splošne lastnosti">
 						<SidebarGroupItem heading="Najbolje prodajana namestitev?">
 							<Switch
-								checked={bestSeller}
+								checked={best_seller}
 								handleChange={this.toggleInputField}
-								name="bestSeller"
+								name="best_seller"
 							/>
 						</SidebarGroupItem>
 						<SidebarGroupItem heading="Trenutno zelo iskano?">
@@ -389,7 +398,7 @@ class CreateNewAccommodation extends Component {
 					<SidebarEditorCta
 						onClick={this.saveAccommodation}
 						text="SHRANI NAMESTITEV"
-						disabled={!accommodationUpdated}
+						loading={accommodations.saving}
 					/>
 				</Sidebar>
 			</PageWrapper>
@@ -403,10 +412,11 @@ CreateNewAccommodation.propTypes = {
 CreateNewAccommodation.defaultProps = {};
 
 const mapStateToProps = state => ({
-	user: state.user.user
+	user: state.user.user,
+	accommodations: state.accommodations
 });
 
-const mapDispatchToProps = {};
+const mapDispatchToProps = { saveAccommodation, clearMessages };
 
 const Sidebar = styled(SidebarBase)`
 	padding: 20px;
