@@ -23,6 +23,8 @@ Route::post('pages/search', 'API\PageController@search');
 
 // Accommodations
 Route::get('accommodations', 'API\AccommodationController@index');
+Route::get('accommodations/{id}', 'API\AccommodationController@show');
+Route::post('accommodations/search', 'API\AccommodationController@search');
 
 
 
@@ -36,6 +38,7 @@ Route::group(['middleware' => 'auth:api'], function() {
     // Dashboard operations
     Route::get('dashboard/users', 'API\UserController@getUsersPreview');
     Route::get('dashboard/pages', 'API\PageController@getPagesPreview');
+    Route::get('dashboard/accommodations', 'API\AccommodationController@getAccommodationsPreview');
 
     // Get currently signed in user info
     Route::get('auth-user', 'API\UserController@getUserDetails');
@@ -64,5 +67,7 @@ Route::group(['middleware' => 'auth:api'], function() {
 
     // Accommodations CRUD
     Route::post('accommodations', 'API\AccommodationController@create');
+    Route::delete('accommodations/{id}', 'API\AccommodationController@destroy');
+    Route::put('accommodations/{id}', 'API\AccommodationController@update');
 
 });

@@ -2,7 +2,8 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import {
 	getPagesPreview,
-	getUsersPreview
+	getUsersPreview,
+	getAccommodationsPreview
 } from "../Store/Actions/DashboardActions";
 import { Link as RouterLink } from "react-router-dom";
 import styled from "styled-components";
@@ -48,7 +49,11 @@ class Dashboard extends Component {
 				break;
 			}
 			case "users": {
-				this.props.getUsersPreview();
+				this.props.getUsersPreview(4);
+				break;
+			}
+			case "accommodations": {
+				this.props.getAccommodationsPreview();
 				break;
 			}
 			default: {
@@ -64,6 +69,8 @@ class Dashboard extends Component {
 	componentDidMount() {
 		this.props.pages.data.length === 0 && this.props.getPagesPreview();
 		this.props.users.data.length === 0 && this.props.getUsersPreview(4);
+		this.props.accommodations.data.length === 0 &&
+			this.props.getAccommodationsPreview();
 	}
 
 	render() {
@@ -120,7 +127,7 @@ class Dashboard extends Component {
 					<DashboardOverviewColumn>
 						<Card
 							title="Nastanitve"
-							subtitle="9"
+							subtitle={accommodations.count}
 							ctaText="dodaj nastanitev"
 							ctaAction="accommodations/add/"
 						>
@@ -142,27 +149,20 @@ class Dashboard extends Component {
 									<FontAwesomeIcon icon="pencil-alt" />
 								</RouterLink>
 							</CardDropdown>
-							<DashboardListItem
-								title="King Bed"
-								icon="home"
-								author="Peter Finch"
-								authorAvatar="/images/avatar_alt.png"
-								link="/accommodations/king-bed/"
-							/>
-							<DashboardListItem
-								title="Elite Suite"
-								icon="home"
-								author="Žiga Krašovec"
-								authorAvatar="/images/avatar.png"
-								link="/accommodations/elite-suite/"
-							/>
-							<DashboardListItem
-								title="Suite with Balcony"
-								icon="home"
-								author="Peter Finch"
-								authorAvatar="/images/avatar_alt.png"
-								link="/accommodations/suite-with-balcony/"
-							/>
+							{accommodationsLoading
+								? null
+								: accommodations.data.map(accommodation => (
+										<DashboardListItem
+											key={accommodation.id}
+											title={accommodation.title}
+											icon={accommodation.featured_image || "home"}
+											author={accommodation.author_name}
+											authorAvatar={
+												"/images/uploads/" + accommodation.author_avatar
+											}
+											link={`/accommodations/edit/${accommodation.id}/`}
+										/>
+								  ))}
 							<Link className="minimal-cta" to="/accommodations/">
 								urejanje namestitev{" "}
 								<FontAwesomeIcon icon="long-arrow-alt-right" />
@@ -300,7 +300,11 @@ const mapStateToProps = state => ({
 	accommodationsLoading: state.dashboard.accommodationsLoading
 });
 
-const mapDispatchToProps = { getPagesPreview, getUsersPreview };
+const mapDispatchToProps = {
+	getPagesPreview,
+	getUsersPreview,
+	getAccommodationsPreview
+};
 
 const DashboardOverviewColumns = styled(BloomerColumns)`
 	margin-top: 30px;

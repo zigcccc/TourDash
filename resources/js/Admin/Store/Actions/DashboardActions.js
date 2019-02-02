@@ -6,6 +6,12 @@ export const GET_USERS_PREVIEW = "GET_USERS_PREVIEW";
 export const GET_USERS_PREVIEW_SUCCESS = "GET_USERS_PREVIEW_SUCCESS";
 export const GET_USERS_PREVIEW_FAIL = "GET_USERS_PREVIEW_FAIL";
 
+export const GET_ACCOMMODATIONS_PREVIEW = "GET_ACCOMMODATIONS_PREVIEW";
+export const GET_ACCOMMODATIONS_PREVIEW_SUCCESS =
+	"GET_ACCOMMODATIONS_PREVIEW_SUCCESS";
+export const GET_ACCOMMODATIONS_PREVIEW_FAIL =
+	"GET_ACCOMMODATIONS_PREVIEW_FAIL";
+
 export const getPagesPreview = () => ({
 	type: GET_PAGES_PREVIEW,
 	payload: {
@@ -21,6 +27,16 @@ export const getUsersPreview = (amount = 3) => ({
 	payload: {
 		request: {
 			url: `/dashboard/users?amount=${amount}`,
+			method: "GET"
+		}
+	}
+});
+
+export const getAccommodationsPreview = () => ({
+	type: GET_ACCOMMODATIONS_PREVIEW,
+	payload: {
+		request: {
+			url: "dashboard/accommodations",
 			method: "GET"
 		}
 	}

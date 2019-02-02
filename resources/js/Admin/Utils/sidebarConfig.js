@@ -22,16 +22,16 @@ const sidebarConfig = [
 			]
 		},
 		{
-			groupName: "nastanitve",
+			groupName: "namestitve",
 			groupMainUrl: "/admin/accommodations/",
 			groupContent: [
 				{
-					linkName: "Vse nastanitve",
+					linkName: "Vse namestitve",
 					linkUrl: "/accommodations/",
 					permissions: ["admin", "superadmin"]
 				},
 				{
-					linkName: "Dodaj novo nastanitev",
+					linkName: "Dodaj novo namestitev",
 					linkUrl: "/accommodations/add/",
 					permissions: ["admin", "superadmin"]
 				}

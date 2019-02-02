@@ -4,7 +4,10 @@ import {
 	GET_PAGES_PREVIEW_FAIL,
 	GET_USERS_PREVIEW,
 	GET_USERS_PREVIEW_SUCCESS,
-	GET_USERS_PREVIEW_FAIL
+	GET_USERS_PREVIEW_FAIL,
+	GET_ACCOMMODATIONS_PREVIEW,
+	GET_ACCOMMODATIONS_PREVIEW_SUCCESS,
+	GET_ACCOMMODATIONS_PREVIEW_FAIL
 } from "../Actions/DashboardActions";
 
 const initialState = {
@@ -88,6 +91,36 @@ const dashboardReducer = (state = initialState, action) => {
 				errorMessage: action.payload
 					? action.payload.data.error
 					: "Pri pridobivanju podatkov o uporabnikih je prišlo do napake..."
+			};
+		}
+
+		// Get accommodations preview
+		case GET_ACCOMMODATIONS_PREVIEW: {
+			return {
+				...state,
+				accommodationsLoading: true,
+				hasError: false,
+				hasSuccess: false
+			};
+		}
+		case GET_ACCOMMODATIONS_PREVIEW_SUCCESS: {
+			return {
+				...state,
+				accommodationsLoading: false,
+				accommodations: {
+					count: action.payload.data.all_accommodations_count,
+					data: action.payload.data.accommodations
+				}
+			};
+		}
+		case GET_ACCOMMODATIONS_PREVIEW_FAIL: {
+			return {
+				...state,
+				accommodationsLoading: false,
+				hasError: true,
+				errorMessage: action.payload
+					? action.payload.data.error
+					: "Pri pridobivanju podatkov o namestitvah je prišlo do napake..."
 			};
 		}
 

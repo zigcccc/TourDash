@@ -10,6 +10,7 @@ import Dashboard from "./Pages/Dashboard";
 import CreateNewPage from "./Pages/Pages/CreateNewPage";
 import PagesOverview from "./Pages/Pages/PagesOverview";
 import CreateNewAccommodation from "./Pages/Accommodations/CreateNewAccommodation";
+import AccommodationsOverview from "./Pages/Accommodations/AccommodationsOverview";
 import EditMenu from "./Pages/Pages/EditMenu";
 import UsersOverview from "./Pages/User/UsersOverview";
 import MyProfile from "./Pages/User/MyProfile";
@@ -58,9 +59,18 @@ class AppRouter extends Component {
 							<Route path="/pages/edit/:id" component={CreateNewPage} />
 							<Route path="/pages/menus/" component={EditMenu} exact />
 							<Route
+								path="/accommodations/"
+								component={AccommodationsOverview}
+								exact
+							/>
+							<Route
 								path="/accommodations/add/"
 								component={CreateNewAccommodation}
 								exact
+							/>
+							<Route
+								path="/accommodations/edit/:id"
+								component={CreateNewAccommodation}
 							/>
 							<Route path="/users/" component={UsersOverview} exact />
 							<Route path="/users/my-profile/" component={MyProfile} exact />

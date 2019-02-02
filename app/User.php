@@ -8,6 +8,7 @@ use Laravel\Passport\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Role;
 use App\Page;
+use App\Accommodation;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -71,5 +72,10 @@ class User extends Authenticatable implements MustVerifyEmail
     public function pages()
     {
         return $this->hasMany(Page::class);
+    }
+
+    public function accommodations()
+    {
+        return $this->hasMany(Accommodation::class);
     }
 }

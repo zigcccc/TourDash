@@ -20,11 +20,20 @@ const DashboardListItem = props => {
 	return (
 		<ListItemContainer link={props.link}>
 			<IconContainer>
-				{props.icon.indexOf("image/") > -1 ? (
-					<ImageIcon src={`/images/uploads/${props.icon}`} alt={props.title} />
-				) : (
-					<FontAwesomeIcon icon={props.icon} />
-				)}
+				{(() => {
+					if (props.icon.indexOf("/images/") > -1) {
+						return <ImageIcon src={props.icon} alt={props.title} />;
+					}
+					if (props.icon.indexOf("image/") > -1) {
+						return (
+							<ImageIcon
+								src={`/images/uploads/${props.icon}`}
+								alt={props.title}
+							/>
+						);
+					}
+					return <FontAwesomeIcon icon={props.icon} />;
+				})()}
 			</IconContainer>
 			<h4 className={classNames({ "full-width": !props.link })}>
 				{props.title}

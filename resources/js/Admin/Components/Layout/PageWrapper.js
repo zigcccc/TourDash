@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import classNames from "classnames";
 import styled from "styled-components";
 import PropTypes from "prop-types";
 import SearchForm from "../SearchForm";
 import _debounce from "lodash/debounce";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class PageWrapper extends Component {
 	constructor(props) {
@@ -36,28 +37,37 @@ class PageWrapper extends Component {
 			hasSearchForm,
 			titleHasMargin,
 			children,
-			searchPlaceholder
+			searchPlaceholder,
+			loading
 		} = this.props;
 		const { searchQuery } = this.state;
 		return (
 			<PageWrapperContainer>
-				<TitleContainer
-					className={classNames({
-						"has-margin": titleHasMargin
-					})}
-				>
-					<h1>{pageTitle}</h1>
-					{hasSearchForm && (
-						<SearchForm
-							onChange={this.handleChange}
-							placeholder={searchPlaceholder}
-							empty={searchQuery.length === 0}
-							loading={false}
-							hasIcon={true}
-						/>
-					)}
-				</TitleContainer>
-				{children}
+				{loading ? (
+					<LoadingContainer>
+						<FontAwesomeIcon icon="circle-notch" spin size="2x" />
+					</LoadingContainer>
+				) : (
+					<Fragment>
+						<TitleContainer
+							className={classNames({
+								"has-margin": titleHasMargin
+							})}
+						>
+							<h1>{pageTitle}</h1>
+							{hasSearchForm && (
+								<SearchForm
+									onChange={this.handleChange}
+									placeholder={searchPlaceholder}
+									empty={searchQuery.length === 0}
+									loading={false}
+									hasIcon={true}
+								/>
+							)}
+						</TitleContainer>
+						{children}
+					</Fragment>
+				)}
 			</PageWrapperContainer>
 		);
 	}
@@ -66,11 +76,13 @@ class PageWrapper extends Component {
 PageWrapper.propTypes = {
 	pageTitle: PropTypes.string,
 	hasSearchForm: PropTypes.bool.isRequired,
-	onSearch: PropTypes.func
+	onSearch: PropTypes.func,
+	loading: PropTypes.bool.isRequired
 };
 
 PageWrapper.defaultProps = {
-	hasSearchForm: false
+	hasSearchForm: false,
+	loading: false
 };
 
 const PageWrapperContainer = styled.div`
@@ -91,6 +103,14 @@ const TitleContainer = styled.div`
 	&.has-margin {
 		margin-bottom: 35px;
 	}
+`;
+
+const LoadingContainer = styled.div`
+	min-height: calc(100vh - 75px);
+	display: flex;
+	color: ${props => props.theme.mainColor};
+	justify-content: center;
+	align-items: center;
 `;
 
 export default PageWrapper;

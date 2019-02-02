@@ -8,7 +8,9 @@ import _isEqual from "lodash/isEqual";
 import _omit from "lodash/omit";
 import {
 	saveAccommodation,
-	clearMessages
+	clearMessages,
+	getAccommodation,
+	updateAccommodation
 } from "../../Store/Actions/AccommodationsActions";
 import {
 	PageWrapper,
@@ -48,7 +50,8 @@ const initialState = {
 	type: "soba",
 	features: [],
 	gallery: [],
-	content: ""
+	content: "",
+	loaded: false
 };
 
 class CreateNewAccommodation extends Component {
@@ -64,6 +67,12 @@ class CreateNewAccommodation extends Component {
 		this.uploadGalleryImage = this.uploadGalleryImage.bind(this);
 		this.getDiff = this.getDiff.bind(this);
 		this.saveAccommodation = this.saveAccommodation.bind(this);
+		this.fetchExistingAccommodation = this.fetchExistingAccommodation.bind(
+			this
+		);
+		this.selectExistingAccommodation = this.selectExistingAccommodation.bind(
+			this
+		);
 	}
 
 	clearfeatured_image() {
@@ -174,8 +183,62 @@ class CreateNewAccommodation extends Component {
 		return _isEqual(this.state, initialState);
 	}
 
+	fetchExistingAccommodation() {
+		this.props
+			.getAccommodation(this.props.match.params.id)
+			.then(res => {
+				const { data } = res.payload.data;
+				this.setState({
+					..._omit(data, ["created_at", "updated_at", "author", "gallery"]),
+					gallery: data.gallery.map(image => {
+						return {
+							width: 1,
+							height: 1,
+							src: image.thumbnail,
+							allsizes: image
+						};
+					}),
+					accommodationUpdated: false,
+					imageLoading: false,
+					featured_imagePreview: data.featured_image.medium,
+					loadingGalleryImage: false,
+					loaded: true
+				});
+			})
+			.catch(err => console.log(err));
+	}
+
+	selectExistingAccommodation(index) {
+		const { accommodations } = this.props;
+		this.setState({
+			..._omit(accommodations.data[index], [
+				"created_at",
+				"updated_at",
+				"author",
+				"gallery"
+			]),
+			gallery: accommodations.data[index].gallery.map(image => ({
+				width: 1,
+				height: 1,
+				src: image.thumbnail,
+				allsizes: image
+			})),
+			accommodationUpdated: false,
+			imageLoading: false,
+			featured_imagePreview: accommodations.data[index].featured_image.medium,
+			loadingGalleryImage: false,
+			loaded: true
+		});
+	}
+
 	saveAccommodation() {
-		const { saveAccommodation, user } = this.props;
+		const {
+			saveAccommodation,
+			updateAccommodation,
+			user,
+			match,
+			history
+		} = this.props;
 
 		const preparedState = produce(this.state, draft => {
 			draft.gallery = draft.gallery.map(item => {
@@ -185,15 +248,56 @@ class CreateNewAccommodation extends Component {
 				}
 			});
 		});
-		saveAccommodation(
-			_omit(preparedState, [
-				"accommodationUpdated",
-				"imageLoading",
-				"featured_image_preview",
-				"loadingGalleryImage"
-			]),
-			user.id
-		);
+
+		const data = _omit(preparedState, [
+			"accommodationUpdated",
+			"imageLoading",
+			"featured_image_preview",
+			"loadingGalleryImage",
+			"loaded"
+		]);
+
+		if (match.params.id) {
+			updateAccommodation(data, user.id, match.params.id);
+		} else {
+			saveAccommodation(data, user.id).then(res => {
+				const { data } = res.payload.data;
+				history.push(`/accommodations/edit/${data.id}`);
+			});
+		}
+	}
+
+	componentDidMount() {
+		const { match, accommodations } = this.props;
+		if (match.params.id) {
+			const editingAccommodationIndex = _findIndex(accommodations.data, {
+				id: parseInt(match.params.id)
+			});
+			if (editingAccommodationIndex >= 0) {
+				this.selectExistingAccommodation(editingAccommodationIndex);
+			} else {
+				this.fetchExistingAccommodation();
+			}
+		} else {
+			this.setState({
+				loaded: true
+			});
+		}
+	}
+
+	componentDidUpdate(prevProps, prevState) {
+		if (prevProps.match.params.id && !this.props.match.params.id) {
+			// Changed from editing accommodation to creating a new one
+			this.setState({
+				...initialState,
+				accommodationUpdated: false,
+				loaded: true
+			});
+		}
+		if (!prevProps.match.params.id && this.props.match.params.id) {
+			// Changed from adding a new accommodation to editing exsiting one
+			this.fetchExistingAccommodation();
+		}
 	}
 
 	render() {
@@ -212,11 +316,17 @@ class CreateNewAccommodation extends Component {
 			features,
 			gallery,
 			loadingGalleryImage,
-			content
+			content,
+			loaded
 		} = this.state;
-		const { accommodations } = this.props;
+		const { accommodations, match } = this.props;
 		return (
-			<PageWrapper pageTitle="Dodaj novo namestitev">
+			<PageWrapper
+				loading={!loaded}
+				pageTitle={
+					match.params.id ? `Uredi "${title}"` : "Dodaj novo namestitev"
+				}
+			>
 				<SnackBar
 					isOpen={accommodations.hasSuccess}
 					message={accommodations.successMessage}
@@ -397,7 +507,7 @@ class CreateNewAccommodation extends Component {
 					</SidebarGroup>
 					<SidebarEditorCta
 						onClick={this.saveAccommodation}
-						text="SHRANI NAMESTITEV"
+						text={match.params.id ? "POSODOBI NAMESTITEV" : "SHRANI NAMESTITEV"}
 						loading={accommodations.saving}
 					/>
 				</Sidebar>
@@ -416,7 +526,12 @@ const mapStateToProps = state => ({
 	accommodations: state.accommodations
 });
 
-const mapDispatchToProps = { saveAccommodation, clearMessages };
+const mapDispatchToProps = {
+	saveAccommodation,
+	clearMessages,
+	getAccommodation,
+	updateAccommodation
+};
 
 const Sidebar = styled(SidebarBase)`
 	padding: 20px;
