@@ -7,6 +7,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Field = styled(BloomerField)`
 	min-width: 650px;
+	@media screen and (max-width: 1150px) {
+		min-width: 100%;
+	}
 	&.is-small {
 		min-width: unset;
 	}
@@ -28,6 +31,7 @@ const Field = styled(BloomerField)`
 		font-weight: 900;
 		padding: 12px 20px;
 		border-color: transparent !important;
+		border-width: 3px !important;
 		&.has-small-font {
 			font-size: 16px;
 		}

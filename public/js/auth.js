@@ -56432,27 +56432,15 @@ var sidebarConfig = [[{
     permissions: ["admin", "superadmin"]
   }]
 }, {
-  groupName: "nastanitve",
+  groupName: "namestitve",
   groupMainUrl: "/admin/accommodations/",
   groupContent: [{
-    linkName: "Vse nastanitve",
+    linkName: "Vse namestitve",
     linkUrl: "/accommodations/",
     permissions: ["admin", "superadmin"]
   }, {
-    linkName: "Dodaj novo nastanitev",
+    linkName: "Dodaj novo namestitev",
     linkUrl: "/accommodations/add/",
-    permissions: ["admin", "superadmin"]
-  }]
-}, {
-  groupName: "objave",
-  groupMainUrl: "/admin/posts/",
-  groupContent: [{
-    linkName: "Vse objave",
-    linkUrl: "/posts/",
-    permissions: ["admin", "superadmin"]
-  }, {
-    linkName: "Dodaj novo objavo",
-    linkUrl: "/pages/add/",
     permissions: ["admin", "superadmin"]
   }]
 }], [{
@@ -56461,10 +56449,30 @@ var sidebarConfig = [[{
   groupContent: [{
     linkName: "Pregled uporabnikov",
     linkUrl: "/users/",
-    permissions: ["superadmin"]
+    permissions: ["admin", "superadmin"]
   }, {
     linkName: "Moj profil",
     linkUrl: "/users/my-profile/",
+    permissions: ["admin", "superadmin"]
+  }]
+}], [{
+  groupName: "nastavitve",
+  groupMainUrl: "/admin/settings/",
+  groupContent: [{
+    linkName: "Pregled nastavitev",
+    linkUrl: "/settings/",
+    permissions: ["admin", "superadmin"]
+  }, {
+    linkName: "Kontaktne informacije",
+    linkUrl: "/settings/contact-info/",
+    permissions: ["admin", "superadmin"]
+  }, {
+    linkName: "Vizualne nastavitve",
+    linkUrl: "/settings/appearance/",
+    permissions: ["admin", "superadmin"]
+  }, {
+    linkName: "Oglaševalska orodja",
+    linkUrl: "/settings/tracking-and-marketing/",
     permissions: ["admin", "superadmin"]
   }]
 }]];
@@ -56595,7 +56603,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var bloomer__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(bloomer__WEBPACK_IMPORTED_MODULE_4__);
 /* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n\tmin-width: 650px;\n\t&.is-small {\n\t\tmin-width: unset;\n\t}\n\t&.has-errors {\n\t\tinput {\n\t\t\tborder-color: ", " !important;\n\t\t\tborder-width: 3px;\n\t\t\t:hover {\n\t\t\t\tborder-color: ", " !important;\n\t\t\t}\n\t\t}\n\t}\n\tinput {\n\t\tborder-radius: 200px;\n\t\tbackground-color: ", ";\n\t\tbox-shadow: none;\n\t\tcolor: ", " !important;\n\t\tfont-size: 22px;\n\t\tfont-weight: 900;\n\t\tpadding: 12px 20px;\n\t\tborder-color: transparent !important;\n\t\t&.has-small-font {\n\t\t\tfont-size: 16px;\n\t\t}\n\t\t:hover {\n\t\t\tborder-color: transparent !important;\n\t\t}\n\t\t:focus {\n\t\t\tbox-shadow: none !important;\n\t\t\tborder-color: ", " !important;\n\t\t\tborder-width: 3px !important;\n\t\t\tcolor: ", " !important;\n\t\t}\n\t\t:-webkit-autofill {\n\t\t\tbackground-color: ", " !important;\n\t\t}\n\t}\n\t.icon {\n\t\tcolor: ", " !important;\n\t\tfont-size: 24px;\n\t\ttransform: translate(0, -1px);\n\t\t&.has-small-font {\n\t\t\tfont-size: 18px;\n\t\t}\n\t}\n"]);
+  var data = _taggedTemplateLiteral(["\n\tmin-width: 650px;\n\t@media screen and (max-width: 1150px) {\n\t\tmin-width: 100%;\n\t}\n\t&.is-small {\n\t\tmin-width: unset;\n\t}\n\t&.has-errors {\n\t\tinput {\n\t\t\tborder-color: ", " !important;\n\t\t\tborder-width: 3px;\n\t\t\t:hover {\n\t\t\t\tborder-color: ", " !important;\n\t\t\t}\n\t\t}\n\t}\n\tinput {\n\t\tborder-radius: 200px;\n\t\tbackground-color: ", ";\n\t\tbox-shadow: none;\n\t\tcolor: ", " !important;\n\t\tfont-size: 22px;\n\t\tfont-weight: 900;\n\t\tpadding: 12px 20px;\n\t\tborder-color: transparent !important;\n\t\tborder-width: 3px !important;\n\t\t&.has-small-font {\n\t\t\tfont-size: 16px;\n\t\t}\n\t\t:hover {\n\t\t\tborder-color: transparent !important;\n\t\t}\n\t\t:focus {\n\t\t\tbox-shadow: none !important;\n\t\t\tborder-color: ", " !important;\n\t\t\tborder-width: 3px !important;\n\t\t\tcolor: ", " !important;\n\t\t}\n\t\t:-webkit-autofill {\n\t\t\tbackground-color: ", " !important;\n\t\t}\n\t}\n\t.icon {\n\t\tcolor: ", " !important;\n\t\tfont-size: 24px;\n\t\ttransform: translate(0, -1px);\n\t\t&.has-small-font {\n\t\t\tfont-size: 18px;\n\t\t}\n\t}\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -57025,43 +57033,43 @@ function (_Component) {
         position: "bottom",
         message: this.state.error
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_1__["AuthNavbar"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Shared_Components_Logo__WEBPACK_IMPORTED_MODULE_4__["default"].Primary, {
-        width: 210,
+        width: window.innerWidth > 768 ? 210 : 120,
         height: _index__WEBPACK_IMPORTED_MODULE_1__["authNavbarHeight"]
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
         href: "/"
-      }, "back to tourdash.app", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__["FontAwesomeIcon"], {
+      }, "nazaj na stran", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__["FontAwesomeIcon"], {
         icon: "chevron-right"
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_1__["AuthFormContainer"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Shared_Components_Typography_MainHeading__WEBPACK_IMPORTED_MODULE_3__["default"], null, "Login"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_1__["AuthForm"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Components_AuthInputField__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_1__["AuthFormContainer"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Shared_Components_Typography_MainHeading__WEBPACK_IMPORTED_MODULE_3__["default"], null, "Prijava"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_1__["AuthForm"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Components_AuthInputField__WEBPACK_IMPORTED_MODULE_6__["default"], {
         hasError: this.state.username.hasError,
-        placeholder: "Username",
+        placeholder: "Uporabni\u0161ko ime",
         handleChange: this.handleChange.bind(this, "username"),
         value: this.state.username.value,
         icon: "user"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Components_AuthInputField__WEBPACK_IMPORTED_MODULE_6__["default"], {
         hasError: this.state.password.hasError,
-        placeholder: "Password",
+        placeholder: "Geslo",
         hiddenCharacters: true,
         handleChange: this.handleChange.bind(this, "password"),
         value: this.state.password.value,
         icon: "unlock"
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Components_AuthCheckSwitch__WEBPACK_IMPORTED_MODULE_7__["default"], {
         name: "remember",
-        label: "Remember me?",
+        label: "Zapomni si me?",
         checked: this.state.remember,
         handleChange: this._handleRemeberSwitch.bind(this)
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Shared_Components_MainCta__WEBPACK_IMPORTED_MODULE_8__["default"], {
         isLoading: this.state.loading,
         handleClick: this.handleSubmit.bind(this),
-        text: "Login"
+        text: "Prijava"
       })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_1__["AuthHelperLinks"], {
         maxWidth: "50"
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_1__["AuthLink"], {
         to: "/password/reset/"
-      }, "Forgot password?"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_1__["AuthLink"], {
+      }, "Pozabljeno geslo?"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_1__["AuthLink"], {
         isbold: "true",
         hasicon: "right",
         to: "/register/"
-      }, "Create account ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__["FontAwesomeIcon"], {
+      }, "Ustvarite ra\u010Dun ", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__["FontAwesomeIcon"], {
         icon: "long-arrow-alt-right"
       })))));
     }
@@ -57325,15 +57333,28 @@ function (_Component) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./index */ "./resources/js/Auth/Pages/Auth/index.js");
-/* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
-/* harmony import */ var bloomer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! bloomer */ "./node_modules/bloomer/bundles/bloomer.min.js");
-/* harmony import */ var bloomer__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(bloomer__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _Shared_Components_Typography_MainHeading__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ../../../Shared/Components/Typography/MainHeading */ "./resources/js/Shared/Components/Typography/MainHeading.js");
-/* harmony import */ var _Shared_Components_Logo__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../Shared/Components/Logo */ "./resources/js/Shared/Components/Logo.js");
-/* harmony import */ var _Shared_Components_Snackbar__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../Shared/Components/Snackbar */ "./resources/js/Shared/Components/Snackbar.js");
-/* harmony import */ var _Components_AuthInputField__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../Components/AuthInputField */ "./resources/js/Auth/Components/AuthInputField.js");
-/* harmony import */ var _Shared_Components_MainCta__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../../Shared/Components/MainCta */ "./resources/js/Shared/Components/MainCta.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var _index__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./index */ "./resources/js/Auth/Pages/Auth/index.js");
+/* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
+/* harmony import */ var bloomer__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! bloomer */ "./node_modules/bloomer/bundles/bloomer.min.js");
+/* harmony import */ var bloomer__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(bloomer__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _Shared_Components_Typography_MainHeading__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ../../../Shared/Components/Typography/MainHeading */ "./resources/js/Shared/Components/Typography/MainHeading.js");
+/* harmony import */ var _Shared_Components_Logo__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ../../../Shared/Components/Logo */ "./resources/js/Shared/Components/Logo.js");
+/* harmony import */ var _Shared_Components_Snackbar__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ../../../Shared/Components/Snackbar */ "./resources/js/Shared/Components/Snackbar.js");
+/* harmony import */ var _Components_AuthInputField__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ../../Components/AuthInputField */ "./resources/js/Auth/Components/AuthInputField.js");
+/* harmony import */ var _Shared_Components_MainCta__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ../../../Shared/Components/MainCta */ "./resources/js/Shared/Components/MainCta.js");
+function _templateObject() {
+  var data = _taggedTemplateLiteral(["\n\t@media screen and (max-width: 1150px) {\n\t\t&:not(:last-of-type) {\n\t\t\tpadding: 0 0.75rem;\n\t\t}\n\t}\n"]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; var ownKeys = Object.keys(source); if (typeof Object.getOwnPropertySymbols === 'function') { ownKeys = ownKeys.concat(Object.getOwnPropertySymbols(source).filter(function (sym) { return Object.getOwnPropertyDescriptor(source, sym).enumerable; })); } ownKeys.forEach(function (key) { _defineProperty(target, key, source[key]); }); } return target; }
@@ -57355,6 +57376,7 @@ function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.g
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); if (superClass) _setPrototypeOf(subClass, superClass); }
 
 function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+
 
 
 
@@ -57439,71 +57461,72 @@ function (_Component) {
   }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_1__["AuthContainer"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Shared_Components_Snackbar__WEBPACK_IMPORTED_MODULE_6__["default"], {
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_2__["AuthContainer"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Shared_Components_Snackbar__WEBPACK_IMPORTED_MODULE_7__["default"], {
         isOpen: this.state.name.hasError || this.state.email.hasError || this.state.password.hasError || this.state.password_repeat.hasError,
         purpose: "error",
         position: "bottom",
         message: this.state.error
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_1__["AuthNavbar"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Shared_Components_Logo__WEBPACK_IMPORTED_MODULE_5__["default"].Primary, {
-        width: 210,
-        height: _index__WEBPACK_IMPORTED_MODULE_1__["authNavbarHeight"]
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_2__["AuthNavbar"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Shared_Components_Logo__WEBPACK_IMPORTED_MODULE_6__["default"].Primary, {
+        width: window.innerWidth > 768 ? 210 : 120,
+        height: _index__WEBPACK_IMPORTED_MODULE_2__["authNavbarHeight"]
       }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("a", {
         href: "/"
-      }, "back to tourdash.app", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__["FontAwesomeIcon"], {
+      }, "nazaj na stran", react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_3__["FontAwesomeIcon"], {
         icon: "chevron-right"
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_1__["AuthFormContainer"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Shared_Components_Typography_MainHeading__WEBPACK_IMPORTED_MODULE_4__["default"], null, "Register"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_1__["AuthForm"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(bloomer__WEBPACK_IMPORTED_MODULE_3__["Columns"], {
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_2__["AuthFormContainer"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Shared_Components_Typography_MainHeading__WEBPACK_IMPORTED_MODULE_5__["default"], null, "Registracija"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_2__["AuthForm"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(bloomer__WEBPACK_IMPORTED_MODULE_4__["Columns"], {
         style: {
           marginBottom: 0
         }
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(bloomer__WEBPACK_IMPORTED_MODULE_3__["Column"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Components_AuthInputField__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Column, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Components_AuthInputField__WEBPACK_IMPORTED_MODULE_8__["default"], {
         isSmall: true,
         hasError: this.state.name.hasError,
-        placeholder: "Full Name",
+        placeholder: "Ime in priimek",
         handleChange: this.handleChange.bind(this, "name"),
         value: this.state.name.value,
         icon: "user"
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(bloomer__WEBPACK_IMPORTED_MODULE_3__["Column"], null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Components_AuthInputField__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(Column, null, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Components_AuthInputField__WEBPACK_IMPORTED_MODULE_8__["default"], {
         isSmall: true,
         hasError: this.state.email.hasError,
-        placeholder: "E-mail",
+        placeholder: "E-po\u0161ta",
         handleChange: this.handleChange.bind(this, "email"),
         value: this.state.email.value,
         icon: "envelope"
-      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Components_AuthInputField__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      }))), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Components_AuthInputField__WEBPACK_IMPORTED_MODULE_8__["default"], {
         hasError: this.state.password.hasError,
-        placeholder: "Password",
+        placeholder: "Geslo",
         hiddenCharacters: true,
         handleChange: this.handleChange.bind(this, "password"),
         value: this.state.password.value,
         icon: "unlock"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Components_AuthInputField__WEBPACK_IMPORTED_MODULE_7__["default"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Components_AuthInputField__WEBPACK_IMPORTED_MODULE_8__["default"], {
         hasError: this.state.password_repeat.hasError,
-        placeholder: "Repeat Password",
+        placeholder: "Ponovi geslo",
         hiddenCharacters: true,
         handleChange: this.handleChange.bind(this, "password_repeat"),
         value: this.state.password_repeat.value,
         icon: "redo-alt"
-      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Shared_Components_MainCta__WEBPACK_IMPORTED_MODULE_8__["default"], {
+      }), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_Shared_Components_MainCta__WEBPACK_IMPORTED_MODULE_9__["default"], {
         isLoading: this.state.loading,
         handleClick: this.handleSubmit.bind(this),
-        text: "Register"
-      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_1__["AuthHelperLinks"], {
+        text: "Registracija"
+      })), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_2__["AuthHelperLinks"], {
         maxWidth: "75"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_1__["AuthLink"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_2__["AuthLink"], {
         isbold: "true",
         hasicon: "left",
         to: "/login/"
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__["FontAwesomeIcon"], {
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_3__["FontAwesomeIcon"], {
         icon: "long-arrow-alt-left"
-      }), " Allready have an account?"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_1__["AuthLink"], {
+      }), " \u017De imate ra\u010Dun?"), react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_index__WEBPACK_IMPORTED_MODULE_2__["AuthLink"], {
         to: "/terms-of-services/"
-      }, "Terms of services and legal info"))));
+      }, "Pogoji uporabe"))));
     }
   }]);
 
   return Register;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
+var Column = Object(styled_components__WEBPACK_IMPORTED_MODULE_1__["default"])(bloomer__WEBPACK_IMPORTED_MODULE_4__["Column"])(_templateObject());
 /* harmony default export */ __webpack_exports__["default"] = (Register);
 
 /***/ }),
@@ -57696,7 +57719,7 @@ function _templateObject6() {
 }
 
 function _templateObject5() {
-  var data = _taggedTemplateLiteral(["\n\tdisplay: flex;\n\tjustify-content: space-between;\n\twidth: ", "%;\n\tmargin: 0 auto;\n"]);
+  var data = _taggedTemplateLiteral(["\n\tdisplay: flex;\n\tjustify-content: space-between;\n\twidth: ", "%;\n\tmargin: 0 auto;\n\t@media screen and (max-width: 1150px) {\n\t\tflex-direction: column;\n\t\talign-items: center;\n\t\ta {\n\t\t\t&:not(:last-of-type) {\n\t\t\t\tmargin-bottom: 10px;\n\t\t\t}\n\t\t}\n\t}\n"]);
 
   _templateObject5 = function _templateObject5() {
     return data;
@@ -57716,7 +57739,7 @@ function _templateObject4() {
 }
 
 function _templateObject3() {
-  var data = _taggedTemplateLiteral(["\n\tflex: 1;\n\tdisplay: flex;\n\talign-items: flex-start;\n\tjustify-content: center;\n\tflex-direction: column;\n\tmax-width: 650px;\n\tmargin: 0 auto;\n\ttransform: translate(0, -", "px);\n"]);
+  var data = _taggedTemplateLiteral(["\n\tflex: 1;\n\tdisplay: flex;\n\talign-items: flex-start;\n\tjustify-content: center;\n\tflex-direction: column;\n\tmax-width: 650px;\n\tmargin: 0 auto;\n\ttransform: translate(0, -", "px);\n\t@media screen and (max-width: 1150px) {\n\t\twidth: 500px;\n\t\tmax-width: calc(100vw - 60px);\n\t\ttransform: translate(0, 0);\n\t}\n"]);
 
   _templateObject3 = function _templateObject3() {
     return data;
@@ -58068,15 +58091,15 @@ var Light = function Light(_ref2) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
-/* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
-/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
-/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_4__);
-function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
-
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! classnames */ "./node_modules/classnames/index.js");
+/* harmony import */ var classnames__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(classnames__WEBPACK_IMPORTED_MODULE_1__);
+/* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
+/* harmony import */ var _fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @fortawesome/react-fontawesome */ "./node_modules/@fortawesome/react-fontawesome/index.es.js");
+/* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! prop-types */ "./node_modules/prop-types/index.js");
+/* harmony import */ var prop_types__WEBPACK_IMPORTED_MODULE_5___default = /*#__PURE__*/__webpack_require__.n(prop_types__WEBPACK_IMPORTED_MODULE_5__);
 function _templateObject2() {
-  var data = _taggedTemplateLiteral(["\n\tborder: none;\n\toutline: none;\n\tbackground-color: ", ";\n\tcolor: ", ";\n\ttext-transform: lowercase;\n\tfont-weight: 900;\n\ttext-align: center;\n\tpadding: 10px 15px;\n\tmin-width: 250px;\n\tborder-radius: 5px;\n\tfont-size: ", ";\n\tdisplay: block;\n\tmargin: 30px auto;\n\tbox-shadow: ", ";\n\ttransition: ", ";\n\t:hover {\n\t\tbackground-color: ", ";\n\t\ttransform: translate(0, -3px);\n\t\tcursor: pointer;\n\t\tbox-shadow: ", ";\n\t}\n\t:active {\n\t\ttransform: translate(0, -3px) scale(0.95);\n\t}\n"]);
+  var data = _taggedTemplateLiteral(["\n\tborder: none;\n\toutline: none;\n\tbackground-color: ", ";\n\tcolor: ", ";\n\ttext-transform: lowercase;\n\tfont-weight: 900;\n\ttext-align: center;\n\tpadding: 10px 15px;\n\tmin-width: 250px;\n\tborder-radius: 5px;\n\tfont-size: ", ";\n\tdisplay: block;\n\tmargin: 30px auto;\n\tbox-shadow: ", ";\n\ttransition: ", ";\n\t:hover {\n\t\tbackground-color: ", ";\n\t\ttransform: translate(0, -3px);\n\t\tcursor: pointer;\n\t\tbox-shadow: ", ";\n\t}\n\t:active {\n\t\ttransform: translate(0, -3px) scale(0.95);\n\t}\n\t&.disabled {\n\t\tbox-shadow: none;\n\t\tbackground: ", ";\n\t\tcolor: ", ";\n\t\tcursor: not-allowed;\n\t\t&:hover {\n\t\t\ttransform: translate(0, 0);\n\t\t}\n\t}\n"]);
 
   _templateObject2 = function _templateObject2() {
     return data;
@@ -58086,7 +58109,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n\tbackground-color: ", ";\n\tcolor: ", ";\n\ttext-transform: lowercase;\n\tfont-weight: 900;\n\ttext-align: center;\n\tpadding: 10px 15px;\n\tmin-width: 250px;\n\tborder-radius: 5px;\n\tfont-size: ", ";\n\tmargin: 10px auto;\n\tbox-shadow: ", ";\n\ttransition: ", ";\n\t:hover {\n\t\tbackground-color: ", ";\n\t\ttransform: translate(0, -3px);\n\t\tcolor: ", ";\n\t\tcursor: pointer;\n\t\tbox-shadow: ", ";\n\t}\n\t:active {\n\t\ttransform: translate(0, -3px) scale(0.95);\n\t}\n"]);
+  var data = _taggedTemplateLiteral(["\n\tbackground-color: ", ";\n\tcolor: ", ";\n\ttext-transform: lowercase;\n\tfont-weight: 900;\n\ttext-align: center;\n\tpadding: 10px 15px;\n\tmin-width: 250px;\n\tborder-radius: 5px;\n\tfont-size: ", ";\n\tmargin: 10px auto;\n\tbox-shadow: ", ";\n\ttransition: ", ";\n\t:hover {\n\t\tbackground-color: ", ";\n\t\ttransform: translate(0, -3px);\n\t\tcolor: ", ";\n\t\tcursor: pointer;\n\t\tbox-shadow: ", ";\n\t}\n\t:active {\n\t\ttransform: translate(0, -3px) scale(0.95);\n\t}\n\t&.disabled {\n\t\tbox-shadow: none;\n\t\tbackground: ", ";\n\t\tcolor: ", ";\n\t\tcursor: not-allowed;\n\t\t&:hover {\n\t\t\ttransform: translate(0, 0);\n\t\t}\n\t}\n\t@media screen and (max-width: 1300px) {\n\t\twidth: 100px;\n\t\tfont-size: ", ";\n\t}\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -58097,52 +58120,27 @@ function _templateObject() {
 
 function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
 
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 
 
 
 
-var MainCtaLink = Object(styled_components__WEBPACK_IMPORTED_MODULE_3__["default"])(react_router_dom__WEBPACK_IMPORTED_MODULE_1__["Link"])(_templateObject(), function (props) {
-  return props.theme.mainColor;
-}, function (props) {
-  return props.theme.whiteShade1;
-}, function (props) {
-  return props["data-size"].toString() + "px";
-}, function (props) {
-  return props.theme.lightShadow;
-}, function (props) {
-  return props.theme.easeTransition;
-}, function (props) {
-  return props.theme.mainColorHover;
-}, function (props) {
-  return props.theme.whiteShade1;
-}, function (props) {
-  return props.theme.hoverShadow;
-});
-var MainCtaButton = styled_components__WEBPACK_IMPORTED_MODULE_3__["default"].button(_templateObject2(), function (props) {
-  return props.theme.mainColor;
-}, function (props) {
-  return props.theme.whiteShade1;
-}, function (props) {
-  return props["data-size"].toString() + "px";
-}, function (props) {
-  return props.theme.lightShadow;
-}, function (props) {
-  return props.theme.easeTransition;
-}, function (props) {
-  return props.theme.mainColorHover;
-}, function (props) {
-  return props.theme.hoverShadow;
-});
+
+
 
 var MainCta = function MainCta(props) {
+  var _classNames, _classNames2;
+
   switch (_typeof(props.handleClick)) {
     case "function":
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(MainCtaButton, {
-        className: props.className,
+        className: classnames__WEBPACK_IMPORTED_MODULE_1___default()((_classNames = {}, _defineProperty(_classNames, props.className, true), _defineProperty(_classNames, "disabled", props.disabled), _classNames)),
         "data-size": props.fontSize,
-        onClick: props.handleClick
-      }, props.isLoading ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__["FontAwesomeIcon"], {
+        onClick: !props.disabled ? props.handleClick : null
+      }, props.isLoading ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_3__["FontAwesomeIcon"], {
         icon: "circle-notch",
         spin: true,
         size: "1x"
@@ -58150,10 +58148,10 @@ var MainCta = function MainCta(props) {
 
     case "undefined":
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(MainCtaLink, {
-        className: props.className,
+        className: classnames__WEBPACK_IMPORTED_MODULE_1___default()((_classNames2 = {}, _defineProperty(_classNames2, props.className, true), _defineProperty(_classNames2, "disabled", props.disabled), _classNames2)),
         "data-size": props.fontSize,
-        to: props.to
-      }, props.isLoading ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_2__["FontAwesomeIcon"], {
+        to: !props.disabled ? props.to : props.match.pathname
+      }, props.isLoading ? react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_3__["FontAwesomeIcon"], {
         icon: "circle-notch",
         spin: true,
         size: "1x"
@@ -58166,16 +58164,60 @@ var MainCta = function MainCta(props) {
 };
 
 MainCta.propTypes = {
-  fontSize: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.number.isRequired,
-  handleClick: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.func,
-  to: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string,
-  isLoading: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.bool,
-  text: prop_types__WEBPACK_IMPORTED_MODULE_4___default.a.string
+  fontSize: prop_types__WEBPACK_IMPORTED_MODULE_5___default.a.number.isRequired,
+  handleClick: prop_types__WEBPACK_IMPORTED_MODULE_5___default.a.func,
+  to: prop_types__WEBPACK_IMPORTED_MODULE_5___default.a.string,
+  isLoading: prop_types__WEBPACK_IMPORTED_MODULE_5___default.a.bool,
+  text: prop_types__WEBPACK_IMPORTED_MODULE_5___default.a.string,
+  disabled: prop_types__WEBPACK_IMPORTED_MODULE_5___default.a.bool.isRequired
 };
 MainCta.defaultProps = {
   fontSize: 24,
-  isLoading: false
+  isLoading: false,
+  disabled: false
 };
+var MainCtaLink = Object(styled_components__WEBPACK_IMPORTED_MODULE_4__["default"])(react_router_dom__WEBPACK_IMPORTED_MODULE_2__["Link"])(_templateObject(), function (props) {
+  return props.theme.mainColor;
+}, function (props) {
+  return props.theme.whiteShade1;
+}, function (props) {
+  return props["data-size"].toString() + "px";
+}, function (props) {
+  return props.theme.lightShadow;
+}, function (props) {
+  return props.theme.easeTransition;
+}, function (props) {
+  return props.theme.mainColorHover;
+}, function (props) {
+  return props.theme.whiteShade1;
+}, function (props) {
+  return props.theme.hoverShadow;
+}, function (props) {
+  return props.theme.lightGray;
+}, function (props) {
+  return props.theme.whiteShade2;
+}, function (props) {
+  return (props["data-size"] - 2).toString() + "px";
+});
+var MainCtaButton = styled_components__WEBPACK_IMPORTED_MODULE_4__["default"].button(_templateObject2(), function (props) {
+  return props.theme.mainColor;
+}, function (props) {
+  return props.theme.whiteShade1;
+}, function (props) {
+  return props["data-size"].toString() + "px";
+}, function (props) {
+  return props.theme.lightShadow;
+}, function (props) {
+  return props.theme.easeTransition;
+}, function (props) {
+  return props.theme.mainColorHover;
+}, function (props) {
+  return props.theme.hoverShadow;
+}, function (props) {
+  return props.theme.lightGray;
+}, function (props) {
+  return props.theme.whiteShade2;
+});
 /* harmony default export */ __webpack_exports__["default"] = (MainCta);
 
 /***/ }),
@@ -58211,7 +58253,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n\tposition: fixed;\n\tz-index: 10000;\n\tleft: 50%;\n\tpadding: 0.75em 1.25em;\n\tmin-width: 200px;\n\tmin-height: 50px;\n\tcolor: ", ";\n\tfont-weight: 700;\n\tborder-radius: 5px;\n\tbox-shadow: ", ";\n\ttransform: translate(-50%, ", ");\n\tbackground-color: ", ";\n\tvisibility: ", ";\n\topacity: ", ";\n\ttransition: ", ";\n\t&.top {\n\t\ttop: 10px;\n\t}\n\t&.bottom {\n\t\tbottom: 10px;\n\t}\n\t&.has-dissmiss {\n\t\tpadding-right: 50px;\n\t}\n"]);
+  var data = _taggedTemplateLiteral(["\n\tposition: fixed;\n\tz-index: 10000;\n\tleft: 50%;\n\tpadding: 0.75em 1.25em;\n\tmin-width: 200px;\n\tmin-height: 50px;\n\tcolor: ", ";\n\tfont-weight: 700;\n\tborder-radius: 5px;\n\tbox-shadow: ", ";\n\ttransform: translate(-50%, ", ");\n\tbackground-color: ", ";\n\tvisibility: ", ";\n\topacity: ", ";\n\ttransition: ", ";\n\t&.top {\n\t\ttop: 10px;\n\t\ttransform: translate(-50%, ", ");\n\t}\n\t&.bottom {\n\t\tbottom: 10px;\n\t}\n\t&.has-dissmiss {\n\t\tpadding-right: 50px;\n\t}\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -58288,12 +58330,14 @@ function (_Component) {
           purpose = _this$props.purpose,
           message = _this$props.message,
           hasDissmissAction = _this$props.hasDissmissAction,
-          dissmissAction = _this$props.dissmissAction;
+          dissmissAction = _this$props.dissmissAction,
+          style = _this$props.style;
       var dissmissed = this.state.dissmissed;
       return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(SnackBarContainer, {
         open: isOpen && !dissmissed,
         className: classnames__WEBPACK_IMPORTED_MODULE_3___default()((_classNames = {}, _defineProperty(_classNames, position, true), _defineProperty(_classNames, "has-dissmiss", hasDissmissAction), _classNames)),
-        purpose: purpose
+        purpose: purpose,
+        style: style
       }, typeof message === "string" && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, message), _typeof(message) === "object" && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement("span", null, Object.values(message)[0][0]), hasDissmissAction && react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(DissmissIconContainer, {
         onClick: dissmissAction ? dissmissAction : this.dissmissSnackbar
       }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_fortawesome_react_fontawesome__WEBPACK_IMPORTED_MODULE_4__["FontAwesomeIcon"], {
@@ -58334,6 +58378,8 @@ var SnackBarContainer = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"
   return props.open ? "1" : "0";
 }, function (props) {
   return props.theme.easeTransition;
+}, function (props) {
+  return props.open ? "0" : "-100%";
 });
 var DissmissIconContainer = styled_components__WEBPACK_IMPORTED_MODULE_1__["default"].div(_templateObject2(), function (props) {
   return props.theme.easeTransition;
@@ -58355,7 +58401,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n\tfont-size: 75px;\n\tcolor: ", ";\n\tfont-weight: 900;\n\ttext-align: left;\n"]);
+  var data = _taggedTemplateLiteral(["\n\tfont-size: 75px;\n\tcolor: ", ";\n\tfont-weight: 900;\n\ttext-align: left;\n\t@media screen and (max-width: 768px) {\n\t\tfont-size: 48px;\n\t}\n"]);
 
   _templateObject = function _templateObject() {
     return data;

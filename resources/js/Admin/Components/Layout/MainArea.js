@@ -14,6 +14,12 @@ const MainAreaContainer = styled.div`
 	padding-right: 300px;
 	width: 100%;
 	min-height: calc(100vh - 75px);
+	@media screen and (max-width: 1300px) {
+		padding-right: 200px;
+	}
+	@media screen and (max-width: 768px) {
+		padding-right: 0;
+	}
 `;
 
 export default MainArea;

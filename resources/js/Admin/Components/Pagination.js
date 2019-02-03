@@ -13,7 +13,7 @@ import {
 } from "bloomer";
 
 const Pagination = props => (
-	<BloomerPagination>
+	<StyledPagination>
 		<PageControl
 			onClick={() => props.fetchNewPage(props.currentPage - 1)}
 			className={classNames({
@@ -47,7 +47,7 @@ const Pagination = props => (
 				</Page>
 			))}
 		</PageList>
-	</BloomerPagination>
+	</StyledPagination>
 );
 
 Pagination.propTypes = {
@@ -64,6 +64,12 @@ Pagination.defaultProps = {
 	currentPage: 1,
 	totalPages: 1
 };
+
+const StyledPagination = styled(BloomerPagination)`
+	@media screen and (max-width: 768px) {
+		padding: 0 10px;
+	}
+`;
 
 const PageControl = styled(BloomerPageControl)`
 	&.disabled {

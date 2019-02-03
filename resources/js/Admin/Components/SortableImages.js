@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import styled from "styled-components";
 import PropTypes from "prop-types";
 import Gallery from "react-photo-gallery";
 import {
@@ -68,7 +67,7 @@ SortableImages.propTypes = {
 };
 
 SortableImages.defaultProps = {
-	columns: 5
+	columns: window.innerWidth > 768 ? 5 : 2
 };
 
 export default SortableImages;

@@ -113,7 +113,7 @@ class DashboardActivity extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			activities: [],
+			activities: [...dummyActivities],
 			loading: false
 		};
 	}

@@ -94,6 +94,9 @@ const DashboardLinkItemContainer = styled(RouterLink)`
 		overflow: hidden;
 		white-space: nowrap;
 		text-overflow: ellipsis;
+		@media screen and (max-width: 1300px) {
+			width: 125px;
+		}
 	}
 	.author-container {
 		display: flex;
@@ -106,6 +109,9 @@ const DashboardLinkItemContainer = styled(RouterLink)`
 			overflow: hidden;
 			white-space: nowrap;
 			text-overflow: ellipsis;
+			@media screen and (max-width: 1300px) {
+				display: none;
+			}
 		}
 		img {
 			width: 18px;
@@ -136,6 +142,12 @@ const DashboardListItemContainer = styled.div`
 		text-overflow: ellipsis;
 		&.full-width {
 			width: 250px;
+			@media screen and (max-width: 1300px) {
+				width: 150px;
+			}
+		}
+		@media screen and (max-width: 1300px) {
+			width: 125px;
 		}
 	}
 	.author-container {

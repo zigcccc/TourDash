@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
+import { connect } from "react-redux";
+import { toggleMenu } from "../Store/Actions/GlobalActions";
+import classNames from "classnames";
 import { PropTypes } from "prop-types";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -45,12 +48,17 @@ class Sidebar extends Component {
 
 	render() {
 		const { collapsed } = this.state;
-		const { match, user, activePath } = this.props;
+		const { match, user, activePath, menuOpen } = this.props;
 		return (
-			<SidebarContainer collapsed={collapsed}>
-				<Link to="/" style={{ padding: "0 30px" }}>
+			<SidebarContainer
+				collapsed={collapsed}
+				className={classNames({
+					"mobile-open": menuOpen
+				})}
+			>
+				<LogoLink to="/" style={{ padding: "0 30px" }}>
 					<Logo.Light />
-				</Link>
+				</LogoLink>
 				<SidebarGroup>
 					<ListLink to="/" className={match.isExact ? "is-active" : ""}>
 						Nadzorna plošča <FontAwesomeIcon icon="th" />
@@ -79,7 +87,7 @@ class Sidebar extends Component {
 						))}
 					</SidebarGroup>
 				))}
-				<Exit href="/">
+				<Exit href="/" className={classNames({ "mobile-open": menuOpen })}>
 					<span>
 						<FontAwesomeIcon icon="chevron-left" />
 					</span>
@@ -94,6 +102,12 @@ Sidebar.propTypes = {
 	user: PropTypes.object.isRequired,
 	activePath: PropTypes.string.isRequired
 };
+
+const mapStateToProps = state => ({
+	menuOpen: state.global.menuOpen
+});
+
+const mapDispatchToProps = { toggleMenu };
 
 const SidebarContainer = styled.div`
 	background-color: ${props => props.theme.mainColor};
@@ -111,7 +125,29 @@ const SidebarContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: flex-start;
+	align-items: flex-start;
+	transition: ${props => props.theme.easeTransition};
+	@media screen and (max-width: 1300px) {
+		max-width: 200px;
+	}
+	@media screen and (max-width: 1150px) {
+		width: 275px;
+		max-width: 100%;
+		left: -275px;
+		background-color: ${props => props.theme.whiteShade1};
+		z-index: 5;
+		box-shadow: ${props => props.theme.hoverShadow};
+		margin-top: 50px;
+		&.mobile-open {
+			left: 0;
+		}
+	}
+`;
+
+const LogoLink = styled(Link)`
+	@media screen and (max-width: 1150px) {
+		display: none;
+	}
 `;
 
 const ListLink = styled(Link)`
@@ -131,7 +167,15 @@ const ListLink = styled(Link)`
     background: rgba(0,0,0,.25);
     cursor: pointer;
     color: ${props => props.theme.whiteShade1}
-  }
+	}
+	@media screen and (max-width: 1150px) {
+		color: ${props =>
+			props.className === "is-active"
+				? props.theme.mainColor
+				: props.theme.darkPrimary}
+		background-color: ${props =>
+			props.className === "is-active" ? "rgba(0,0,0,.1)" : "transparent"};
+	}
 `;
 
 const ListLinkPlaceholder = styled.div`
@@ -158,6 +202,9 @@ const SidebarGroup = styled.div`
 		width: 130px;
 		height: 1px;
 		margin: 20px auto 0;
+		@media screen and (max-width: 1150px) {
+			background: ${props => props.theme.darkPrimary};
+		}
 	}
 `;
 
@@ -184,6 +231,26 @@ const Exit = styled.a`
 			transform: translate(-3px, 0);
 		}
 	}
+	@media screen and (max-width: 1300px) {
+		width: 200px;
+		padding: 15px 10px;
+	}
+	@media screen and (max-width: 1150px) {
+		width: 275px;
+		max-width: 100%;
+		left: -275px;
+		background: ${props => props.theme.mainColor};
+		color: ${props => props.theme.white};
+		transition: ${props => props.theme.easeTransition};
+		&.mobile-open {
+			left: 0;
+		}
+	}
 `;
 
-export default withRouter(Sidebar);
+const connectedSidebar = connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Sidebar);
+
+export default withRouter(connectedSidebar);

@@ -9,13 +9,14 @@ import {
 	searchUsers
 } from "../../Store/Actions/UserActions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Table, Button as BloomerButton } from "bloomer";
+import { Button as BloomerButton } from "bloomer";
 import { PageWrapper, CenteredItem } from "../../Components/Layout";
 import RolesDropdown from "../../Components/RolesDropdown";
 import CardBase from "../../Components/Card";
 import Snackbar from "../../../Shared/Components/Snackbar";
 import Pagination from "../../Components/Pagination";
 import { Spacer } from "../../Components/Helpers";
+import OverviewTable from "../../Components/OverviewTable";
 
 class UsersOverview extends Component {
 	constructor(props) {
@@ -129,7 +130,7 @@ class UsersOverview extends Component {
 							<Spinner icon="circle-notch" spin size="2x" />
 						</CenteredItem>
 					) : users.data.length > 0 ? (
-						<UsersTable isNarrow={false} className="is-hoverable">
+						<Table>
 							<thead>
 								<tr>
 									<th>Ime in priimek</th>
@@ -153,7 +154,7 @@ class UsersOverview extends Component {
 											)}
 											{user.name}
 										</NameField>
-										<td>{user.email}</td>
+										<OnlyDesktopField>{user.email}</OnlyDesktopField>
 										<RoleField>
 											<RolesDropdown
 												user={user}
@@ -174,7 +175,7 @@ class UsersOverview extends Component {
 									</TableRow>
 								))}
 							</tbody>
-						</UsersTable>
+						</Table>
 					) : (
 						<ResultsNotFound>
 							<p>Za iskalni niz ni najdenih rezultatov...</p>
@@ -215,17 +216,22 @@ UsersOverview.propTypes = {
 
 const Card = styled(CardBase)`
 	margin-top: 45px;
-	min-height: 820px;
+	min-height: calc(100vh - 200px);
 	display: flex;
 	flex-direction: column;
+	@media screen and (max-width: 768px) {
+		margin-top: 30px;
+		min-height: calc(100vh - 200px);
+		padding: 20px 0;
+	}
+`;
+
+const Table = styled(OverviewTable)`
+	margin-top: 0;
 `;
 
 const Spinner = styled(FontAwesomeIcon)`
 	color: ${props => props.theme.mainColor};
-`;
-
-const UsersTable = styled(Table)`
-	width: 100%;
 `;
 
 const TableRow = styled.tr`
@@ -233,6 +239,12 @@ const TableRow = styled.tr`
 		padding-top: 15px;
 		padding-bottom: 15px;
 		vertical-align: middle;
+	}
+`;
+
+const OnlyDesktopField = styled.td`
+	@media screen and (max-width: 768px) {
+		display: none;
 	}
 `;
 
@@ -261,6 +273,9 @@ const AvatarContainer = styled.div`
 		object-fit: cover;
 		width: 100%;
 		height: 100%;
+	}
+	@media screen and (max-width: 768px) {
+		display: none;
 	}
 `;
 
@@ -299,6 +314,11 @@ const ResultsNotFound = styled.div`
 		font-size: 22px;
 		color: ${props => props.theme.heavyGray};
 		font-weight: 900;
+		@media screen and (max-width: 768px) {
+			padding: 0 20px;
+			font-size: 18px;
+			text-align: center;
+		}
 	}
 `;
 

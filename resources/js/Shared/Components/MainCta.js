@@ -94,6 +94,10 @@ const MainCtaLink = styled(Link)`
 			transform: translate(0, 0);
 		}
 	}
+	@media screen and (max-width: 1300px) {
+		width: 100px;
+		font-size: ${props => (props["data-size"] - 2).toString() + "px"};
+	}
 `;
 
 const MainCtaButton = styled.button`

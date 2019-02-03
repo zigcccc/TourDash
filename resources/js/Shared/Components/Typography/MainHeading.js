@@ -6,6 +6,9 @@ const MainHeadingStyle = styled.h1`
 	color: ${props => props.theme.darkPrimary};
 	font-weight: 900;
 	text-align: left;
+	@media screen and (max-width: 768px) {
+		font-size: 48px;
+	}
 `;
 
 const MainHeading = props => (

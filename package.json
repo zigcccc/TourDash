@@ -46,6 +46,7 @@
         "bulma": "^0.7.1",
         "classnames": "^2.2.6",
         "eslint": "^5.12.1",
+        "font-picker-react": "^2.2.0",
         "google-map-react": "^1.1.2",
         "immer": "^1.7.4",
         "lodash-move": "^1.1.1",

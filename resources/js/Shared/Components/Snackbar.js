@@ -107,6 +107,9 @@ const SnackBarContainer = styled.div`
 	&.has-dissmiss {
 		padding-right: 50px;
 	}
+	@media screen and (max-width: 768px) {
+		min-width: calc(100vw - 20px);
+	}
 `;
 
 const DissmissIconContainer = styled.div`

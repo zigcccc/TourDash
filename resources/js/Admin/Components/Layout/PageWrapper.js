@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import SearchForm from "../SearchForm";
 import _debounce from "lodash/debounce";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import CtaBase from "../../../Shared/Components/MainCta";
 
 class PageWrapper extends Component {
 	constructor(props) {
@@ -38,7 +39,12 @@ class PageWrapper extends Component {
 			titleHasMargin,
 			children,
 			searchPlaceholder,
-			loading
+			loading,
+			hasActionButton,
+			actionButtonLoading,
+			actionButtonText,
+			actionButtonDisabled,
+			onClick
 		} = this.props;
 		const { searchQuery } = this.state;
 		return (
@@ -51,7 +57,9 @@ class PageWrapper extends Component {
 					<Fragment>
 						<TitleContainer
 							className={classNames({
-								"has-margin": titleHasMargin
+								"has-margin": titleHasMargin,
+								"has-action-button": hasActionButton,
+								"has-search-form": hasSearchForm
 							})}
 						>
 							<h1>{pageTitle}</h1>
@@ -62,6 +70,15 @@ class PageWrapper extends Component {
 									empty={searchQuery.length === 0}
 									loading={false}
 									hasIcon={true}
+								/>
+							)}
+							{hasActionButton && (
+								<MainCta
+									text={actionButtonText}
+									handleClick={onClick}
+									fontSize={14}
+									isLoading={actionButtonLoading}
+									disabled={actionButtonDisabled}
 								/>
 							)}
 						</TitleContainer>
@@ -77,12 +94,20 @@ PageWrapper.propTypes = {
 	pageTitle: PropTypes.string,
 	hasSearchForm: PropTypes.bool.isRequired,
 	onSearch: PropTypes.func,
-	loading: PropTypes.bool.isRequired
+	loading: PropTypes.bool.isRequired,
+	hasActionButton: PropTypes.bool.isRequired,
+	onClick: PropTypes.func,
+	actionButtonText: PropTypes.string,
+	actionButtonLoading: PropTypes.bool.isRequired,
+	actionButtonDisabled: PropTypes.bool.isRequired
 };
 
 PageWrapper.defaultProps = {
 	hasSearchForm: false,
-	loading: false
+	loading: false,
+	hasActionButton: false,
+	actionButtonLoading: false,
+	actionButtonDisabled: false
 };
 
 const PageWrapperContainer = styled.div`
@@ -93,6 +118,10 @@ const PageWrapperContainer = styled.div`
 		font-weight: 900;
 		font-size: 54px;
 		line-height: 1;
+		@media screen and (max-width: 768px) {
+			font-size: 32px;
+			width: 100%;
+		}
 	}
 `;
 
@@ -103,6 +132,22 @@ const TitleContainer = styled.div`
 	&.has-margin {
 		margin-bottom: 35px;
 	}
+	&.has-action-button {
+		@media screen and (max-width: 768px) {
+			flex-direction: column;
+			align-items: center;
+		}
+	}
+	&.has-search-form {
+		@media screen and (max-width: 768px) {
+			flex-direction: column;
+			align-items: center;
+			& > .field {
+				margin-top: 20px;
+				min-width: 100%;
+			}
+		}
+	}
 `;
 
 const LoadingContainer = styled.div`
@@ -111,6 +156,13 @@ const LoadingContainer = styled.div`
 	color: ${props => props.theme.mainColor};
 	justify-content: center;
 	align-items: center;
+`;
+
+const MainCta = styled(CtaBase)`
+	margin: 0;
+	@media screen and (max-width: 768px) {
+		margin-top: 20px;
+	}
 `;
 
 export default PageWrapper;

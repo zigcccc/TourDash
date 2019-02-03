@@ -26,6 +26,11 @@ Route::get('accommodations', 'API\AccommodationController@index');
 Route::get('accommodations/{id}', 'API\AccommodationController@show');
 Route::post('accommodations/search', 'API\AccommodationController@search');
 
+// Common settings
+Route::get('settings/contact', 'API\SettingController@indexContact');
+Route::get('settings/visual', 'API\SettingController@indexVisual');
+Route::get('settings/marketing', 'API\SettingController@indexMarketing');
+Route::get('settings/{id}', 'API\SettingController@show');
 
 
 Route::group(['middleware' => 'auth:api'], function() {
@@ -69,5 +74,10 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::post('accommodations', 'API\AccommodationController@create');
     Route::delete('accommodations/{id}', 'API\AccommodationController@destroy');
     Route::put('accommodations/{id}', 'API\AccommodationController@update');
+
+    // Settings CRUD
+    //Route::post('settings', 'API\SettingController@create');
+    Route::delete('settings/{id}', 'API\SettingController@destroy');
+    Route::post('settings', 'API\SettingController@store');
 
 });

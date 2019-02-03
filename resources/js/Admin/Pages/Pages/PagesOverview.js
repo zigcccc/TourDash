@@ -10,7 +10,7 @@ import {
 } from "../../Store/Actions/PagesActions";
 import _times from "lodash/times";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Table, Button as BloomerButton } from "bloomer";
+import { Button as BloomerButton } from "bloomer";
 import { PageWrapper, CenteredItem } from "../../Components/Layout";
 import MainCta from "../../../Shared/Components/MainCta";
 import CardBase from "../../Components/Card";
@@ -18,7 +18,12 @@ import CardDropdown from "../../Components/CardDropdown";
 import Snackbar from "../../../Shared/Components/Snackbar";
 import { Spacer } from "../../Components/Helpers";
 import Pagination from "../../Components/Pagination";
-import { StatusGroup, StatusIndicator } from "../../Components/SiteStatus";
+import {
+	StatusGroup,
+	StatusIndicator as StatusIndicatorBase
+} from "../../Components/SiteStatus";
+import OverviewTable from "../../Components/OverviewTable";
+import ResultNotFound from "../../Components/ResultNotFound";
 
 class PagesOverview extends Component {
 	constructor(props) {
@@ -91,7 +96,7 @@ class PagesOverview extends Component {
 							<Spinner icon="circle-notch" spin size="2x" />
 						</CenteredItem>
 					) : pages.pages.data.length > 0 ? (
-						<PagesTable isNarrow={false} className="is-hoverable">
+						<OverviewTable>
 							<thead>
 								<tr>
 									<th>Naslov strani</th>
@@ -132,9 +137,11 @@ class PagesOverview extends Component {
 													<FontAwesomeIcon icon="user" size="lg" />
 												</AvatarContainerPlaceholder>
 											)}
-											{page.author.name}
+											<PageAuthor>{page.author.name}</PageAuthor>
 										</NameField>
-										<td>{this.parseDate(page.created_at)}</td>
+										<OnlyDesktopField>
+											{this.parseDate(page.created_at)}
+										</OnlyDesktopField>
 										<td>
 											<StatusGroup>
 												<StatusIndicator
@@ -142,7 +149,11 @@ class PagesOverview extends Component {
 														page.status === "published" ? "success" : "error"
 													}
 												/>
-												{page.status === "published" ? "objavljena" : "skrita"}
+												<PageAuthor>
+													{page.status === "published"
+														? "objavljena"
+														: "skrita"}
+												</PageAuthor>
 											</StatusGroup>
 										</td>
 										<ActionField>
@@ -167,12 +178,12 @@ class PagesOverview extends Component {
 									</TableRow>
 								))}
 							</tbody>
-						</PagesTable>
+						</OverviewTable>
 					) : (
-						<ResultsNotFound>
-							<p>Za iskalni niz ni najdenih rezultatov...</p>
-							<MainCta to="/pages/add/" fontSize={16} text="Dodaj novo stran" />
-						</ResultsNotFound>
+						<ResultNotFound
+							action="/pages/add/"
+							actionText="dodaj novo stran"
+						/>
 					)}
 					{pages.pages.totalPages > 1 && (
 						<Fragment>
@@ -211,18 +222,24 @@ PagesOverview.propTypes = {
 
 const Card = styled(CardBase)`
 	margin-top: 45px;
-	min-height: 820px;
+	min-height: calc(100vh - 200px);
 	display: flex;
 	flex-direction: column;
+	@media screen and (max-width: 768px) {
+		margin-top: 30px;
+		min-height: calc(100vh - 200px);
+		padding: 20px 0;
+	}
+`;
+
+const StatusIndicator = styled(StatusIndicatorBase)`
+	@media screen and (max-width: 768px) {
+		margin-right: 0;
+	}
 `;
 
 const Spinner = styled(FontAwesomeIcon)`
 	color: ${props => props.theme.mainColor};
-`;
-
-const PagesTable = styled(Table)`
-	width: 100%;
-	margin-top: 25px;
 `;
 
 const TableRow = styled.tr`
@@ -249,7 +266,19 @@ const TitleField = styled.td`
 	}
 `;
 
-const UrlField = styled.td`
+const PageAuthor = styled.span`
+	@media screen and (max-width: 768px) {
+		display: none;
+	}
+`;
+
+const OnlyDesktopField = styled.td`
+	@media screen and (max-width: 768px) {
+		display: none;
+	}
+`;
+
+const UrlField = styled(OnlyDesktopField)`
 	a {
 		font-family: monospace;
 		color: ${props => props.theme.heavyGray};
@@ -260,7 +289,7 @@ const UrlField = styled.td`
 	}
 `;
 
-const NameField = styled.td`
+const NameField = styled(OnlyDesktopField)`
 	clear: both;
 `;
 
@@ -340,19 +369,6 @@ const EditButton = styled(ActionButton)`
 		color: ${props => props.theme.white};
 		background-color: ${props => props.theme.mainColor};
 		border-color: ${props => props.theme.mainColor};
-	}
-`;
-
-const ResultsNotFound = styled.div`
-	flex: 1;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	p {
-		font-size: 22px;
-		color: ${props => props.theme.heavyGray};
-		font-weight: 900;
 	}
 `;
 

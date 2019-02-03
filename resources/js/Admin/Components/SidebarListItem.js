@@ -25,6 +25,16 @@ const ListItemHeading = styled.div`
 	h4 {
 		font-weight: 900;
 	}
+	@media screen and (max-width: 1150px) {
+		background-color: ${props =>
+			props.isOpen ? "rgba(0, 0, 0, 0.1)" : "transparent"};
+		color: ${props =>
+			props.isOpen ? props.theme.mainColor : props.theme.darkPrimary};
+		&:hover {
+			background-color: rgba(0, 0, 0, 0.1);
+			color: ${props => props.theme.mainColor};
+		}
+	}
 `;
 
 const ListItemGroup = styled.div`
@@ -44,6 +54,9 @@ const ListItemGroup = styled.div`
 		position: relative;
 		:hover {
 			transform: translate(10px, 0);
+		}
+		@media screen and (max-width: 1150px) {
+			color: ${props => props.theme.darkPrimary};
 		}
 	}
 `;

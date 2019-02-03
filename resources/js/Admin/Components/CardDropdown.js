@@ -93,6 +93,7 @@ const DropdownContent = styled.div`
 		max-height: unset;
 		padding-bottom: 5px;
 		padding-top: 5px;
+		z-index: 1;
 	}
 	a {
 		display: flex;

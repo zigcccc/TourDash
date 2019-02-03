@@ -85,25 +85,28 @@ class Login extends Component {
 					message={this.state.error}
 				/>
 				<AuthNavbar>
-					<Logo.Primary width={210} height={authNavbarHeight} />
+					<Logo.Primary
+						width={window.innerWidth > 768 ? 210 : 120}
+						height={authNavbarHeight}
+					/>
 					<a href="/">
-						back to tourdash.app
+						nazaj na stran
 						<FontAwesomeIcon icon="chevron-right" />
 					</a>
 				</AuthNavbar>
 				<AuthFormContainer>
-					<MainHeading>Login</MainHeading>
+					<MainHeading>Prijava</MainHeading>
 					<AuthForm>
 						<AuthInputField
 							hasError={this.state.username.hasError}
-							placeholder="Username"
+							placeholder="Uporabniško ime"
 							handleChange={this.handleChange.bind(this, "username")}
 							value={this.state.username.value}
 							icon="user"
 						/>
 						<AuthInputField
 							hasError={this.state.password.hasError}
-							placeholder="Password"
+							placeholder="Geslo"
 							hiddenCharacters={true}
 							handleChange={this.handleChange.bind(this, "password")}
 							value={this.state.password.value}
@@ -111,20 +114,20 @@ class Login extends Component {
 						/>
 						<AuthCheckSwitch
 							name="remember"
-							label="Remember me?"
+							label="Zapomni si me?"
 							checked={this.state.remember}
 							handleChange={this._handleRemeberSwitch.bind(this)}
 						/>
 						<MainCta
 							isLoading={this.state.loading}
 							handleClick={this.handleSubmit.bind(this)}
-							text="Login"
+							text="Prijava"
 						/>
 					</AuthForm>
 					<AuthHelperLinks maxWidth="50">
-						<AuthLink to="/password/reset/">Forgot password?</AuthLink>
+						<AuthLink to="/password/reset/">Pozabljeno geslo?</AuthLink>
 						<AuthLink isbold="true" hasicon="right" to="/register/">
-							Create account <FontAwesomeIcon icon="long-arrow-alt-right" />
+							Ustvarite račun <FontAwesomeIcon icon="long-arrow-alt-right" />
 						</AuthLink>
 					</AuthHelperLinks>
 				</AuthFormContainer>

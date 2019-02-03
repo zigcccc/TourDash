@@ -23,6 +23,9 @@ const CardDate = styled.div`
 	font-weight: 900;
 	font-size: 10px;
 	padding: 3px 8px;
+	@media screen and (max-width: 768px) {
+		display: none;
+	}
 `;
 
 class DashboardAnalytics extends Component {

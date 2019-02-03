@@ -35,9 +35,7 @@ Route::group(['middleware' => ['admin', 'verified']], function() {
 
 
 // Check if the route is index
-Route::get('/', ['as' => 'home', 'uses' =>  function () {
-    return view('index');
-}]);
+Route::get('/', ['as' => 'home', 'uses' => 'WebController@index']);
 // Check if route is a child of index
 Route::get('/{wildcard}', function ($wildcard) {
     return view('index');

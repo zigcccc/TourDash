@@ -37,7 +37,9 @@ class CreateNewPage extends Component {
 		this.state = {
 			originalState: null,
 			pageId: null,
-			stateLoading: true
+			stateLoading: true,
+			actionbarExpanded: false,
+			sidebarEditorExpanded: false
 		};
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.autoSlug = this.autoSlug.bind(this);
@@ -50,6 +52,29 @@ class CreateNewPage extends Component {
 		this.selectExistingPage = this.selectExistingPage.bind(this);
 		this.fetchExistingPage = this.fetchExistingPage.bind(this);
 		this.updatePage = this.updatePage.bind(this);
+		this.toggleActionBar = this.toggleActionBar.bind(this);
+		this.toggleSidebarEditor = this.toggleSidebarEditor.bind(this);
+	}
+
+	toggleActionBar() {
+		this.setState({
+			...this.state,
+			actionbarExpanded: !this.state.actionbarExpanded
+		});
+	}
+
+	toggleSidebarEditor() {
+		this.setState(
+			{
+				...this.state,
+				sidebarEditorExpanded: !this.state.sidebarEditorExpanded
+			},
+			() => {
+				if (!this.state.sidebarEditorExpanded) {
+					this.props.unsetActiveBlock();
+				}
+			}
+		);
 	}
 
 	handleInputChange(e) {
@@ -251,6 +276,7 @@ class CreateNewPage extends Component {
 			errorMessage,
 			successMessage
 		} = this.props.editingPage;
+		const { actionbarExpanded, sidebarEditorExpanded } = this.state;
 		return (
 			<Fragment>
 				<Snackbar
@@ -269,14 +295,28 @@ class CreateNewPage extends Component {
 				/>
 				<div>
 					<MainArea onClick={this.unsetActiveBlock}>
-						<EditorActionBar>
+						<EditorActionBar
+							className={classNames({
+								open: actionbarExpanded
+							})}
+						>
+							<ExpandActionBar onClick={this.toggleActionBar}>
+								<FontAwesomeIcon
+									icon={actionbarExpanded ? "chevron-up" : "chevron-down"}
+									size="1x"
+								/>
+							</ExpandActionBar>
 							<PageTitle
 								onChange={this.handleInputChange}
 								onBlur={!slugOverriden ? this.autoSlug : null}
 								name="pageTitle"
 								value={this.state.stateLoading ? "" : pageTitle}
 							/>
-							<PageSlugContainer>
+							<PageSlugContainer
+								className={classNames({
+									open: actionbarExpanded
+								})}
+							>
 								<span>https://localhost:8000/</span>
 								<PageSlug
 									className={classNames({
@@ -289,7 +329,8 @@ class CreateNewPage extends Component {
 								/>
 							</PageSlugContainer>
 							<Spacer />
-							<Dropdown
+							<PageTypeDropdown
+								className={classNames({ open: actionbarExpanded })}
 								current={type}
 								handleClick={this.setPageType}
 								possibilities={["naslovnica", "vsebinska"]}
@@ -333,7 +374,10 @@ class CreateNewPage extends Component {
 							)}
 						</EditorContainer>
 					</MainArea>
-					<Sidebar>
+					<Sidebar
+						editorExpanded={sidebarEditorExpanded}
+						toggleEditor={this.toggleSidebarEditor}
+					>
 						<SidebarEditor
 							editingBlock={editingBlock}
 							pageUpdated={hasBeenUpdated}
@@ -354,7 +398,35 @@ const EditorActionBar = styled.div`
 	padding: 1em;
 	box-shadow: ${props => props.theme.minimalShadow};
 	display: flex;
+	position: relative;
 	align-items: center;
+	transition: ${props => props.theme.easeTransition};
+	@media screen and (max-width: 768px) {
+		flex-direction: column;
+		max-height: 85px;
+		&.open {
+			max-height: unset;
+		}
+	}
+`;
+
+const ExpandActionBar = styled.div`
+	width: 25px;
+	height: 25px;
+	font-size: 12px;
+	color: ${props => props.theme.white};
+	background-color: ${props => props.theme.darkPrimary};
+	position: absolute;
+	bottom: 0;
+	left: 50%;
+	transform: translate(-50%, 50%);
+	border-radius: 50%;
+	justify-content: center;
+	align-items: center;
+	display: none;
+	@media screen and (max-width: 768px) {
+		display: flex;
+	}
 `;
 
 const rocketAnimation = keyframes`
@@ -411,12 +483,25 @@ const PageTitle = styled.input`
 		outline: none;
 		border: 2px solid ${props => props.theme.mainColor};
 	}
+	@media screen and (max-width: 768px) {
+		width: 100%;
+		margin-bottom: 15px;
+	}
 `;
 
 const PageSlugContainer = styled.div`
 	margin-left: 15px;
 	span {
 		color: ${props => props.theme.darkGray};
+	}
+	@media screen and (max-width: 768px) {
+		margin-bottom: 15px;
+		opacity: 0;
+		visibility: hidden;
+		&.open {
+			opacity: 1;
+			visibility: visible;
+		}
 	}
 `;
 
@@ -434,6 +519,17 @@ const PageSlug = styled.input`
 	&:focus {
 		outline: none;
 		border-color: ${props => props.theme.mainColor};
+	}
+`;
+
+const PageTypeDropdown = styled(Dropdown)`
+	@media screen and (max-width: 768px) {
+		visibility: hidden;
+		opacity: 0;
+		&.open {
+			opacity: 1;
+			visibility: visible;
+		}
 	}
 `;
 

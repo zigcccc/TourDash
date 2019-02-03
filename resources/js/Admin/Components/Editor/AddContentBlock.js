@@ -33,6 +33,7 @@ class AddContentBlock extends Component {
 				>
 					{contentBlocksMap.map(block => (
 						<BlockCard
+							isSize="full"
 							key={block.id}
 							onClick={this.addNewBlock.bind(this, block.type)}
 						>
@@ -81,6 +82,14 @@ const BlockCard = styled(Column)`
 		cursor: pointer;
 		box-shadow: ${props => props.theme.lightShadow};
 		color: ${props => props.theme.mainColor};
+	}
+	&.is-full {
+		width: calc(50% - 10px);
+		flex: 0 0 calc(50% - 10px);
+		@media screen and (max-width: 1300px) {
+			width: calc(100% - 10px);
+			flex: none;
+		}
 	}
 `;
 

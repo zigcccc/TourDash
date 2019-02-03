@@ -8,16 +8,18 @@ class SiteStatus extends Component {
 	render() {
 		return (
 			<SiteStatusContainer>
-				<StatusGroup>
-					<StatusIndicator status="success" />
-					Stanje strani: <strong>aktivno</strong>
-				</StatusGroup>
-				<Badge content="2" size={18} horizontalOffset={-3}>
+				<StatusGroupContainer>
 					<StatusGroup>
-						<StatusIndicator status="warning" />
-						SEO stanje: <strong>prihaja do napak</strong>
+						<StatusIndicator status="success" />
+						Stanje strani: <strong>aktivno</strong>
 					</StatusGroup>
-				</Badge>
+					<Badge content="2" size={18} horizontalOffset={-3}>
+						<StatusGroup>
+							<StatusIndicator status="warning" />
+							SEO stanje: <strong>prihaja do napak</strong>
+						</StatusGroup>
+					</Badge>
+				</StatusGroupContainer>
 				<CustomLink href="/" target="_blank">
 					<FontAwesomeIcon icon="sign-out-alt" />
 					&nbsp;<span>https://tourdash.app</span>
@@ -28,7 +30,6 @@ class SiteStatus extends Component {
 }
 
 const SiteStatusContainer = styled.div`
-	margin-left: 25px;
 	font-size: 14px;
 	display: flex;
 	align-items: center;
@@ -36,6 +37,13 @@ const SiteStatusContainer = styled.div`
 	position: relative;
 `;
 
+const StatusGroupContainer = styled.div`
+	display: flex;
+	align-items: center;
+	@media screen and (max-width: 1150px) {
+		display: none;
+	}
+`;
 export const StatusGroup = styled.div`
 	margin-right: 20px;
 	display: flex;
@@ -66,6 +74,9 @@ const CustomLink = styled.a`
 	}
 	span {
 		font-style: italic;
+	}
+	@media screen and (max-width: 1150px) {
+		color: ${props => props.theme.white};
 	}
 `;
 

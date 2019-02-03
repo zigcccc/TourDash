@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import produce from "immer";
 import styled from "styled-components";
+import classNames from "classnames";
 import PropTypes from "prop-types";
 import _findIndex from "lodash/findIndex";
 import _isEqual from "lodash/isEqual";
@@ -51,7 +52,8 @@ const initialState = {
 	features: [],
 	gallery: [],
 	content: "",
-	loaded: false
+	loaded: false,
+	editorExpanded: false
 };
 
 class CreateNewAccommodation extends Component {
@@ -73,6 +75,14 @@ class CreateNewAccommodation extends Component {
 		this.selectExistingAccommodation = this.selectExistingAccommodation.bind(
 			this
 		);
+		this.toggleEditor = this.toggleEditor.bind(this);
+	}
+
+	toggleEditor() {
+		this.setState({
+			...this.state,
+			editorExpanded: !this.state.editorExpanded
+		});
 	}
 
 	clearfeatured_image() {
@@ -254,7 +264,8 @@ class CreateNewAccommodation extends Component {
 			"imageLoading",
 			"featured_image_preview",
 			"loadingGalleryImage",
-			"loaded"
+			"loaded",
+			"editorExpanded"
 		]);
 
 		if (match.params.id) {
@@ -317,7 +328,8 @@ class CreateNewAccommodation extends Component {
 			gallery,
 			loadingGalleryImage,
 			content,
-			loaded
+			loaded,
+			editorExpanded
 		} = this.state;
 		const { accommodations, match } = this.props;
 		return (
@@ -470,7 +482,11 @@ class CreateNewAccommodation extends Component {
 						/>
 					</section>
 				</MainArea>
-				<Sidebar>
+				<Sidebar
+					editorExpanded={editorExpanded}
+					toggleEditor={this.toggleEditor}
+					className={classNames({ open: editorExpanded })}
+				>
 					<SidebarGroup heading="Glavna slika namestitve">
 						<ImageInput
 							onChange={this.uploadfeatured_image}
@@ -537,12 +553,22 @@ const Sidebar = styled(SidebarBase)`
 	padding: 20px;
 	display: flex;
 	flex-direction: column;
+	@media screen and (max-width: 768px) {
+		padding-top: 5px;
+	}
 `;
 
 const AbsoluteCtaContainer = styled.div`
 	position: absolute;
 	top: 35px;
 	right: 30px;
+	@media screen and (max-width: 768px) {
+		top: unset;
+		bottom: -50px;
+		right: unset;
+		left: 50%;
+		transform: translate(-50%, 0);
+	}
 `;
 
 const NoImagesContainer = styled.div`

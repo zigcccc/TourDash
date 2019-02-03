@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { connect } from "react-redux";
-import { deletePage } from "../../Store/Actions/PagesActions";
 import {
 	getAccommodations,
 	searchAccommodations,
@@ -11,7 +10,7 @@ import {
 } from "../../Store/Actions/AccommodationsActions";
 import _times from "lodash/times";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Table, Button as BloomerButton } from "bloomer";
+import { Button as BloomerButton } from "bloomer";
 import { PageWrapper, CenteredItem } from "../../Components/Layout";
 import MainCta from "../../../Shared/Components/MainCta";
 import CardBase from "../../Components/Card";
@@ -19,6 +18,8 @@ import CardDropdown from "../../Components/CardDropdown";
 import Snackbar from "../../../Shared/Components/Snackbar";
 import { Spacer } from "../../Components/Helpers";
 import { StatusGroup, StatusIndicator } from "../../Components/SiteStatus";
+import OverviewTable from "../../Components/OverviewTable";
+import ResultNotFound from "../../Components/ResultNotFound";
 
 class AccommodationsOverview extends Component {
 	constructor(props) {
@@ -109,7 +110,7 @@ class AccommodationsOverview extends Component {
 							<Spinner icon="circle-notch" spin size="2x" />
 						</CenteredItem>
 					) : accommodations.data.length > 0 ? (
-						<PagesTable isNarrow={false} className="is-hoverable">
+						<OverviewTable>
 							<thead>
 								<tr>
 									<th>Naziv namestitve</th>
@@ -151,7 +152,9 @@ class AccommodationsOverview extends Component {
 											)}
 											{accommodation.author.name}
 										</NameField>
-										<td>{this.parseDate(accommodation.created_at)}</td>
+										<OnlyDesktopField>
+											{this.parseDate(accommodation.created_at)}
+										</OnlyDesktopField>
 										<td>
 											<StatusGroup>
 												<StatusIndicator
@@ -189,16 +192,12 @@ class AccommodationsOverview extends Component {
 									</TableRow>
 								))}
 							</tbody>
-						</PagesTable>
+						</OverviewTable>
 					) : (
-						<ResultsNotFound>
-							<p>Za iskalni niz ni najdenih rezultatov...</p>
-							<MainCta
-								to="/accommodations/add/"
-								fontSize={16}
-								text="Dodaj novo namestitev"
-							/>
-						</ResultsNotFound>
+						<ResultNotFound
+							action="/accommodations/add/"
+							actionText="dodaj novo namestitev"
+						/>
 					)}
 				</Card>
 			</PageWrapper>
@@ -210,18 +209,18 @@ AccommodationsOverview.propTypes = {};
 
 const Card = styled(CardBase)`
 	margin-top: 45px;
-	min-height: 820px;
+	min-height: calc(100vh - 200px);
 	display: flex;
 	flex-direction: column;
+	@media screen and (max-width: 768px) {
+		margin-top: 30px;
+		min-height: calc(100vh - 200px);
+		padding: 20px 0;
+	}
 `;
 
 const Spinner = styled(FontAwesomeIcon)`
 	color: ${props => props.theme.mainColor};
-`;
-
-const PagesTable = styled(Table)`
-	width: 100%;
-	margin-top: 25px;
 `;
 
 const TableRow = styled.tr`
@@ -229,6 +228,12 @@ const TableRow = styled.tr`
 		padding-top: 15px;
 		padding-bottom: 15px;
 		vertical-align: middle;
+	}
+`;
+
+const OnlyDesktopField = styled.td`
+	@media screen and (max-width: 768px) {
+		display: none;
 	}
 `;
 
@@ -247,10 +252,13 @@ const TitleField = styled.td`
 			font-weight: 400;
 			font-size: 0.9rem;
 		}
+		@media screen and (max-width: 768px) {
+			font-size: 1rem;
+		}
 	}
 `;
 
-const NameField = styled.td`
+const NameField = styled(OnlyDesktopField)`
 	clear: both;
 `;
 
@@ -271,6 +279,9 @@ const AvatarContainer = styled.div`
 		object-fit: cover;
 		width: 100%;
 		height: 100%;
+	}
+	@media screen and (max-width: 768px) {
+		display: none;
 	}
 `;
 

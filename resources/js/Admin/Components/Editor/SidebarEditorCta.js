@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import classNames from "classnames";
 import styled from "styled-components";
 import PropTypes from "prop-types";
@@ -14,7 +14,13 @@ const SidebarEditorCta = props => (
 		{props.loading ? (
 			<FontAwesomeIcon icon="circle-notch" spin size="1x" />
 		) : (
-			props.text
+			<Fragment>
+				{window.innerWidth > 768 ? (
+					props.text
+				) : (
+					<FontAwesomeIcon icon="save" size="2x" />
+				)}
+			</Fragment>
 		)}
 	</SavePage>
 );
@@ -58,6 +64,13 @@ const SavePage = styled.button`
 	&:hover {
 		cursor: pointer;
 		background-color: ${props => props.theme.mainColorHover};
+	}
+	@media screen and (max-width: 1300px) {
+		width: 200px;
+	}
+	@media screen and (max-width: 768px) {
+		width: 75px;
+		height: 80px;
 	}
 `;
 

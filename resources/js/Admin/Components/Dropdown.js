@@ -64,7 +64,8 @@ class DropdownElement extends Component {
 				isAlign="right"
 				isActive={active}
 				className={classNames({
-					"full-width": fullWidth
+					"full-width": fullWidth,
+					[this.props.className]: true
 				})}
 				style={style}
 			>

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import styled from "styled-components";
 import {
 	AuthContainer,
 	AuthForm,
@@ -9,7 +10,7 @@ import {
 	authNavbarHeight
 } from "./index";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Columns, Column } from "bloomer";
+import { Columns, Column as ColumnBase } from "bloomer";
 import MainHeading from "../../../Shared/Components/Typography/MainHeading";
 import Logo from "../../../Shared/Components/Logo";
 import Snackbar from "../../../Shared/Components/Snackbar";
@@ -80,21 +81,24 @@ class Register extends Component {
 					message={this.state.error}
 				/>
 				<AuthNavbar>
-					<Logo.Primary width={210} height={authNavbarHeight} />
+					<Logo.Primary
+						width={window.innerWidth > 768 ? 210 : 120}
+						height={authNavbarHeight}
+					/>
 					<a href="/">
-						back to tourdash.app
+						nazaj na stran
 						<FontAwesomeIcon icon="chevron-right" />
 					</a>
 				</AuthNavbar>
 				<AuthFormContainer>
-					<MainHeading>Register</MainHeading>
+					<MainHeading>Registracija</MainHeading>
 					<AuthForm>
 						<Columns style={{ marginBottom: 0 }}>
 							<Column>
 								<AuthInputField
 									isSmall
 									hasError={this.state.name.hasError}
-									placeholder="Full Name"
+									placeholder="Ime in priimek"
 									handleChange={this.handleChange.bind(this, "name")}
 									value={this.state.name.value}
 									icon="user"
@@ -104,7 +108,7 @@ class Register extends Component {
 								<AuthInputField
 									isSmall
 									hasError={this.state.email.hasError}
-									placeholder="E-mail"
+									placeholder="E-pošta"
 									handleChange={this.handleChange.bind(this, "email")}
 									value={this.state.email.value}
 									icon="envelope"
@@ -113,7 +117,7 @@ class Register extends Component {
 						</Columns>
 						<AuthInputField
 							hasError={this.state.password.hasError}
-							placeholder="Password"
+							placeholder="Geslo"
 							hiddenCharacters={true}
 							handleChange={this.handleChange.bind(this, "password")}
 							value={this.state.password.value}
@@ -121,7 +125,7 @@ class Register extends Component {
 						/>
 						<AuthInputField
 							hasError={this.state.password_repeat.hasError}
-							placeholder="Repeat Password"
+							placeholder="Ponovi geslo"
 							hiddenCharacters={true}
 							handleChange={this.handleChange.bind(this, "password_repeat")}
 							value={this.state.password_repeat.value}
@@ -130,22 +134,27 @@ class Register extends Component {
 						<MainCta
 							isLoading={this.state.loading}
 							handleClick={this.handleSubmit.bind(this)}
-							text="Register"
+							text="Registracija"
 						/>
 					</AuthForm>
 					<AuthHelperLinks maxWidth="75">
 						<AuthLink isbold="true" hasicon="left" to="/login/">
-							<FontAwesomeIcon icon="long-arrow-alt-left" /> Allready have an
-							account?
+							<FontAwesomeIcon icon="long-arrow-alt-left" /> Že imate račun?
 						</AuthLink>
-						<AuthLink to="/terms-of-services/">
-							Terms of services and legal info
-						</AuthLink>
+						<AuthLink to="/terms-of-services/">Pogoji uporabe</AuthLink>
 					</AuthHelperLinks>
 				</AuthFormContainer>
 			</AuthContainer>
 		);
 	}
 }
+
+const Column = styled(ColumnBase)`
+	@media screen and (max-width: 1150px) {
+		&:not(:last-of-type) {
+			padding: 0 0.75rem;
+		}
+	}
+`;
 
 export default Register;

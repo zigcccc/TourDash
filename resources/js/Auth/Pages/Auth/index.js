@@ -46,6 +46,11 @@ export const AuthFormContainer = styled.div`
 	max-width: 650px;
 	margin: 0 auto;
 	transform: translate(0, -${authNavbarHeight}px);
+	@media screen and (max-width: 1150px) {
+		width: 500px;
+		max-width: calc(100vw - 60px);
+		transform: translate(0, 0);
+	}
 `;
 
 export const AuthForm = styled.div`
@@ -57,6 +62,15 @@ export const AuthHelperLinks = styled.div`
 	justify-content: space-between;
 	width: ${props => props.maxWidth}%;
 	margin: 0 auto;
+	@media screen and (max-width: 1150px) {
+		flex-direction: column;
+		align-items: center;
+		a {
+			&:not(:last-of-type) {
+				margin-bottom: 10px;
+			}
+		}
+	}
 `;
 
 export const AuthLink = styled(Link)`

@@ -50139,7 +50139,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react_router_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-router-dom */ "./node_modules/react-router-dom/es/index.js");
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n  background-color: ", ";\n  min-height: 75px;\n  display: flex;\n  align-items: center;\n  justify-content: center;\n"]);
+  var data = _taggedTemplateLiteral(["\n\tbackground-color: ", ";\n\tmin-height: 75px;\n\tdisplay: flex;\n\talign-items: center;\n\tjustify-content: center;\n"]);
 
   _templateObject = function _templateObject() {
     return data;
@@ -50154,7 +50154,7 @@ function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(
 
 
 var Header = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].header(_templateObject(), function (props) {
-  return props.theme.dark;
+  return props.theme.mainColor;
 });
 
 var AppHeader = function AppHeader(props) {
@@ -50467,17 +50467,33 @@ __webpack_require__.r(__webpack_exports__);
 /*!************************************!*\
   !*** ./resources/js/Client/app.js ***!
   \************************************/
-/*! exports provided: default */
+/*! exports provided: access_token, csrf_token, default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "access_token", function() { return access_token; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "csrf_token", function() { return csrf_token; });
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "./node_modules/react/index.js");
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! react-dom */ "./node_modules/react-dom/index.js");
 /* harmony import */ var react_dom__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(react_dom__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var styled_components__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! styled-components */ "./node_modules/styled-components/dist/styled-components.browser.esm.js");
 /* harmony import */ var _router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./router */ "./resources/js/Client/router.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_4__);
+function _templateObject() {
+  var data = _taggedTemplateLiteral(["\n\twidth: 100vw;\n\theight: 100vh;\n\tdisplay: flex;\n\tjustify-content: center;\n\talign-items: center;\n"]);
+
+  _templateObject = function _templateObject() {
+    return data;
+  };
+
+  return data;
+}
+
+function _taggedTemplateLiteral(strings, raw) { if (!raw) { raw = strings.slice(0); } return Object.freeze(Object.defineProperties(strings, { raw: { value: Object.freeze(raw) } })); }
+
 function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -50500,35 +50516,84 @@ function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf || func
 
 
 
-var theme = {
-  mainColor: "#97695C",
-  light: "#FBFCFF",
-  dark: "#7d7d7d"
-};
+
+
+var access_token = window.access_token;
+var csrf_token = document.querySelector('meta[name="csrf-token"]').content;
+var client = axios__WEBPACK_IMPORTED_MODULE_4___default.a.create({
+  baseURL:  true ? "http://localhost:8000/api" : undefined,
+  responseType: "json",
+  headers: {
+    _token: csrf_token,
+    "X-XSRF-TOKEN": window.xsrf_token,
+    Authorization: "Bearer ".concat(access_token),
+    "X-Requested-With": "XMLHttpRequest"
+  }
+});
+axios__WEBPACK_IMPORTED_MODULE_4___default.a.defaults.headers.common["_token"] = csrf_token;
+axios__WEBPACK_IMPORTED_MODULE_4___default.a.defaults.headers.common["X-XSRF-TOKEN"] = window.xsrf_token;
+axios__WEBPACK_IMPORTED_MODULE_4___default.a.defaults.headers.common["Authorization"] = "Bearer ".concat(access_token);
 
 var App =
 /*#__PURE__*/
 function (_Component) {
   _inherits(App, _Component);
 
-  function App() {
+  function App(props) {
+    var _this;
+
     _classCallCheck(this, App);
 
-    return _possibleConstructorReturn(this, _getPrototypeOf(App).apply(this, arguments));
+    _this = _possibleConstructorReturn(this, _getPrototypeOf(App).call(this, props));
+    _this.state = {
+      loading: true,
+      theme: {}
+    };
+    return _this;
   }
 
   _createClass(App, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      axios__WEBPACK_IMPORTED_MODULE_4___default.a.get("/api/settings/visual").then(function (res) {
+        var data = res.data.data;
+        var settings = data.reduce(function (result, setting) {
+          var key = Object.keys(setting)[0];
+          result[key] = setting[key].setting_value;
+          return result;
+        }, {});
+        console.log(settings);
+
+        _this2.setState({
+          loading: false,
+          theme: {
+            mainColor: settings.primary_color || "#97695C",
+            light: settings.light_color || "#FBFBFB",
+            dark: settings.dark_color || "#7d7d7d"
+          }
+        });
+      }).catch(function (err) {
+        return console.log(err);
+      });
+    }
+  }, {
     key: "render",
     value: function render() {
-      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(styled_components__WEBPACK_IMPORTED_MODULE_2__["ThemeProvider"], {
+      var _this$state = this.state,
+          loading = _this$state.loading,
+          theme = _this$state.theme;
+      return react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(react__WEBPACK_IMPORTED_MODULE_0__["Fragment"], null, loading ? null : react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(styled_components__WEBPACK_IMPORTED_MODULE_2__["ThemeProvider"], {
         theme: theme
-      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_router__WEBPACK_IMPORTED_MODULE_3__["default"], null));
+      }, react__WEBPACK_IMPORTED_MODULE_0___default.a.createElement(_router__WEBPACK_IMPORTED_MODULE_3__["default"], null)));
     }
   }]);
 
   return App;
 }(react__WEBPACK_IMPORTED_MODULE_0__["Component"]);
 
+var LoadingContainer = styled_components__WEBPACK_IMPORTED_MODULE_2__["default"].div(_templateObject());
 /* harmony default export */ __webpack_exports__["default"] = (App);
 
 if (document.getElementById("root")) {

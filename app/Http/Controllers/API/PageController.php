@@ -183,6 +183,7 @@ class PageController extends Controller
         try {
             $response = Page::select('id', 'title', 'slug', 'menu_order')
                         ->where('status', 'published')
+                        ->where('type', '!=', 'naslovnica')
                         ->orderBy('menu_order')
                         ->get();
 

@@ -114,6 +114,9 @@ const CardCta = styled(MainCta)`
 	:active {
 		transform: translate(-50%, 47%) scale(0.8);
 	}
+	@media screen and (max-width: 1300px) {
+		min-width: 180px;
+	}
 `;
 
 export default Card;

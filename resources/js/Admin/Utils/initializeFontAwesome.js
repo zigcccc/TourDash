@@ -58,7 +58,10 @@ import {
 	faThermometerHalf,
 	faPhone,
 	faBath,
-	faHeadphones
+	faHeadphones,
+	faCog,
+	faBars,
+	faSave
 } from "@fortawesome/free-solid-svg-icons";
 
 const initializeFontAwesome = () =>
@@ -121,7 +124,10 @@ const initializeFontAwesome = () =>
 		faThermometerHalf,
 		faPhone,
 		faBath,
-		faHeadphones
+		faHeadphones,
+		faCog,
+		faBars,
+		faSave
 	);
 
 export default initializeFontAwesome;

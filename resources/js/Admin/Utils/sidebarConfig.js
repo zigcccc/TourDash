@@ -67,14 +67,19 @@ const sidebarConfig = [
 					permissions: ["admin", "superadmin"]
 				},
 				{
-					linkName: "Nastavitve portala",
-					linkUrl: "/settings/customization/",
+					linkName: "Kontaktne informacije",
+					linkUrl: "/settings/contact-info/",
 					permissions: ["admin", "superadmin"]
 				},
 				{
-					linkName: "Nastavitve administracije",
-					linkUrl: "/settings/administration/",
-					permissions: ["superadmin"]
+					linkName: "Vizualne nastavitve",
+					linkUrl: "/settings/appearance/",
+					permissions: ["admin", "superadmin"]
+				},
+				{
+					linkName: "Oglaševalska orodja",
+					linkUrl: "/settings/tracking-and-marketing/",
+					permissions: ["admin", "superadmin"]
 				}
 			]
 		}

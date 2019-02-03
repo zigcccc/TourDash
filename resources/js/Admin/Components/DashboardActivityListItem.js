@@ -164,6 +164,9 @@ const ActivityListItemContainer = styled.div`
 const ActivityListItemHeader = styled.div`
 	display: flex;
 	align-items: center;
+	@media screen and (max-width: 768px) {
+		align-items: flex-start;
+	}
 `;
 
 const ActivityListItemAvatar = styled.div`
@@ -176,6 +179,10 @@ const ActivityListItemAvatar = styled.div`
 		object-fit: cover;
 		width: 100%;
 		height: 100%;
+	}
+	@media screen and (max-width: 768px) {
+		width: 40px;
+		height: 40px;
 	}
 `;
 
@@ -223,6 +230,9 @@ const ActivityListItemMeta = styled.p`
 	font-size: 10px;
 	padding-right: 20px;
 	font-weight: 400;
+	@media screen and (max-width: 768px) {
+		display: none;
+	}
 `;
 
 const DeleteActivityContainer = styled.a`
@@ -246,6 +256,9 @@ const ActivityListItemBody = styled.div`
 		font-weight: 700;
 		font-size: 14px;
 	}
+	@media screen and (max-width: 768px) {
+		padding-left: 60px;
+	}
 `;
 
 const StarsContainer = styled.div`
@@ -256,12 +269,18 @@ const StarsContainer = styled.div`
 			color: ${props => props.theme.darkGray};
 		}
 	}
+	@media screen and (max-width: 768px) {
+		margin-top: 7px;
+	}
 `;
 
 const ActivityCta = styled(InvertedCta)`
 	margin: 15px auto 5px;
 	text-transform: uppercase;
 	min-width: 300px;
+	@media screen and (max-width: 768px) {
+		min-width: 100%;
+	}
 `;
 
 const ActivityFlatCta = styled(FlatCta)`
@@ -270,6 +289,9 @@ const ActivityFlatCta = styled(FlatCta)`
 	margin: 0 auto;
 	padding: 5px;
 	min-width: 300px;
+	@media screen and (max-width: 768px) {
+		min-width: 100%;
+	}
 `;
 
 export default DashboardActivityListItem;

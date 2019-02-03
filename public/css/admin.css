@@ -10551,6 +10551,12 @@ label.panel-block:hover {
   padding: 3rem 1.5rem 6rem;
 }
 
+@media screen and (max-width: 768px) {
+  section.section {
+    padding: 1.5rem 0;
+  }
+}
+
 .content p:not(:last-child),
 .content dl:not(:last-child),
 .content ol:not(:last-child),

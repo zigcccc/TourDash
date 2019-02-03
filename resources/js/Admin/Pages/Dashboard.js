@@ -312,6 +312,9 @@ const DashboardOverviewColumns = styled(BloomerColumns)`
 
 const DashboardOverviewColumn = styled(BloomerColumn)`
 	display: flex;
+	@media screen and (max-width: 1150px) {
+		margin-bottom: 20px;
+	}
 `;
 
 const DashboardDetailsColumns = styled(BloomerColumns)`
@@ -332,6 +335,9 @@ const AnalyticsTile = styled(Tile)`
 		padding: 0 8px 0;
 		:first-of-type {
 			padding-left: 0;
+			@media screen and (max-width: 768px) {
+				padding-right: 0;
+			}
 		}
 		:last-of-type {
 			padding-right: 0;

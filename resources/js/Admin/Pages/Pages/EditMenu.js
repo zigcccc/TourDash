@@ -87,7 +87,12 @@ class EditMenu extends Component {
 						<MenuContainer>
 							<Logo.Primary width="250" />
 							<DragDropContext onDragEnd={this.onDragEnd}>
-								<Droppable droppableId="droppable" direction="horizontal">
+								<Droppable
+									droppableId="droppable"
+									direction={
+										window.innerWidth > 768 ? "horizontal" : "vertical"
+									}
+								>
 									{(provided, snapshot) => (
 										<DroppableInner
 											ref={provided.innerRef}
@@ -160,6 +165,9 @@ const MenuContainer = styled.div`
 	img {
 		margin-right: 1em;
 	}
+	@media screen and (max-width: 768px) {
+		flex-direction: column;
+	}
 `;
 
 const DraggableInner = styled.div`
@@ -175,6 +183,11 @@ const DraggableInner = styled.div`
 		background: ${props => props.theme.mainColor};
 		color: ${props => props.theme.white};
 	}
+	@media screen and (max-width: 768px) {
+		&:not(:last-of-type) {
+			margin-bottom: 5px;
+		}
+	}
 `;
 
 const DroppableInner = styled.div`
@@ -188,6 +201,12 @@ const DroppableInner = styled.div`
 	&.dragging {
 		background: ${props => props.theme.lightGray};
 		border-color: ${props => props.theme.heavyGray};
+	}
+	@media screen and (max-width: 768px) {
+		margin-top: 20px;
+		flex-direction: column;
+		width: 100%;
+		text-align: center;
 	}
 `;
 
