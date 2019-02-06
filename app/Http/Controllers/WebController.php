@@ -8,7 +8,7 @@ use Debugbar;
 
 class WebController extends Controller
 {
-    public function index()
+    private function generateResponse()
     {
         $settings = Setting::where('setting_name', 'favicon')
                             ->orWhere('setting_name', 'primary_color')
@@ -17,18 +17,28 @@ class WebController extends Controller
                             ->get()
                             ->toArray();
         
-        $response = [];
+        $output = [];
         foreach($settings as $setting) {
             
             if ($setting['setting_name'] === "heading_font" || $setting['setting_name'] === "text_font") {
-                $response[$setting['setting_name']] = str_replace(" ", "+", $setting['setting_value']);
+                $output[$setting['setting_name']] = str_replace(" ", "+", $setting['setting_value']);
             } else {
-                $response[$setting['setting_name']] = $setting['setting_value'];
+                $output[$setting['setting_name']] = $setting['setting_value'];
             }
             
         }
-        Debugbar::info($response);
-        
+        return $output;
+    }
+
+    public function index()
+    {
+        $response = $this->generateResponse();
+        return view('index')->with($response);
+    }
+
+    public function wildcard($wildcard)
+    {
+        $response = $this->generateResponse();
         return view('index')->with($response);
     }
 }

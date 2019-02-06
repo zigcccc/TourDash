@@ -50,7 +50,7 @@ const MainCta = props => {
 MainCta.propTypes = {
 	fontSize: PropTypes.number.isRequired,
 	handleClick: PropTypes.func,
-	to: PropTypes.string,
+	to: PropTypes.oneOfType([PropTypes.string, PropTypes.object]),
 	isLoading: PropTypes.bool,
 	text: PropTypes.string,
 	disabled: PropTypes.bool.isRequired

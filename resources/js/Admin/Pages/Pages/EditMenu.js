@@ -81,7 +81,7 @@ class EditMenu extends Component {
 							purpose="error"
 							position="bottom"
 							message={pages.errorMessage}
-							isOpen={pages.hasError}
+							isOpen={pages.hasErrors}
 							dissmissAction={() => this.props.clearError()}
 						/>
 						<MenuContainer>

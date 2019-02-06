@@ -1,24 +1,12 @@
 import React, { Component, Fragment } from "react";
 import styled from "styled-components";
 import PropTypes from "prop-types";
-import ReactPlaceholder from "react-placeholder";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Spacer, OutsideHandler } from "./Helpers";
 import Snackbar from "../../Shared/Components/Snackbar";
 import { validResponse } from "../../Shared/Utils/";
-
-const AvatarDropdownPlaceholder = () => (
-	<DropdownContainer>
-		<DropdownTriggerPlaceholder>
-			<AvatarContainerPlaceholder>
-				<FontAwesomeIcon icon="user" size="lg" />
-			</AvatarContainerPlaceholder>
-			<FontAwesomeIcon icon="chevron-down" />
-		</DropdownTriggerPlaceholder>
-	</DropdownContainer>
-);
 
 class AvatarDropdown extends Component {
 	constructor(props) {
@@ -213,10 +201,6 @@ const DropdownTrigger = styled.div`
 	@media screen and (max-width: 1150px) {
 		background: rgba(0, 0, 0, 0.15);
 	}
-`;
-
-const DropdownTriggerPlaceholder = styled(DropdownTrigger)`
-	min-width: 200px;
 `;
 
 const DropdownContent = styled.div`

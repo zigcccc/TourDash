@@ -218,6 +218,10 @@ const Block = styled.div`
 	&.editing {
 		border-color: ${props => props.theme.mainColor};
 	}
+	&.is-fluid {
+		margin-left: 5px !important;
+		margin-right: 5px !important;
+	}
 `;
 
 const BlockActions = styled.div`

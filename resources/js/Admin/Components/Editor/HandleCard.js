@@ -15,7 +15,6 @@ class HandleCard extends Component {
 
 	onBlur(target, property) {
 		const { setBlockProperty, editingPage } = this.props;
-		console.log(target.innerText, property);
 		if (!_empty(editingPage.editingBlock)) {
 			setBlockProperty(property, target.innerText);
 		}

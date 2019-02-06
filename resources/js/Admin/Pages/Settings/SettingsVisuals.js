@@ -217,7 +217,7 @@ class SettingsVisuals extends Component {
 									<FontPicker
 										apiKey="AIzaSyBvfBlhxYRkc_nc77mMLi_j3njLAvQfKQA"
 										options={{ name: "heading" }}
-										activeFont={heading_font.setting_value || "Indie Flower"}
+										activeFont={heading_font.setting_value || "Noto Serif"}
 										onChange={this.setFonts.bind(this, "heading_font")}
 									/>
 									<HeadingFont className="apply-font-heading">

@@ -1,50 +1,52 @@
-import React, { Component } from "react";
-import { Section } from "../Elements";
-import { Box } from "bloomer";
+import React, { Component, Fragment } from "react";
+import { connect } from "react-redux";
+import { getHomepage } from "../Store/Actions/PagesActions";
+import _isEmpty from "lodash/isEmpty";
+import { PageLoadingContainer } from "../Elements";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import HandleContentBlock from "../Components/HandleContentBlock";
+import HomepageSlider from "../Components/HomepageSlider";
 
 class Homepage extends Component {
 	constructor(props) {
 		super(props);
-		this.state = {
-			user: null
-		};
-		this.getUser = this.getUser.bind(this);
-	}
-	async getUser() {
-		try {
-			const user = await axios.get("/api/auth-user", {
-				headers: {
-					Authorization: `Bearer ${window.access_token}`
-				}
-			});
-			if (user.status === 200) {
-				this.setState({
-					user: user.data.user
-				});
-			}
-		} catch (e) {
-			console.log(e);
-		}
-	}
-	logout() {
-		axios
-			.post("/logout")
-			.then(res => (window.location.href = "/login"))
-			.catch(err => console.log(err.response));
+		this.state = {};
 	}
 	componentDidMount() {
-		this.getUser();
+		const { homepage, getHomepage } = this.props;
+		if (_isEmpty(homepage)) {
+			getHomepage();
+		}
 	}
 	render() {
+		const { homepage } = this.props;
 		return (
-			<Section maxWidth={960}>
-				<Box>Homepage</Box>
-				{this.state.user && <h1>Hi, {this.state.user.name}</h1>}
-				<button onClick={this.getUser}>get user info</button>
-				<button onClick={this.logout}>logout</button>
-			</Section>
+			<Fragment>
+				{_isEmpty(homepage) ? (
+					<PageLoadingContainer>
+						<FontAwesomeIcon icon="circle-notch" spin size="2x" />
+					</PageLoadingContainer>
+				) : (
+					<Fragment>
+						<HomepageSlider />
+						{homepage.content.map(block => (
+							<HandleContentBlock key={block.uid} block={block} />
+						))}
+					</Fragment>
+				)}
+			</Fragment>
 		);
 	}
 }
 
-export default Homepage;
+const mapStateToProps = state => ({
+	pages: state.pages,
+	homepage: state.pages.homepage
+});
+
+const mapDispatchToProps = { getHomepage };
+
+export default connect(
+	mapStateToProps,
+	mapDispatchToProps
+)(Homepage);

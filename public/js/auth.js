@@ -58253,7 +58253,7 @@ function _templateObject2() {
 }
 
 function _templateObject() {
-  var data = _taggedTemplateLiteral(["\n\tposition: fixed;\n\tz-index: 10000;\n\tleft: 50%;\n\tpadding: 0.75em 1.25em;\n\tmin-width: 200px;\n\tmin-height: 50px;\n\tcolor: ", ";\n\tfont-weight: 700;\n\tborder-radius: 5px;\n\tbox-shadow: ", ";\n\ttransform: translate(-50%, ", ");\n\tbackground-color: ", ";\n\tvisibility: ", ";\n\topacity: ", ";\n\ttransition: ", ";\n\t&.top {\n\t\ttop: 10px;\n\t\ttransform: translate(-50%, ", ");\n\t}\n\t&.bottom {\n\t\tbottom: 10px;\n\t}\n\t&.has-dissmiss {\n\t\tpadding-right: 50px;\n\t}\n"]);
+  var data = _taggedTemplateLiteral(["\n\tposition: fixed;\n\tz-index: 10000;\n\tleft: 50%;\n\tpadding: 0.75em 1.25em;\n\tmin-width: 200px;\n\tmin-height: 50px;\n\tcolor: ", ";\n\tfont-weight: 700;\n\tborder-radius: 5px;\n\tbox-shadow: ", ";\n\ttransform: translate(-50%, ", ");\n\tbackground-color: ", ";\n\tvisibility: ", ";\n\topacity: ", ";\n\ttransition: ", ";\n\t&.top {\n\t\ttop: 10px;\n\t\ttransform: translate(-50%, ", ");\n\t}\n\t&.bottom {\n\t\tbottom: 10px;\n\t}\n\t&.has-dissmiss {\n\t\tpadding-right: 50px;\n\t}\n\t@media screen and (max-width: 768px) {\n\t\tmin-width: calc(100vw - 20px);\n\t}\n"]);
 
   _templateObject = function _templateObject() {
     return data;

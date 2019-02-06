@@ -18,6 +18,7 @@ Route::post('login', 'API\PassportController@login');
 // Pages
 Route::get('pages/menu', 'API\PageController@getMenu');
 Route::get('pages', 'API\PageController@index');
+Route::get('pages/homepage', 'API\PageController@homepage');
 Route::get('pages/{id}', 'API\PageController@show');
 Route::post('pages/search', 'API\PageController@search');
 

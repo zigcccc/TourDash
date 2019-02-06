@@ -81,6 +81,23 @@ class PageController extends Controller
     }
 
     /**
+     * Display the homepage.
+     *
+     * @param  \App\Page  $page
+     * @return \Illuminate\Http\Response
+     */
+    public function homepage(Page $page)
+    {
+        try {
+            return new PageResource(Page::where('type', 'naslovnica')->firstOrFail());
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        } catch (ModelNotFoundException $e) {
+            return response()->json(['error' => 'Zahtevana stran ne obstaja...'], 404);
+        }
+    }
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

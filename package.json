@@ -58,6 +58,7 @@
         "react-color": "^2.17.0",
         "react-cookie": "^3.0.8",
         "react-fontawesome-list": "^0.1.0",
+        "react-id-swiper": "^1.6.8",
         "react-photo-gallery": "^6.3.1",
         "react-placeholder": "^3.0.1",
         "react-redux": "^5.0.7",

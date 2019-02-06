@@ -65,6 +65,9 @@ const SavePage = styled.button`
 		cursor: pointer;
 		background-color: ${props => props.theme.mainColorHover};
 	}
+	@media screen and (max-width: 1500px) {
+		width: 250px;
+	}
 	@media screen and (max-width: 1300px) {
 		width: 200px;
 	}

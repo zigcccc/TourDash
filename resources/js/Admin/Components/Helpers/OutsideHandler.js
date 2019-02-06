@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import PropTypes from "prop-types";
 
-class OutiseHandler extends Component {
+class OutsideHandler extends Component {
 	constructor(props) {
 		super(props);
 		this.setWrapperRef = this.setWrapperRef.bind(this);
@@ -31,9 +31,9 @@ class OutiseHandler extends Component {
 	}
 }
 
-OutiseHandler.propTypes = {
+OutsideHandler.propTypes = {
 	handleClickOutside: PropTypes.func.isRequired,
 	children: PropTypes.element.isRequired
 };
 
-export default OutiseHandler;
+export default OutsideHandler;

@@ -408,7 +408,7 @@ const editingPageReducer = (state = initialState, action) => {
 				type: action.payload.type,
 				status: action.payload.status,
 				content: action.payload.content,
-				contentBlocksUsed: action.payload.content.flat().length
+				contentBlocksUsed: countBlocks(action.payload.content)
 			};
 		}
 
@@ -421,6 +421,17 @@ const editingPageReducer = (state = initialState, action) => {
 function getParentIndex(state, id) {
 	return _findIndex(state, ["uid", id]);
 }
+
+const countBlocks = array => {
+	let blockCount = 0;
+	for (let elem of array) {
+		if (Array.isArray(elem.data)) {
+			blockCount += countBlocks(elem.data);
+		}
+		blockCount++;
+	}
+	return blockCount;
+};
 
 const sumUp = array =>
 	array.reduce((sum, el) => sum + (Array.isArray(el) ? sumUp(el) : +el), 0);

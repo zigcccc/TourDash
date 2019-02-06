@@ -1,13 +1,23 @@
 import React, { Component, Fragment } from "react";
 import ReactDOM from "react-dom";
-import { ThemeProvider } from "styled-components";
+import { Provider } from "react-redux";
+import { createStore, applyMiddleware } from "redux";
 import Router from "./router";
 import axios from "axios";
-import styled from "styled-components";
+import axiosMiddleware from "redux-axios-middleware";
+import rootReducer from "./Store";
+import createBrowserHistory from "history/createBrowserHistory";
+import LoadingContainer from "./Helpers/LoadingContainer";
+import initializeFontAwesome from "./Helpers/initializeFontAwesome";
+import ThemeProvider from "./Helpers/ThemeProvider";
+
+initializeFontAwesome();
 
 export const access_token = window.access_token;
 export const csrf_token = document.querySelector('meta[name="csrf-token"]')
 	.content;
+
+const history = createBrowserHistory();
 
 const client = axios.create({
 	baseURL:
@@ -27,59 +37,27 @@ axios.defaults.headers.common["_token"] = csrf_token;
 axios.defaults.headers.common["X-XSRF-TOKEN"] = window.xsrf_token;
 axios.defaults.headers.common["Authorization"] = `Bearer ${access_token}`;
 
+const store = createStore(
+	rootReducer,
+	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
+	applyMiddleware(axiosMiddleware(client))
+);
+
 class App extends Component {
-	constructor(props) {
-		super(props);
-		this.state = {
-			loading: true,
-			theme: {}
-		};
-	}
-
-	componentDidMount() {
-		axios
-			.get("/api/settings/visual")
-			.then(res => {
-				const { data } = res.data;
-				const settings = data.reduce((result, setting) => {
-					let key = Object.keys(setting)[0];
-					result[key] = setting[key].setting_value;
-					return result;
-				}, {});
-				console.log(settings);
-				this.setState({
-					loading: false,
-					theme: {
-						mainColor: settings.primary_color || "#97695C",
-						light: settings.light_color || "#FBFBFB",
-						dark: settings.dark_color || "#7d7d7d"
-					}
-				});
-			})
-			.catch(err => console.log(err));
-	}
-
 	render() {
-		const { loading, theme } = this.state;
 		return (
 			<Fragment>
-				{loading ? null : (
-					<ThemeProvider theme={theme}>
-						<Router />
-					</ThemeProvider>
-				)}
+				<Provider store={store}>
+					<LoadingContainer>
+						<ThemeProvider>
+							<Router history={history} />
+						</ThemeProvider>
+					</LoadingContainer>
+				</Provider>
 			</Fragment>
 		);
 	}
 }
-
-const LoadingContainer = styled.div`
-	width: 100vw;
-	height: 100vh;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-`;
 
 export default App;
 

@@ -5,7 +5,6 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Sidebar = props => {
-	console.log(props);
 	return (
 		<SidebarContainer
 			className={classNames({ open: props.editorExpanded })}
@@ -71,6 +70,9 @@ const SidebarContainer = styled.div`
 	padding-bottom: 75px !important;
 	&::-webkit-scrollbar {
 		width: 0px;
+	}
+	@media screen and (max-width: 1500px) {
+		width: 250px;
 	}
 	@media screen and (max-width: 1300px) {
 		width: 200px;
