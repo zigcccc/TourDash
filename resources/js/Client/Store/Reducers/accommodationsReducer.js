@@ -10,7 +10,7 @@ const initialState = {
 	hasSuccess: false,
 	successMessage: "",
 	data: [],
-	loading: false
+	loading: true
 };
 
 const accommodationsReducer = (state = initialState, action) => {

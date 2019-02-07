@@ -11,7 +11,19 @@ import {
 	faLongArrowAltRight,
 	faEnvelope,
 	faPhone,
-	faMap
+	faMap,
+	faUsers,
+	faBed,
+	faDollarSign,
+	faThermometerHalf,
+	faWifi,
+	faSnowflake,
+	faTv,
+	faBath,
+	faPaw,
+	faLock,
+	faGlassMartini,
+	faHeadphones
 } from "@fortawesome/free-solid-svg-icons";
 
 const initializeFontAwesome = () =>
@@ -27,7 +39,19 @@ const initializeFontAwesome = () =>
 		faLongArrowAltRight,
 		faEnvelope,
 		faPhone,
-		faMap
+		faMap,
+		faUsers,
+		faBed,
+		faDollarSign,
+		faThermometerHalf,
+		faWifi,
+		faSnowflake,
+		faTv,
+		faBath,
+		faPaw,
+		faLock,
+		faGlassMartini,
+		faHeadphones
 	);
 
 export default initializeFontAwesome;

@@ -1,26 +1,53 @@
-import React, { Fragment } from "react";
+import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter, Route } from "react-router-dom";
-import { Homepage, Rooms, Page } from "./Pages";
+import { withRouter } from "react-router";
+import { Homepage, Rooms, Page, SingleAccommodation } from "./Pages";
 import AppHeader from "./Components/Header";
 import { PageWrapper } from "./Elements";
 import AppFooter from "./Components/Footer";
+import slugify from "slugify";
 
-const Router = ({ match, menu }) => (
+class ScrollToTop extends Component {
+	componentDidUpdate(prevProps) {
+		if (this.props.location !== prevProps.location) {
+			window.scrollTo(0, 0);
+		}
+	}
+	render() {
+		return this.props.children;
+	}
+}
+
+const HandleScroll = withRouter(ScrollToTop);
+
+const Router = ({ menu, accommodations }) => (
 	<BrowserRouter>
 		<Fragment>
 			<AppHeader />
 			<PageWrapper>
-				<Route path="/" component={Homepage} exact />
-				<Route path="/namestitve/" component={Rooms} exact />
-				{menu.map(item => (
-					<Route
-						key={item.id}
-						path={`/${item.slug}/`}
-						render={props => <Page {...props} pageId={item.id} />}
-						exact
-					/>
-				))}
+				<HandleScroll>
+					<Route path="/" component={Homepage} exact />
+					<Route path="/namestitve/" component={Rooms} exact />
+					{accommodations.map(item => (
+						<Route
+							path={`/namestitve/${slugify(item.title, { lower: true })}/`}
+							exact
+							key={item.id}
+							render={props => (
+								<SingleAccommodation {...props} accommodationId={item.id} />
+							)}
+						/>
+					))}
+					{menu.map(item => (
+						<Route
+							key={item.id}
+							path={`/${item.slug}/`}
+							render={props => <Page {...props} pageId={item.id} />}
+							exact
+						/>
+					))}
+				</HandleScroll>
 			</PageWrapper>
 			<AppFooter />
 		</Fragment>
@@ -28,7 +55,8 @@ const Router = ({ match, menu }) => (
 );
 
 const mapStateToProps = state => ({
-	menu: state.pages.menu
+	menu: state.pages.menu,
+	accommodations: state.accommodations.data
 });
 
 export default connect(

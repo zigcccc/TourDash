@@ -53,6 +53,7 @@ const CardContent = styled.div`
 `;
 
 const StyledCard = styled(CardBase)`
+	background-color: white;
 	&.has-image {
 		padding: 0;
 		overflow: hidden;

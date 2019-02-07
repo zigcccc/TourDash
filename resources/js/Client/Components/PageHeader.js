@@ -6,7 +6,7 @@ import { Hero, HeroBody, Title, Breadcrumb, BreadcrumbItem } from "bloomer";
 
 const PageHeader = props => {
 	return (
-		<StyledHero isColor="dark" isSize="medium">
+		<StyledHero isColor="dark" isSize="medium" image={props.image}>
 			<StyledHeroBody isDisplay="flex">
 				<Title tag="h1" isSize={1}>
 					{props.title}
@@ -16,6 +16,11 @@ const PageHeader = props => {
 						<BreadcrumbItem>
 							<Link to="/">Domov</Link>
 						</BreadcrumbItem>
+						{props.image && (
+							<BreadcrumbItem>
+								<Link to="/namestitve/">Namestitve</Link>
+							</BreadcrumbItem>
+						)}
 						<BreadcrumbItem isActive>
 							<Link to={props.pageSlug}>{props.title}</Link>
 						</BreadcrumbItem>
@@ -28,12 +33,16 @@ const PageHeader = props => {
 
 PageHeader.propTypes = {
 	title: PropTypes.string,
-	pageSlug: PropTypes.string
+	pageSlug: PropTypes.string,
+	image: PropTypes.string
 };
 
 const StyledHero = styled(Hero)`
 	background-image: linear-gradient(rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.45)),
-		url("/images/page-background.jpeg");
+		${props =>
+			props.image
+				? `url("${props.image}")`
+				: 'url("/images/page-background.jpeg")'};
 	background-size: cover;
 	background-repeat: no-repeat;
 	background-position: center center;

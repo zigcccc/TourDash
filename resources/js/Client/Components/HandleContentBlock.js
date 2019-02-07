@@ -13,12 +13,24 @@ import {
 	Typography
 } from "./HandleBlocks";
 
-const ContentBlockWrapper = ({ fluid, children, style, hasParent }) => {
+const ContentBlockWrapper = ({
+	fluid,
+	children,
+	style,
+	hasParent,
+	isGoogleMaps
+}) => {
 	if (hasParent) {
 		return children;
 	} else {
 		return (
-			<Container isFluid={fluid} style={style}>
+			<Container
+				isFluid={fluid}
+				style={
+					(style,
+					isGoogleMaps && fluid ? { marginLeft: 0, marginRight: 0 } : null)
+				}
+			>
 				{children}
 			</Container>
 		);
@@ -28,6 +40,7 @@ const ContentBlockWrapper = ({ fluid, children, style, hasParent }) => {
 const HandleContentBlock = ({ block, hasParent }) => (
 	<ContentBlockWrapper
 		hasParent={hasParent}
+		isGoogleMaps={block.type === "googleMaps"}
 		fluid={block.isFluid}
 		style={block.options && block.type !== "columns" ? block.options.style : {}}
 	>

@@ -6,6 +6,7 @@ import { getPage } from "../Store/Actions/PagesActions";
 import PageHeader from "../Components/PageHeader";
 import HandleContentBlock from "../Components/HandleContentBlock";
 import AccommodationsCallout from "../Components/AccommodationsCallout";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class Page extends Component {
 	constructor(props) {
@@ -18,9 +19,7 @@ class Page extends Component {
 		const { pageId, pages, getPage } = this.props;
 		const pageIndex = _findIndex(pages.pages, { id: pageId });
 		if (pageIndex < 0) {
-			getPage(pageId).then(res => {
-				console.log(res);
-			});
+			getPage(pageId);
 		}
 	}
 
@@ -33,7 +32,6 @@ class Page extends Component {
 	}
 
 	componentDidUpdate(prevProps) {
-		//console.log(prevProps.location, this.props.location);
 		if (prevProps.location !== this.props.location) {
 			this.getPageIfNotInStore();
 		}
@@ -56,7 +54,11 @@ class Page extends Component {
 				</main>
 			);
 		} else {
-			return null;
+			return (
+				<LoadingContainer>
+					<FontAwesomeIcon icon="circle-notch" spin size="2x" />
+				</LoadingContainer>
+			);
 		}
 	}
 }
@@ -70,6 +72,14 @@ const mapDispatchToProps = { getPage };
 const PageContent = styled.div`
 	padding: 45px 0 125px;
 	min-height: 45vh;
+`;
+
+const LoadingContainer = styled.div`
+	min-height: calc(100vh - 75px);
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	color: ${props => props.theme.dark};
 `;
 
 export default connect(

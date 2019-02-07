@@ -1,12 +1,19 @@
 import React from "react";
 import styled from "styled-components";
+import classNames from "classnames";
 import MainCta from "./MainCta";
 import slugify from "slugify";
 import { Title } from "bloomer";
 import { Spacer } from "../Elements";
 
 const AccommodationCard = props => (
-	<CardContainer {...props}>
+	<CardContainer
+		{...props}
+		className={classNames({
+			"flexible-height": props.flexibleHeight,
+			"swiper-slide": props.isSlide
+		})}
+	>
 		<ImageContainer>
 			<img
 				alt={props.accommodation.title}
@@ -55,6 +62,9 @@ const CardContainer = styled.div`
 	overflow: hidden;
 	display: flex;
 	flex-direction: column;
+	&.flexible-height {
+		height: auto;
+	}
 `;
 
 const CardContent = styled.div`
@@ -103,7 +113,7 @@ const CardTags = styled.div`
 const TitleContainer = styled.div`
 	display: flex;
 	justify-content: space-between;
-	align-items: flex-end;
+	align-items: flex-start;
 `;
 
 const Price = styled.p`
@@ -111,6 +121,8 @@ const Price = styled.p`
 	color: ${props => props.theme.dark};
 	font-family: ${props => props.theme.headingFont};
 	font-weight: 900;
+	line-height: 1;
+	margin-top: 0;
 	small {
 		font-size: 0.75em;
 	}
@@ -119,8 +131,10 @@ const Price = styled.p`
 const CardButton = styled.div`
 	display: flex;
 	justify-content: flex-end;
+	margin-top: 10px;
 	a {
 		margin: 10px 0;
+		min-width: unset;
 	}
 `;
 

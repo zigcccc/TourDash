@@ -54,6 +54,7 @@ class Accommodations extends Component {
 							<AccommodationCard
 								key={accommodation.id}
 								accommodation={accommodation}
+								isSlide
 							/>
 						))}
 					</Swiper>
