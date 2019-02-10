@@ -14,3 +14,18 @@ export const getUser = token => ({
 		}
 	}
 });
+
+export const UPDATE_SAVED_ITEMS = "UPDATE_SAVED_ITEMS";
+export const UPDATE_SAVED_ITEMS_SUCCESS = "UPDATE_SAVED_ITEMS_SUCCESS";
+export const UPDATE_SAVED_ITEMS_FAIL = "UPDATE_SAVED_ITEMS_FAIL";
+
+export const updateSavedItems = (saved_items, user_id, accommodation) => ({
+	type: UPDATE_SAVED_ITEMS,
+	payload: {
+		request: {
+			url: `/user/${user_id}/saved-items`,
+			method: "POST",
+			data: { saved_items, accommodation }
+		}
+	}
+});

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\API;
 
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\Accommodation;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -190,6 +191,29 @@ class AccommodationController extends Controller
             
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+
+    /**
+     * Get most liked accommodations
+     * @return \Illuminate\Http\Response
+     */
+    public function mostFavorited()
+    {
+        try {
+
+            $accommodations = Accommodation::orderBy('num_of_saves', 'DESC')->limit(7)->select('title', 'id', 'featured_image->thumbnail as image', 'num_of_saves')->get();
+
+            return response()->json(['data' => $accommodations], 200);
+
+        } catch (Exception $e) {
+
+            return response()->json(['error' => $e->getMessage()], 500);
+
+        } catch (ModelNotFoundException $e) {
+
+            return response()->json(['error' => 'Zahtevana nastanitev ne obstaja.'], 404);
+
         }
     }
 }

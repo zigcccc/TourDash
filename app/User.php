@@ -20,7 +20,7 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array
      */
     protected $fillable = [
-        'email', 'password', 'name'
+        'email', 'password', 'name', 'saved_items'
     ];
 
     /**
@@ -31,6 +31,8 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+    protected $casts = ["saved_items" => "array"];
 
     protected $primaryKey = 'id';
 
@@ -74,8 +76,8 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasMany(Page::class);
     }
 
-    public function accommodations()
+    public function savedItems()
     {
-        return $this->hasMany(Accommodation::class);
+        return $this->hasMany(Accommodation::class, 'id', 'saved_items');
     }
 }

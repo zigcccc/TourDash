@@ -103,21 +103,21 @@ class AvatarDropdown extends Component {
 								/>
 							</DropdownTrigger>
 							<DropdownContent className={this.state.open ? "is-active" : ""}>
-								<a href="/admin/users/my-profile/">
-									Moj profil
-									<Spacer />
-									<FontAwesomeIcon icon="user" />
-								</a>
-								<a href="/admin/users/my-profile/">
-									Administracija
-									<Spacer />
-									<FontAwesomeIcon icon="cog" />
-								</a>
-								<a href="/admin/settings/">
-									Nastavitve
-									<Spacer />
-									<FontAwesomeIcon icon="cog" />
-								</a>
+								{(user.user.role === "admin" ||
+									user.user.role === "superadmin") && (
+									<Fragment>
+										<a href="/admin/users/my-profile/">
+											Moj profil
+											<Spacer />
+											<FontAwesomeIcon icon="user" />
+										</a>
+										<a href="/admin/users/my-profile/">
+											Administracija
+											<Spacer />
+											<FontAwesomeIcon icon="cog" />
+										</a>
+									</Fragment>
+								)}
 								<a className="is-danger" onClick={this._signUserOut} href="#">
 									Odjava
 									<Spacer />
@@ -174,25 +174,19 @@ const DropdownTrigger = styled.div`
 	font-size: 14px;
 	&.is-active {
 		background-color: white;
-		@media screen and (max-width: 1150px) {
-			background-color: rgba(0, 0, 0, 0.2);
-		}
 	}
 	:hover {
 		background: rgba(0, 0, 0, 0.05);
 		cursor: pointer;
-		@media screen and (max-width: 1150px) {
-			background-color: rgba(0, 0, 0, 0.2);
-		}
 	}
 	svg {
 		margin-left: 10px;
+		@media screen and (max-width: 1150px) {
+			margin-left: 0;
+		}
 	}
 	position: relative;
 	z-index: 10;
-	@media screen and (max-width: 1150px) {
-		background: rgba(0, 0, 0, 0.15);
-	}
 `;
 
 const DropdownContent = styled.div`

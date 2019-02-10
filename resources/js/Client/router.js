@@ -2,7 +2,7 @@ import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
 import { BrowserRouter, Route } from "react-router-dom";
 import { withRouter } from "react-router";
-import { Homepage, Rooms, Page, SingleAccommodation } from "./Pages";
+import { Homepage, Rooms, Page, SingleAccommodation, Favorites } from "./Pages";
 import AppHeader from "./Components/Header";
 import { PageWrapper } from "./Elements";
 import AppFooter from "./Components/Footer";
@@ -29,6 +29,7 @@ const Router = ({ menu, accommodations }) => (
 				<HandleScroll>
 					<Route path="/" component={Homepage} exact />
 					<Route path="/namestitve/" component={Rooms} exact />
+					<Route path="/priljubljene/" component={Favorites} exact />
 					{accommodations.map(item => (
 						<Route
 							path={`/namestitve/${slugify(item.title, { lower: true })}/`}

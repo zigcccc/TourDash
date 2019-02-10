@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import { connect } from "react-redux";
+import styled from "styled-components";
 import { getHomepage } from "../Store/Actions/PagesActions";
 import _isEmpty from "lodash/isEmpty";
 import { PageLoadingContainer } from "../Elements";
@@ -27,12 +28,12 @@ class Homepage extends Component {
 						<FontAwesomeIcon icon="circle-notch" spin size="2x" />
 					</PageLoadingContainer>
 				) : (
-					<Fragment>
+					<Main>
 						<HomepageSlider />
 						{homepage.content.map(block => (
 							<HandleContentBlock key={block.uid} block={block} />
 						))}
-					</Fragment>
+					</Main>
 				)}
 			</Fragment>
 		);
@@ -45,6 +46,17 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = { getHomepage };
+
+const Main = styled.div`
+	@media screen and (max-width: 768px) {
+		.container {
+			padding: 0 20px;
+			&.is-fluid {
+				padding: 0;
+			}
+		}
+	}
+`;
 
 export default connect(
 	mapStateToProps,

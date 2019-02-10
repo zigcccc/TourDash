@@ -95,7 +95,8 @@ const DropdownContent = styled.div`
 		padding-top: 5px;
 		z-index: 1;
 	}
-	a {
+	a,
+	span {
 		display: flex;
 		align-items: center;
 		position: relative;

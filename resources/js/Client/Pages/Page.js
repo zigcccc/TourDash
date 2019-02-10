@@ -43,7 +43,7 @@ class Page extends Component {
 		const page = pages.pages[pageIndex];
 		if (!pages.loading && page) {
 			return (
-				<main>
+				<Main>
 					<PageHeader title={page.title} pageSlug={page.slug} />
 					<PageContent>
 						{page.content.map(block => (
@@ -51,7 +51,7 @@ class Page extends Component {
 						))}
 					</PageContent>
 					<AccommodationsCallout />
-				</main>
+				</Main>
 			);
 		} else {
 			return (
@@ -80,6 +80,15 @@ const LoadingContainer = styled.div`
 	justify-content: center;
 	align-items: center;
 	color: ${props => props.theme.dark};
+`;
+
+const Main = styled.main`
+	.container {
+		padding: 0 20px;
+		&.is-fluid {
+			padding: 0;
+		}
+	}
 `;
 
 export default connect(

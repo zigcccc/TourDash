@@ -104,6 +104,12 @@ const HeroHeader = styled(HeroHeaderBase)`
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+		@media screen and (max-width: 768px) {
+			flex-direction: column;
+			a {
+				padding: 15px 0;
+			}
+		}
 	}
 	padding: 20px;
 	font-family: ${props => props.theme.textFont};
@@ -136,6 +142,12 @@ const ContactContainer = styled(Container)`
 		p {
 			margin-top: 1em;
 			text-align: center;
+		}
+	}
+	@media screen and (max-width: 768px) {
+		flex-direction: column;
+		& > div {
+			margin: 10px 0;
 		}
 	}
 `;

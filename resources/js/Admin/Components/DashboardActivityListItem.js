@@ -16,20 +16,27 @@ class DashboardActivityListItem extends Component {
 			iconsMap: {
 				review: "star",
 				favorite: "heart",
+				unfavorite: "heart",
 				contact: "envelope"
 			},
 			headingMap: {
 				review: "written a review",
-				favorite: "favorited an accommodation",
+				favorite: "dodal(a) namestitev med priljubljene",
+				unfavorite: "odstranil(a) namestitev iz priljubljenih",
 				contact: "contacted you"
 			}
 		};
 	}
 
+	parseDate(date) {
+		const dateObj = new Date(date);
+		return `${dateObj.getDate()}. ${dateObj.getMonth() +
+			1}. ${dateObj.getFullYear()}`;
+	}
+
 	render() {
 		const {
 			activity,
-			deleteActivity,
 			deleteMessage,
 			replyToMessage,
 			dennyReview,
@@ -42,28 +49,37 @@ class DashboardActivityListItem extends Component {
 						<Badge>
 							<FontAwesomeIcon icon={this.state.iconsMap[activity.type]} />
 						</Badge>
-						<img src={activity.author.avatar} alt={activity.author.name} />
+						<AvatarContainer>
+							{activity.author.avatar ? (
+								<img
+									src={"/images/uploads/" + activity.author.avatar}
+									alt={activity.author.name}
+								/>
+							) : (
+								<FontAwesomeIcon icon="user" size="2x" />
+							)}
+						</AvatarContainer>
 					</ActivityListItemAvatar>
 					<ActivityListItemAuthorInfo>
 						<h4>
-							<span>{activity.author.name}</span> has{" "}
+							<span>{activity.author.name}</span> je{" "}
 							{this.state.headingMap[activity.type]}
 						</h4>
 						{activity.type === "review" && (
 							<p>
-								Review for accommodation: <span>{activity.refersTo}</span>
+								Review for accommodation: <span>{activity.refers_to}</span>
 							</p>
 						)}
-						{activity.type === "favorite" && (
+						{(activity.type === "favorite" ||
+							activity.type === "unfavorite") && (
 							<p>
-								Accommodation: <span>{activity.refersTo}</span>
+								Namestitev: <span>{activity.refers_to}</span>
 							</p>
 						)}
 					</ActivityListItemAuthorInfo>
-					<ActivityListItemMeta>{activity.date}</ActivityListItemMeta>
-					<DeleteActivityContainer href="#" onClick={deleteActivity}>
-						<FontAwesomeIcon icon="eye-slash" />
-					</DeleteActivityContainer>
+					<ActivityListItemMeta>
+						{this.parseDate(activity.created_at.date)}
+					</ActivityListItemMeta>
 				</ActivityListItemHeader>
 				<ActivityListItemBody>
 					{activity.type === "review" && (
@@ -175,14 +191,24 @@ const ActivityListItemAvatar = styled.div`
 	width: 50px;
 	height: 50px;
 	margin-right: 20px;
+	@media screen and (max-width: 768px) {
+		width: 40px;
+		height: 40px;
+	}
+`;
+
+const AvatarContainer = styled.div`
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	overflow: hidden;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	img {
 		object-fit: cover;
 		width: 100%;
 		height: 100%;
-	}
-	@media screen and (max-width: 768px) {
-		width: 40px;
-		height: 40px;
 	}
 `;
 

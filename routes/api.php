@@ -40,6 +40,8 @@ Route::group(['middleware' => 'auth:api'], function() {
     Route::get('user/{id}', 'API\UserController@getUser');
     Route::put('user/{id}', 'API\UserController@updateUser');
     Route::delete('user/{id}', 'API\UserController@deleteUser');
+    Route::get('user/{id}/saved-items', 'API\UserController@getUserSavedItems');
+    Route::post('user/{id}/saved-items', 'API\UserController@updateUserSavedItems');
 
     // Dashboard operations
     Route::get('dashboard/users', 'API\UserController@getUsersPreview');
@@ -73,6 +75,7 @@ Route::group(['middleware' => 'auth:api'], function() {
 
     // Accommodations CRUD
     Route::post('accommodations', 'API\AccommodationController@create');
+    Route::get('accommodations-most-favorited', 'API\AccommodationController@mostFavorited');
     Route::delete('accommodations/{id}', 'API\AccommodationController@destroy');
     Route::put('accommodations/{id}', 'API\AccommodationController@update');
 
@@ -80,5 +83,8 @@ Route::group(['middleware' => 'auth:api'], function() {
     //Route::post('settings', 'API\SettingController@create');
     Route::delete('settings/{id}', 'API\SettingController@destroy');
     Route::post('settings', 'API\SettingController@store');
+
+    // Activities
+    Route::get('activities', 'API\ActivityController@index');
 
 });

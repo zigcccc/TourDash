@@ -1,4 +1,5 @@
-import React, { Fragment } from "react";
+import React, { Fragment, Component } from "react";
+import classNames from "classnames";
 import { connect } from "react-redux";
 import { NavLink } from "react-router-dom";
 import styled, { withTheme } from "styled-components";
@@ -6,51 +7,94 @@ import { Spacer } from "../Elements";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import AvatarDropdown from "../Components/AvatarDropdown";
 
-const AppHeader = props => (
-	<Header>
-		<NavLink to="/">
-			{props.settings.data.visual.primary_logo.setting_value ? (
-				<Logo
-					src={props.settings.data.visual.primary_logo.setting_value}
-					alt="Tourdash"
-				/>
-			) : (
-				<Logo src="/images/logo_primary.png" alt="Tourdash" />
-			)}
-		</NavLink>
-		{props.menu && (
-			<Fragment>
-				<NavLink to="/namestitve/">namestitve</NavLink>
-				{props.menu.map(menuItem => (
-					<NavLink
-						key={menuItem.id}
-						to={{
-							pathname: `/${menuItem.slug}/`,
-							state: { pageId: menuItem.id }
-						}}
-					>
-						{menuItem.title}
-					</NavLink>
-				))}
-			</Fragment>
-		)}
-		<Spacer />
-		{props.user ? (
-			<Fragment>
-				<NavLink to="/namestitve/priljubljene/">
-					<FontAwesomeIcon icon="bookmark" size="1x" />
-					<Favorites>priljubljene</Favorites>
+class AppHeader extends Component {
+	constructor(props) {
+		super(props);
+		this.state = {
+			mobileMenuOpen: false
+		};
+		this.toggleMenu = this.toggleMenu.bind(this);
+	}
+
+	toggleMenu() {
+		this.setState({
+			mobileMenuOpen: !this.state.mobileMenuOpen
+		});
+	}
+
+	render() {
+		const { settings, menu, user } = this.props;
+		const { mobileMenuOpen } = this.state;
+		return (
+			<Header>
+				<NavLink to="/">
+					{settings.data.visual.primary_logo.setting_value ? (
+						<Logo
+							src={settings.data.visual.primary_logo.setting_value}
+							alt="Tourdash"
+						/>
+					) : (
+						<Logo src="/images/logo_primary.png" alt="Tourdash" />
+					)}
 				</NavLink>
-				<AvatarDropdown />
-			</Fragment>
-		) : (
-			<LoginContainer className="has-padding" href="/login">
-				<FontAwesomeIcon icon="user" size="1x" />
-				<span>prijava</span>
-			</LoginContainer>
-		)}
-	</Header>
-);
+				<DesktopMenu>
+					{menu && (
+						<Fragment>
+							<NavLink to="/namestitve/">namestitve</NavLink>
+							{menu.map(menuItem => (
+								<NavLink
+									key={menuItem.id}
+									to={{
+										pathname: `/${menuItem.slug}/`,
+										state: { pageId: menuItem.id }
+									}}
+								>
+									{menuItem.title}
+								</NavLink>
+							))}
+						</Fragment>
+					)}
+				</DesktopMenu>
+				<Spacer />
+				{user ? (
+					<Fragment>
+						<NavLink to="/priljubljene/">
+							<FontAwesomeIcon icon="bookmark" size="1x" />
+							<Favorites>priljubljene</Favorites>
+						</NavLink>
+						<AvatarDropdown />
+					</Fragment>
+				) : (
+					<LoginContainer className="has-padding" href="/login">
+						<FontAwesomeIcon icon="user" size="1x" />
+						<span>prijava</span>
+					</LoginContainer>
+				)}
+				<MobileMenuIcon onClick={this.toggleMenu}>
+					<FontAwesomeIcon icon={mobileMenuOpen ? "times" : "bars"} />
+				</MobileMenuIcon>
+				<MobileMenu className={classNames({ open: mobileMenuOpen })}>
+					{menu && (
+						<Fragment>
+							<NavLink to="/namestitve/">namestitve</NavLink>
+							{menu.map(menuItem => (
+								<NavLink
+									key={menuItem.id}
+									to={{
+										pathname: `/${menuItem.slug}/`,
+										state: { pageId: menuItem.id }
+									}}
+								>
+									{menuItem.title}
+								</NavLink>
+							))}
+						</Fragment>
+					)}
+				</MobileMenu>
+			</Header>
+		);
+	}
+}
 
 const mapStateToProps = state => ({
 	menu: state.pages.menu,
@@ -88,6 +132,12 @@ const Header = styled.header`
 	}
 `;
 
+const DesktopMenu = styled.div`
+	@media screen and (max-width: 768px) {
+		display: none;
+	}
+`;
+
 const Logo = styled.img`
 	max-height: 60px;
 	margin-top: 5px;
@@ -98,6 +148,9 @@ const Logo = styled.img`
 const Favorites = styled.span`
 	margin-left: 7px;
 	text-transform: lowercase;
+	@media screen and (max-width: 1130px) {
+		display: none;
+	}
 `;
 
 const LoginContainer = styled.a`
@@ -114,14 +167,36 @@ const LoginContainer = styled.a`
 	}
 `;
 
-const AvatarContainer = styled(LoginContainer)`
-	display: flex;
-	align-items: center;
-	&.has-padding {
-		padding: 5px;
+const MobileMenuIcon = styled.div`
+	display: none;
+	@media screen and (max-width: 768px) {
+		display: block;
+		margin-left: 5px;
+		&:hover {
+			cursor: pointer;
+		}
 	}
-	span {
-		margin-right: 10px;
+`;
+
+const MobileMenu = styled.div`
+	position: fixed;
+	right: -100%;
+	width: 50vw;
+	min-width: 300px;
+	background: ${props => props.theme.light};
+	top: 75px;
+	bottom: 0;
+	display: flex;
+	flex-direction: column;
+	box-shadow: ${props => props.theme.hoverShadow};
+	align-items: center;
+	padding: 20px;
+	transition: ${props => props.theme.easeTransition};
+	&.open {
+		right: 0;
+	}
+	a {
+		margin: 20px 0;
 	}
 `;
 

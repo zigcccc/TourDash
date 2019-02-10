@@ -74,6 +74,12 @@ const Title = styled(TitleBase)`
 		color: ${props => props.theme.light};
 		margin-bottom: 30px;
 	}
+	@media screen and (max-width: 768px) {
+		&.title {
+			text-align: center;
+			font-size: 38px;
+		}
+	}
 `;
 
 const Cta = styled(InvertedCtaBase)`

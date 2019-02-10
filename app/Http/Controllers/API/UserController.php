@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\User;
 use App\Role;
+use App\Accommodation;
+use App\Activity;
 use Illuminate\Support\Facades\Hash;
 use App\Http\Resources\User as UserResource;
 use Illuminate\Support\Facades\Auth;
@@ -84,14 +86,81 @@ class UserController extends Controller
         }
 
         $user = User::where('id', $id)->first();
+        $saved_items = [];
         $data = [
             'id' => $user->id,
             'name' => $user->name,
             'email' => $user->email,
             'avatar' => $user->avatar,
-            'role' => $user->roles()->first()->name
+            'role' => $user->roles()->first()->name,
+            'saved_items' => $user->saved_items
         ];
         return response()->json(['user' => $data], 200);
+    }
+
+    public function getUserSavedItems($userId)
+    {
+        try {
+            $user = User::where('id', $userId)->first();
+            $saved_items = [];
+            foreach ($user->saved_items as $accommodationId) {
+                $accommodation = Accommodation::where('id', $accommodationId)
+                                                ->select('id', 'title', 'price', 'featured_image->medium as image', 'description')
+                                                ->get();
+                array_push($saved_items, $accommodation);
+            }
+            return response()->json(['saved_items' => $saved_items], 200);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
+    }
+
+    public function updateUserSavedItems(Request $request, $userId)
+    {
+        $input = $request->all();
+        $validator = Validator::make($input, [
+            'saved_items' => 'array',
+            'accommodation' => 'string'
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json(['error' => $validator->errors()], 403);
+        }
+
+        try {
+
+            $user = User::find($userId);
+            $accommodation = Accommodation::where('title', $input['accommodation'])->first();
+
+            $deleteAction = false;
+            if ($user->saved_items) {
+                $deleteAction = sizeof($user->saved_items) > sizeof($input['saved_items']);
+            }
+
+            if ($user) {
+                $user->saved_items = $input['saved_items'];
+                $user->save();
+
+                $activity = new Activity;
+                $activity->type = $deleteAction ? "unfavorite" : "favorite";
+                $activity->refers_to = $input['accommodation'];
+                $activity->user_id = $user->id;
+                $activity->save();
+            }
+
+            if ($accommodation) {
+                if ($deleteAction) {
+                    $accommodation->num_of_saves = $accommodation->num_of_saves - 1;
+                } else {
+                    $accommodation->num_of_saves = $accommodation->num_of_saves + 1;
+                }
+                $accommodation->save();
+            }
+
+            return new UserResource($user);
+        } catch (Exception $e) {
+            return response()->json(['error' => $e->getMessage()]);
+        }
     }
 
     // Update user

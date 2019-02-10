@@ -36,7 +36,8 @@ class User extends JsonResource
             'name' => $this->name,
             'email' => $this->email,
             'avatar' => $this->avatar ? avatar_asset($this->avatar) : null,
-            'role' => $this->roles()->first()->name
+            'role' => $this->roles()->first()->name,
+            'saved_items' => $this->saved_items
         ];
     }
 

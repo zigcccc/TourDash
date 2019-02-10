@@ -21,7 +21,8 @@ class Accommodation extends Model
         'trending',
         'best_seller',
         'visible',
-        'author_id'
+        'author_id',
+        'num_of_saves'
     ];
 
     protected $casts = [

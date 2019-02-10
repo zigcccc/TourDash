@@ -28,7 +28,7 @@ class Accommodations extends Component {
 		}
 	}
 	render() {
-		const { accommodations } = this.props;
+		const { accommodations, user } = this.props;
 		if (accommodations.loading || accommodations.data.length === 0) {
 			return (
 				<LoadingContainer>
@@ -43,10 +43,13 @@ class Accommodations extends Component {
 						{...params}
 						slidesPerView={this.props.data.amountPerSlide}
 						spaceBetween={20}
-						breakPoints={{
-							768: {
+						breakpoints={{
+							1480: {
+								slidesPerView: this.props.data.amountPerSlide - 1
+							},
+							885: {
 								slidesPerView: 1,
-								spaceBetween: 0
+								spaceBetween: 20
 							}
 						}}
 					>
@@ -55,6 +58,12 @@ class Accommodations extends Component {
 								key={accommodation.id}
 								accommodation={accommodation}
 								isSlide
+								hasSaveAction
+								isSaved={
+									user.user &&
+									user.user.saved_items &&
+									user.user.saved_items.indexOf(accommodation.id) >= 0
+								}
 							/>
 						))}
 					</Swiper>
@@ -65,7 +74,8 @@ class Accommodations extends Component {
 }
 
 const mapStateToProps = state => ({
-	accommodations: state.accommodations
+	accommodations: state.accommodations,
+	user: state.user
 });
 
 const mapDispatchToProps = { getAccommodations };

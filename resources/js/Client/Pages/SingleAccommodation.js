@@ -2,24 +2,46 @@ import React, { Component, Fragment } from "react";
 import styled from "styled-components";
 import classNames from "classnames";
 import _findIndex from "lodash/findIndex";
+import _isArray from "lodash/isArray";
 import { connect } from "react-redux";
 import { getAccommodations } from "../Store/Actions/AccommodationsActions";
+import { updateSavedItems } from "../Store/Actions/UserActions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PageHeader from "../Components/PageHeader";
 import { Container as ContainerBase, Title, Columns, Column } from "bloomer";
 import Swiper from "react-id-swiper";
 
 class SingleAccommodation extends Component {
+	constructor(props) {
+		super(props);
+	}
+
 	componentDidMount() {
 		const { accommodations, getAccommodations } = this.props;
 		accommodations.data.length <= 0 && getAccommodations();
 	}
+
+	addToSavedItems(accommodationTitle) {
+		const { updateSavedItems, user, accommodationId } = this.props;
+		const userSavedItems = _isArray(user.user.saved_items)
+			? [...user.user.saved_items, accommodationId]
+			: [accommodationId];
+		updateSavedItems(userSavedItems, user.user.id, accommodationTitle);
+	}
+
 	render() {
-		const { accommodations, accommodationId } = this.props;
+		const { accommodations, accommodationId, user } = this.props;
 		const accommodationIndex = _findIndex(accommodations.data, {
 			id: accommodationId
 		});
 		const accommodation = accommodations.data[accommodationIndex];
+		let isSaved = false;
+		if (user.user) {
+			isSaved =
+				user.user.saved_items &&
+				user.user.saved_items.indexOf(accommodation.id) >= 0;
+		}
+
 		return (
 			<main>
 				<AccommodationContainer
@@ -34,6 +56,20 @@ class SingleAccommodation extends Component {
 								image={accommodation.featured_image.fullsize}
 								pageSlug={accommodation.title}
 							/>
+							{user && (
+								<BookmarkButton
+									className={classNames({
+										saved: isSaved
+									})}
+									onClick={this.addToSavedItems.bind(this, accommodation.title)}
+								>
+									{isSaved ? "Namestitev shranjena" : "Shrani namestitev"}
+									<FontAwesomeIcon
+										icon={user.saving ? "circle-notch" : "bookmark"}
+										spin={user.saving}
+									/>
+								</BookmarkButton>
+							)}
 							<Container>
 								<section className="section">
 									<p className="accommodation-description">
@@ -140,10 +176,11 @@ class SingleAccommodation extends Component {
 }
 
 const mapStateToProps = state => ({
-	accommodations: state.accommodations
+	accommodations: state.accommodations,
+	user: state.user
 });
 
-const mapDispatchToProps = { getAccommodations };
+const mapDispatchToProps = { getAccommodations, updateSavedItems };
 
 const AccommodationContainer = styled.div`
 	min-height: calc(100vh - 75px);
@@ -186,15 +223,30 @@ const Container = styled(ContainerBase)`
 	}
 `;
 
-const AccommodationType = styled.span`
-	padding: 0.5em 1.5em;
-	font-size: 0.9rem;
-	font-weight: bold;
+const BookmarkButton = styled.div`
+	display: flex;
+	background-color: ${props => props.theme.dark};
 	border-radius: 200px;
-	color: white;
-	background-color: ${props => props.theme.mainColor};
-	margin-bottom: 20px;
-	display: inline-block;
+	padding: 0.5em 1.25em;
+	color: ${props => props.theme.light};
+	align-items: center;
+	box-shadow: ${props => props.theme.lightShadow};
+	position: absolute;
+	top: 420px;
+	left: 50%;
+	transform: translate(-50%, 0);
+	transition: ${props => props.theme.easeTransition};
+	svg {
+		margin-left: 10px;
+	}
+	font-weight: bold;
+	&:hover {
+		cursor: pointer;
+		background-color: ${props => props.theme.mainColor};
+	}
+	&.saved {
+		background-color: ${props => props.theme.mainColor};
+	}
 `;
 
 const Card = styled.div`

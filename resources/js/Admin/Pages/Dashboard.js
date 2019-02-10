@@ -20,7 +20,7 @@ import CardDropdown from "../Components/CardDropdown";
 import { Spacer } from "../Components/Helpers";
 import DashboardListItem from "../Components/DashboardListItem";
 import DashboardActivity from "../Components/DashboardActivity";
-import DashboardAnalytics from "../Components/DashboardAnalytics";
+import DashboardTopAccommodations from "../Components/DashboardTopAccommodations";
 import InvertedCtaBase from "../../Shared/Components/InvertedCta";
 import { SectionTitle } from "../Components/Typography";
 
@@ -60,10 +60,6 @@ class Dashboard extends Component {
 				return null;
 			}
 		}
-	}
-
-	_goToAnalytics() {
-		console.log("Going to analytics...");
 	}
 
 	componentDidMount() {
@@ -210,80 +206,8 @@ class Dashboard extends Component {
 						<DashboardActivity />
 					</ActivityColumn>
 					<AnalyticsColumn isSize="1/2">
-						<SectionTitle text="Analitika" />
-						<AnalyticsTile isAncestor>
-							<Tile isParent isVertical isSize="1/2">
-								<Tile
-									isChild
-									render={props => (
-										<DashboardAnalytics
-											type="pageviews"
-											title="Ogledi strani"
-											subtitle="2.309"
-											date={{
-												from: this.state.today,
-												to: this.state.oneWeekFromNow
-											}}
-											{...props}
-										/>
-									)}
-								/>
-								<Tile
-									isChild
-									render={props => (
-										<DashboardAnalytics
-											hasMarginTop={true}
-											type="devices"
-											title="Naprave"
-											subtitle="dekstop vs mobile"
-											date={{
-												from: this.state.today,
-												to: this.state.oneWeekFromNow
-											}}
-											{...props}
-										/>
-									)}
-								/>
-							</Tile>
-							<Tile isParent isVertical isSize="1/2">
-								<Tile
-									isChild
-									render={props => (
-										<DashboardAnalytics
-											type="visitors"
-											title="Obiskovalci"
-											subtitle="returning vs new"
-											date={{
-												from: this.state.today,
-												to: this.state.oneWeekFromNow
-											}}
-											{...props}
-										/>
-									)}
-								/>
-								<Tile
-									isChild
-									render={props => (
-										<DashboardAnalytics
-											hasMarginTop={true}
-											type="countries"
-											title="Ogledi strani"
-											subtitle="po državah"
-											date={{
-												from: this.state.today,
-												to: this.state.oneWeekFromNow
-											}}
-											{...props}
-										/>
-									)}
-								/>
-							</Tile>
-						</AnalyticsTile>
-						<InvertedCta
-							handleClick={this._goToAnalytics.bind(this)}
-							text="VSA ANALITIKA"
-							fontSize={14}
-						/>
+						<SectionTitle text="Največkrat shranjeno" />
+						<DashboardTopAccommodations />
 					</AnalyticsColumn>
 				</DashboardDetailsColumns>
 			</PageWrapper>

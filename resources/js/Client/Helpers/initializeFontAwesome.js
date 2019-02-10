@@ -23,7 +23,9 @@ import {
 	faPaw,
 	faLock,
 	faGlassMartini,
-	faHeadphones
+	faHeadphones,
+	faBars,
+	faTimes
 } from "@fortawesome/free-solid-svg-icons";
 
 const initializeFontAwesome = () =>
@@ -51,7 +53,9 @@ const initializeFontAwesome = () =>
 		faPaw,
 		faLock,
 		faGlassMartini,
-		faHeadphones
+		faHeadphones,
+		faBars,
+		faTimes
 	);
 
 export default initializeFontAwesome;
