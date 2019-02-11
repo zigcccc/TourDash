@@ -16,14 +16,12 @@ class DashboardActivityListItem extends Component {
 			iconsMap: {
 				review: "star",
 				favorite: "heart",
-				unfavorite: "heart",
-				contact: "envelope"
+				unfavorite: "heart"
 			},
 			headingMap: {
-				review: "written a review",
+				review: "ocenil(a) namestitev",
 				favorite: "dodal(a) namestitev med priljubljene",
-				unfavorite: "odstranil(a) namestitev iz priljubljenih",
-				contact: "contacted you"
+				unfavorite: "odstranil(a) namestitev iz priljubljenih"
 			}
 		};
 	}
@@ -35,13 +33,7 @@ class DashboardActivityListItem extends Component {
 	}
 
 	render() {
-		const {
-			activity,
-			deleteMessage,
-			replyToMessage,
-			dennyReview,
-			approveReview
-		} = this.props;
+		const { activity } = this.props;
 		return (
 			<ActivityListItemContainer key={activity.id}>
 				<ActivityListItemHeader>
@@ -67,7 +59,7 @@ class DashboardActivityListItem extends Component {
 						</h4>
 						{activity.type === "review" && (
 							<p>
-								Review for accommodation: <span>{activity.refers_to}</span>
+								Mnenja za namestitev: <span>{activity.refers_to}</span>
 							</p>
 						)}
 						{(activity.type === "favorite" ||
@@ -98,45 +90,14 @@ class DashboardActivityListItem extends Component {
 							})}
 						</StarsContainer>
 					)}
-					{activity.type === "contact" && (
-						<h4>Subject: {activity.content.subject}</h4>
-					)}
-					{!isEmpty(activity.content) && (
+					{activity.content && activity.content.review && (
 						<p
 							className={classNames({
 								"little-margin": activity.type === "contact"
 							})}
 						>
-							{truncate(activity.content.message, 140)}
+							{truncate(activity.content.review, 140)}
 						</p>
-					)}
-					{activity.type === "review" && (
-						<React.Fragment>
-							<ActivityCta
-								fontSize={12}
-								handleClick={approveReview}
-								text="odobri"
-							/>
-							<ActivityFlatCta
-								handleClick={dennyReview}
-								fontSize={12}
-								text="zavrni"
-							/>
-						</React.Fragment>
-					)}
-					{activity.type === "contact" && (
-						<React.Fragment>
-							<ActivityCta
-								fontSize={12}
-								handleClick={replyToMessage}
-								text={"Odgovori"}
-							/>
-							<ActivityFlatCta
-								handleClick={deleteMessage}
-								fontSize={12}
-								text="izbriši"
-							/>
-						</React.Fragment>
 					)}
 				</ActivityListItemBody>
 			</ActivityListItemContainer>
@@ -258,14 +219,6 @@ const ActivityListItemMeta = styled.p`
 	font-weight: 400;
 	@media screen and (max-width: 768px) {
 		display: none;
-	}
-`;
-
-const DeleteActivityContainer = styled.a`
-	color: ${props => props.theme.lightGray};
-	transition: ${props => props.theme.easeTransition};
-	:hover {
-		color: ${props => props.theme.colorError};
 	}
 `;
 

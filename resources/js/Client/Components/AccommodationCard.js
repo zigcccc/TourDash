@@ -8,6 +8,7 @@ import slugify from "slugify";
 import { Title } from "bloomer";
 import { Spacer } from "../Elements";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import swal from "sweetalert";
 
 class AccommodationCard extends Component {
 	constructor(props) {
@@ -15,8 +16,46 @@ class AccommodationCard extends Component {
 		this.handleSave = this.handleSave.bind(this);
 	}
 
+	showLoginPrompt() {
+		swal({
+			title: "Niste prijavljeni",
+			text:
+				"Za shranjevanje namestitev morate biti prijavljeni. Prijavite se oziroma ustvarite račun, če računa še nimate.",
+			icon: "info",
+			buttons: {
+				cancel: {
+					text: "zapri",
+					visible: true
+				},
+				login: {
+					text: "prijavi se"
+				},
+				register: {
+					text: "ustvari račun"
+				}
+			}
+		}).then(value => {
+			switch (value) {
+				case "login": {
+					window.location.href = "/login";
+					break;
+				}
+				case "register": {
+					window.location.href = "/register";
+					break;
+				}
+				default: {
+					break;
+				}
+			}
+		});
+	}
+
 	handleSave() {
 		const { user, updateSavedItems, accommodation, isSaved } = this.props;
+		if (!user.user) {
+			this.showLoginPrompt();
+		}
 		if (isSaved) {
 			const savedItems = user.user.saved_items.filter(
 				item => item !== accommodation.id
@@ -37,7 +76,6 @@ class AccommodationCard extends Component {
 			className,
 			accommodation,
 			isSaved,
-			hasDeleteAction,
 			noTags,
 			hasSaveAction
 		} = this.props;

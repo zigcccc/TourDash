@@ -71,7 +71,6 @@ class PageController extends Controller
     {
         try {
             $res = $page->findOrFail($id);
-            Debugbar::info($res);
             return new PageResource($res);
         } catch (Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);

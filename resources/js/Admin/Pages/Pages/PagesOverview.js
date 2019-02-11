@@ -12,7 +12,6 @@ import _times from "lodash/times";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { Button as BloomerButton } from "bloomer";
 import { PageWrapper, CenteredItem } from "../../Components/Layout";
-import MainCta from "../../../Shared/Components/MainCta";
 import CardBase from "../../Components/Card";
 import CardDropdown from "../../Components/CardDropdown";
 import Snackbar from "../../../Shared/Components/Snackbar";

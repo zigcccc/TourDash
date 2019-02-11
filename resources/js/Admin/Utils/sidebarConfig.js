@@ -34,6 +34,11 @@ const sidebarConfig = [
 					linkName: "Dodaj novo namestitev",
 					linkUrl: "/accommodations/add/",
 					permissions: ["admin", "superadmin"]
+				},
+				{
+					linkName: "Pregled mnenj gostov",
+					linkUrl: "/accommodations/reviews/",
+					permissions: ["admin", "superadmin"]
 				}
 			]
 		}

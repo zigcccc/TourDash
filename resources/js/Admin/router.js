@@ -14,6 +14,7 @@ import CreateNewPage from "./Pages/Pages/CreateNewPage";
 import PagesOverview from "./Pages/Pages/PagesOverview";
 import CreateNewAccommodation from "./Pages/Accommodations/CreateNewAccommodation";
 import AccommodationsOverview from "./Pages/Accommodations/AccommodationsOverview";
+import ReviewsOverview from "./Pages/Accommodations/ReviewsOverview";
 import EditMenu from "./Pages/Pages/EditMenu";
 import UsersOverview from "./Pages/User/UsersOverview";
 import MyProfile from "./Pages/User/MyProfile";
@@ -92,6 +93,11 @@ class AppRouter extends Component {
 							<Route
 								path="/accommodations/add/"
 								component={CreateNewAccommodation}
+								exact
+							/>
+							<Route
+								path="/accommodations/reviews/"
+								component={ReviewsOverview}
 								exact
 							/>
 							<Route

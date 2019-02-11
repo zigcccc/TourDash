@@ -8,21 +8,158 @@ import { getAccommodations } from "../Store/Actions/AccommodationsActions";
 import { updateSavedItems } from "../Store/Actions/UserActions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import PageHeader from "../Components/PageHeader";
-import { Container as ContainerBase, Title, Columns, Column } from "bloomer";
+import {
+	Container as ContainerBase,
+	Title,
+	Columns,
+	Column,
+	Field,
+	Label,
+	Control,
+	Select,
+	Input,
+	Notification
+} from "bloomer";
 import Swiper from "react-id-swiper";
+import MainCta from "../Components/MainCta";
+import Review from "../Components/Review";
 
 class SingleAccommodation extends Component {
 	constructor(props) {
 		super(props);
+		this.state = {
+			reviews: [],
+			newReview: {
+				review: "",
+				rating: 5
+			},
+			submiting: false,
+			reviewSubmitSuccess: false
+		};
+		this.setRating = this.setRating.bind(this);
+		this.setReview = this.setReview.bind(this);
+		this.submitReview = this.submitReview.bind(this);
+		this.getAccommodationReviews = this.getAccommodationReviews.bind(this);
 	}
 
 	componentDidMount() {
 		const { accommodations, getAccommodations } = this.props;
 		accommodations.data.length <= 0 && getAccommodations();
+		this.getAccommodationReviews();
+	}
+
+	componentDidUpdate(prevProps) {
+		if (prevProps.location !== this.props.location) {
+			this.setState(
+				{
+					...this.state,
+					newReview: {
+						review: "",
+						rating: 5
+					},
+					reviews: []
+				},
+				() => {
+					this.getAccommodationReviews();
+				}
+			);
+		}
+	}
+
+	getAccommodationReviews() {
+		const { accommodationId } = this.props;
+		axios
+			.get(`/api/reviews/${accommodationId}`)
+			.then(res => {
+				const { data } = res.data;
+				this.setState({
+					...this.state,
+					reviews: data
+				});
+			})
+			.catch(err => console.log(err));
+	}
+
+	setRating(e) {
+		this.setState({
+			newReview: {
+				...this.state.newReview,
+				rating: e.target.value
+			}
+		});
+	}
+
+	setReview(e) {
+		this.setState({
+			newReview: {
+				...this.state.newReview,
+				review: e.target.value
+			}
+		});
+	}
+
+	submitReview() {
+		const { user, accommodationId } = this.props;
+		this.setState({ submiting: true });
+		axios
+			.post("/api/reviews", {
+				rating: this.state.newReview.rating,
+				review: this.state.newReview.review,
+				user_id: user.user.id,
+				accommodation_id: accommodationId
+			})
+			.then(res => {
+				this.setState({
+					...this.state,
+					reviewSubmitSuccess: true
+				});
+			})
+			.catch(err => {
+				this.setState({ submiting: false });
+				console.log(err);
+			});
+	}
+
+	showLoginPrompt() {
+		swal({
+			title: "Niste prijavljeni",
+			text:
+				"Za shranjevanje namestitev morate biti prijavljeni. Prijavite se oziroma ustvarite račun, če računa še nimate.",
+			icon: "info",
+			buttons: {
+				cancel: {
+					text: "zapri",
+					visible: true
+				},
+				login: {
+					text: "prijavi se"
+				},
+				register: {
+					text: "ustvari račun"
+				}
+			}
+		}).then(value => {
+			switch (value) {
+				case "login": {
+					window.location.href = "/login";
+					break;
+				}
+				case "register": {
+					window.location.href = "/register";
+					break;
+				}
+				default: {
+					break;
+				}
+			}
+		});
 	}
 
 	addToSavedItems(accommodationTitle) {
 		const { updateSavedItems, user, accommodationId } = this.props;
+		if (!user.user) {
+			this.showLoginPrompt();
+		}
 		const userSavedItems = _isArray(user.user.saved_items)
 			? [...user.user.saved_items, accommodationId]
 			: [accommodationId];
@@ -31,6 +168,7 @@ class SingleAccommodation extends Component {
 
 	render() {
 		const { accommodations, accommodationId, user } = this.props;
+		const { reviews, submiting } = this.state;
 		const accommodationIndex = _findIndex(accommodations.data, {
 			id: accommodationId
 		});
@@ -160,6 +298,95 @@ class SingleAccommodation extends Component {
 								</section>
 								<section className="section">
 									<Title tag="h2" isSize={3}>
+										Mnenja gostov
+									</Title>
+									{reviews.length > 0 ? (
+										<Swiper
+											pagination={{
+												el: ".swiper-pagination",
+												dynamicBullets: true,
+												clickable: true
+											}}
+											loop={this.state.reviews.length > 1}
+											autoplay={{
+												delay: 5500,
+												disableOnInteraction: true
+											}}
+											slidesPerView={1}
+											spaceBetween={20}
+										>
+											{reviews.map(review => (
+												<Review review={review} key={review.id} />
+											))}
+										</Swiper>
+									) : (
+										<p className="centered">Ta namestitev še nima mnenj...</p>
+									)}
+									{user.user &&
+										reviews.filter(review => review.author.id === user.user.id)
+											.length === 0 && (
+											<Fragment>
+												<Title tag="h5" isSize={5}>
+													Dodaj mnenje
+												</Title>
+												{this.state.reviewSubmitSuccess ? (
+													<Notification isColor="success">
+														Mnenje uspešno oddano! Hvala za vaš čas.
+													</Notification>
+												) : (
+													<Fragment>
+														<Columns>
+															<Column isSize={2}>
+																<Field>
+																	<Label>Ocena*</Label>
+																	<Control>
+																		<Select
+																			value={this.state.newReview.rating}
+																			onChange={this.setRating}
+																		>
+																			<option value="1">1</option>
+																			<option value="2">2</option>
+																			<option value="3">3</option>
+																			<option value="4">4</option>
+																			<option value="5">5</option>
+																		</Select>
+																	</Control>
+																</Field>
+															</Column>
+															<Column isSize={10}>
+																<Field>
+																	<Label>Mnenje</Label>
+																	<Control>
+																		<Input
+																			type="text"
+																			placeholder="Vaše mnenje o namestitvi"
+																			value={this.state.newReview.review}
+																			onChange={this.setReview}
+																		/>
+																	</Control>
+																</Field>
+															</Column>
+														</Columns>
+														<div
+															style={{
+																display: "flex",
+																justifyContent: "center"
+															}}
+														>
+															<MainCta
+																text="Dodaj mnenje"
+																handleClick={this.submitReview}
+																fontSize={14}
+																isLoading={submiting}
+															/>
+														</div>
+													</Fragment>
+												)}
+											</Fragment>
+										)}
+								</section>
+								<section className="section">
+									<Title tag="h2" isSize={3}>
 										Opis namestitve
 									</Title>
 									<p className="accommodation-presentation">
@@ -209,6 +436,9 @@ const Container = styled(ContainerBase)`
 		font-family: ${props => props.theme.textFont};
 		line-height: 1.618;
 	}
+	h5 {
+		margin-top: 35px;
+	}
 	.title {
 		font-family: ${props => props.theme.headingFont};
 	}
@@ -256,6 +486,7 @@ const Card = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	background-color: white;
 	svg {
 		color: ${props => props.theme.mainColor};
 		font-size: 2rem;

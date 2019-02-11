@@ -142,6 +142,9 @@ const DashboardListItemContainer = styled.div`
 		text-overflow: ellipsis;
 		&.full-width {
 			width: 250px;
+			@media screen and (max-width: 1500px) {
+				width: 200px;
+			}
 			@media screen and (max-width: 1300px) {
 				width: 150px;
 			}

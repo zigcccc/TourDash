@@ -20,7 +20,9 @@ class Activity extends JsonResource
             'created_at' => $this->created_at,
             'author' => $this->user,
             'type' => $this->type,
-            'refers_to' => $this->refers_to
+            'refers_to' => $this->refers_to,
+            'content' => $this->content,
+            'referral' => $this->referral
         ];
     }
 }

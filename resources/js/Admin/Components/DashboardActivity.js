@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from "react";
 import styled from "styled-components";
+import produce from "immer";
 import Card from "../Components/Card";
 import _reject from "lodash/reject";
 import DashboardActivityListItem from "./DashboardActivityListItem";
@@ -71,7 +72,7 @@ class DashboardActivity extends Component {
 					</span>
 				</CardDropdown>
 				{activities.length > 0 ? (
-					activities.map(activity => (
+					activities.map((activity, i) => (
 						<DashboardActivityListItem key={activity.id} activity={activity} />
 					))
 				) : (

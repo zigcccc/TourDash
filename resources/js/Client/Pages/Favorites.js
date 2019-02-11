@@ -8,6 +8,11 @@ import { Container, Columns, Column } from "bloomer";
 import MainCta from "../Components/MainCta";
 
 class Favorites extends Component {
+	constructor(props) {
+		super(props);
+		this.showLoginPrompt = this.showLoginPrompt.bind(this);
+	}
+
 	removeFromFavorites(id, e) {
 		const { user, updateSavedItems } = this.props;
 		e.preventDefault();
@@ -17,13 +22,55 @@ class Favorites extends Component {
 		);
 	}
 
+	showLoginPrompt() {
+		swal({
+			title: "Niste prijavljeni",
+			text:
+				"Za shranjevanje namestitev morate biti prijavljeni. Prijavite se oziroma ustvarite račun, če računa še nimate.",
+			icon: "info",
+			buttons: {
+				cancel: {
+					text: "zapri",
+					visible: true
+				},
+				login: {
+					text: "prijavi se"
+				},
+				register: {
+					text: "ustvari račun"
+				}
+			}
+		}).then(value => {
+			switch (value) {
+				case "login": {
+					window.location.href = "/login";
+					break;
+				}
+				case "register": {
+					window.location.href = "/register";
+					break;
+				}
+				default: {
+					this.props.history.push("/");
+				}
+			}
+		});
+	}
+
+	componentDidMount() {
+		const { user } = this.props;
+		if (!user.user) {
+			this.showLoginPrompt();
+		}
+	}
+
 	render() {
 		const { accommodations, user } = this.props;
 		return (
 			<Main>
 				<PageHeader title="Priljubljene namestitve" pageSlug="priljubljene" />
 				<Container>
-					{user.user.saved_items ? (
+					{user.user && user.user.saved_items ? (
 						<Columns isMultiline>
 							{accommodations.data
 								.filter(

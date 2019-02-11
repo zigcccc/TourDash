@@ -25,7 +25,8 @@ import {
 	faGlassMartini,
 	faHeadphones,
 	faBars,
-	faTimes
+	faTimes,
+	faStar
 } from "@fortawesome/free-solid-svg-icons";
 
 const initializeFontAwesome = () =>
@@ -55,7 +56,8 @@ const initializeFontAwesome = () =>
 		faGlassMartini,
 		faHeadphones,
 		faBars,
-		faTimes
+		faTimes,
+		faStar
 	);
 
 export default initializeFontAwesome;

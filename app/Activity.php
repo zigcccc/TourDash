@@ -9,8 +9,11 @@ class Activity extends Model
     protected $fillable = [
         "type",
         "user_id",
-        "refers_to"
+        "refers_to",
+        "content"
     ];
+
+    protected $casts = ["content" => "array"];
 
 
     public function user()

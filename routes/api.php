@@ -33,6 +33,10 @@ Route::get('settings/visual', 'API\SettingController@indexVisual');
 Route::get('settings/marketing', 'API\SettingController@indexMarketing');
 Route::get('settings/{id}', 'API\SettingController@show');
 
+// Reviews
+Route::get('reviews/approved', 'API\ReviewController@approvedReviews');
+Route::get('reviews/{accommodation_id}', 'API\ReviewController@show');
+
 
 Route::group(['middleware' => 'auth:api'], function() {
     // User CRUD
@@ -86,5 +90,11 @@ Route::group(['middleware' => 'auth:api'], function() {
 
     // Activities
     Route::get('activities', 'API\ActivityController@index');
+
+    // Reviews CRUD
+    Route::get('reviews', 'API\ReviewController@index');
+    Route::post('reviews', 'API\ReviewController@store');
+    Route::delete('reviews/{id}', 'API\ReviewController@destroy');
+    Route::put('reviews/{id}', 'API\ReviewController@approve');
 
 });

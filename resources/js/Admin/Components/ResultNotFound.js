@@ -5,18 +5,22 @@ import MainCta from "../../Shared/Components/MainCta";
 
 const ResultNotFound = props => (
 	<StyledResultsNotFound>
-		<p>Za iskalni niz ni najdenih rezultatov...</p>
-		<MainCta to={props.action} fontSize={16} text={props.actionText} />
+		<p>{props.heading}</p>
+		{props.action && (
+			<MainCta to={props.action} fontSize={16} text={props.actionText} />
+		)}
 	</StyledResultsNotFound>
 );
 
 ResultNotFound.propTypes = {
-	action: PropTypes.string.isRequired,
-	actionText: PropTypes.string.isRequired
+	action: PropTypes.string,
+	actionText: PropTypes.string,
+	heading: PropTypes.string.isRequired
 };
 
 ResultNotFound.defaultProps = {
-	actionText: "Dodaj novo"
+	actionText: "Dodaj novo",
+	heading: "Za iskalni niz ni najdenih rezultatov..."
 };
 
 const StyledResultsNotFound = styled.div`
