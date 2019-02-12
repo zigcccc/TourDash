@@ -27,7 +27,7 @@ const client = axios.create({
 	baseURL:
 		process.env.NODE_ENV === "development"
 			? "http://localhost:8000/api"
-			: "https://tourdash.app/api",
+			: "/api",
 	responseType: "json",
 	headers: {
 		_token: csrf_token,

@@ -22,7 +22,7 @@ class SiteStatus extends Component {
 				</StatusGroupContainer>
 				<CustomLink href="/" target="_blank">
 					<FontAwesomeIcon icon="sign-out-alt" />
-					&nbsp;<span>https://tourdash.app</span>
+					&nbsp;<span>https://zigakrasovec.com</span>
 				</CustomLink>
 			</SiteStatusContainer>
 		);

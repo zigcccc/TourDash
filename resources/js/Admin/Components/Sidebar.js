@@ -91,7 +91,7 @@ class Sidebar extends Component {
 					<span>
 						<FontAwesomeIcon icon="chevron-left" />
 					</span>
-					nazaj na tourdash.app
+					nazaj na zigakrasovec.com
 				</Exit>
 			</SidebarContainer>
 		);
