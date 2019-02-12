@@ -20,10 +20,7 @@ export const csrf_token = document.querySelector('meta[name="csrf-token"]')
 const history = createBrowserHistory();
 
 const client = axios.create({
-	baseURL:
-		process.env.NODE_ENV === "development"
-			? "http://localhost:8000/api"
-			: "/api",
+	baseURL: "/api",
 	responseType: "json",
 	headers: {
 		_token: csrf_token,
