@@ -17,7 +17,6 @@ class Reviews extends Component {
 		axios
 			.get("/api/reviews/approved")
 			.then(res => {
-				console.log(res.data);
 				this.setState({
 					loading: false,
 					reviews: res.data.data

@@ -24,7 +24,10 @@ if (!access_token || !csrf_token) {
 }
 
 const client = axios.create({
-	baseURL: "/api",
+	baseURL:
+		process.env.NODE_ENV === "production"
+			? "https://zigakrasovec.com/api"
+			: "http://localhost:8000/api",
 	responseType: "json",
 	headers: {
 		_token: csrf_token,
