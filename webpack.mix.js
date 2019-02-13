@@ -18,3 +18,7 @@ mix
 	.sass("resources/sass/app.sass", "public/css")
 	.sass("resources/sass/admin.sass", "public/css/admin.css")
 	.sass("resources/sass/auth.sass", "public/css");
+
+if (mix.inProduction()) {
+	mix.version();
+}

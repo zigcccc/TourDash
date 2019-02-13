@@ -1,8 +1,8 @@
 {
-    "/js/admin.js": "/js/admin.js",
-    "/js/app.js": "/js/app.js",
-    "/css/app.css": "/css/app.css",
-    "/css/admin.css": "/css/admin.css",
-    "/css/auth.css": "/css/auth.css",
-    "/js/auth.js": "/js/auth.js"
+    "/js/admin.js": "/js/admin.js?id=6fe820d2b632c4cc0ff3",
+    "/js/app.js": "/js/app.js?id=7c9d7125e332ac16b7e8",
+    "/css/app.css": "/css/app.css?id=5fe250870bb5a50bad4e",
+    "/css/admin.css": "/css/admin.css?id=77167966d226faecae8e",
+    "/css/auth.css": "/css/auth.css?id=b659b38471606973ac56",
+    "/js/auth.js": "/js/auth.js?id=0d342bfd67157b619c86"
 }
