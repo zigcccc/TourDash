@@ -163,7 +163,7 @@ class AccommodationsOverview extends Component {
 												{accommodation.visible ? "objavljena" : "skrita"}
 											</StatusGroup>
 										</td>
-										<ActionField>
+										<ActionField className="hidden-mobile">
 											<EditButton
 												onClick={() =>
 													this.props.history.push(
@@ -265,6 +265,11 @@ const NameField = styled(OnlyDesktopField)`
 const ActionField = styled.td`
 	width: 20px;
 	text-align: center;
+	&.hidden-mobile {
+		@media screen and (max-width: 768px) {
+			display: none;
+		}
+	}
 `;
 
 const AvatarContainer = styled.div`
@@ -348,18 +353,8 @@ const EditButton = styled(ActionButton)`
 		background-color: ${props => props.theme.mainColor};
 		border-color: ${props => props.theme.mainColor};
 	}
-`;
-
-const ResultsNotFound = styled.div`
-	flex: 1;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-direction: column;
-	p {
-		font-size: 22px;
-		color: ${props => props.theme.heavyGray};
-		font-weight: 900;
+	@media screen and (max-width: 768px) {
+		display: none;
 	}
 `;
 

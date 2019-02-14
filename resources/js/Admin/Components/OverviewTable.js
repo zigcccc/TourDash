@@ -1,9 +1,14 @@
 import React from "react";
 import styled from "styled-components";
+import classNames from "classnames";
 import { Table } from "bloomer";
 
 const OverviewTable = props => (
-	<StyledTable isNarrow={false} className="is-hoverable" {...props}>
+	<StyledTable
+		isNarrow={false}
+		className={classNames({ "is-hoverable": true, [props.className]: true })}
+		{...props}
+	>
 		{props.children}
 	</StyledTable>
 );
@@ -18,6 +23,9 @@ const StyledTable = styled(Table)`
 	}
 	@media screen and (max-width: 768px) {
 		overflow: hidden;
+		&.no-margin-mobile {
+			margin-top: 0;
+		}
 	}
 `;
 

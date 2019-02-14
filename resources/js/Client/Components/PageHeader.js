@@ -11,7 +11,7 @@ const PageHeader = props => {
 				<Title tag="h1" isSize={1}>
 					{props.title}
 				</Title>
-				<Breadcrumb isAlign="right">
+				<StyledBreadcrumbs isAlign="right">
 					<ul>
 						<BreadcrumbItem>
 							<Link to="/">Domov</Link>
@@ -25,7 +25,7 @@ const PageHeader = props => {
 							<Link to={props.pageSlug}>{props.title}</Link>
 						</BreadcrumbItem>
 					</ul>
-				</Breadcrumb>
+				</StyledBreadcrumbs>
 			</StyledHeroBody>
 		</StyledHero>
 	);
@@ -51,6 +51,15 @@ const StyledHero = styled(Hero)`
 const StyledHeroBody = styled(HeroBody)`
 	align-items: center;
 	justify-content: space-between;
+	@media screen and (max-width: 768px) {
+		flex-direction: column;
+	}
+`;
+
+const StyledBreadcrumbs = styled(Breadcrumb)`
+	@media screen and (max-width: 768px) {
+		font-size: 0.75rem;
+	}
 `;
 
 export default PageHeader;

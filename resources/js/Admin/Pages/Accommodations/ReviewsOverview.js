@@ -105,7 +105,7 @@ class ReviewsOverview extends Component {
 							<Spinner icon="circle-notch" spin size="2x" />
 						</CenteredItem>
 					) : reviews.length > 0 ? (
-						<OverviewTable>
+						<OverviewTable className="no-margin-mobile">
 							<thead>
 								<tr>
 									<th>Avtor</th>
@@ -226,10 +226,28 @@ const Spinner = styled(FontAwesomeIcon)`
 `;
 
 const TableRow = styled.tr`
+	@media screen and (max-width: 768px) {
+		display: flex;
+		flex-direction: column;
+		border-bottom: 1px solid ${props => props.theme.lightGray};
+		margin: 20px 0;
+		padding-bottom: 20px;
+		&:last-of-type {
+			border-bottom: 0;
+		}
+	}
 	td {
 		padding-top: 15px;
 		padding-bottom: 15px;
 		vertical-align: middle;
+		@media screen and (max-width: 768px) {
+			width: 100%;
+			text-align: center;
+			border: none;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+		}
 	}
 `;
 
@@ -278,7 +296,10 @@ const ActionButton = styled(BloomerButton)`
 	margin-right: auto;
   background-color: transparent;
   font-size: 14px;
-  transition ${props => props.theme.easeTransition};
+	transition ${props => props.theme.easeTransition};
+	@media screen and (max-width: 768px) {
+		margin-right: 0;
+	}
   &:focus {
     &:not(:active) {
       box-shadow: ${props => props.theme.fancyShadow};  

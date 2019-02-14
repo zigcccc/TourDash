@@ -38,21 +38,17 @@ const ExpandSidebarEditor = styled.div`
 	display: none;
 	justify-content: center;
 	align-items: center;
-	background: ${props => props.theme.darkPrimary};
-	border-radius: 50%;
-	width: 30px;
+	background: ${props => props.theme.lightGray};
+	width: calc(100% - 75px);
 	height: 30px;
 	position: fixed;
-	bottom: 80px;
-	left: 50%;
 	color: ${props => props.theme.white};
-	transform: translate(-100%, 50%);
 	z-index: 5;
 	@media screen and (max-width: 768px) {
 		display: flex;
 	}
 	&.open {
-		bottom: 460px;
+		bottom: 430px;
 	}
 `;
 
@@ -87,6 +83,7 @@ const SidebarContainer = styled.div`
 		right: 0;
 		height: 80px;
 		width: calc(100% - 75px);
+		z-index: 9999;
 		box-shadow: ${props => props.theme.lightShadow};
 		&.open {
 			height: 460px;

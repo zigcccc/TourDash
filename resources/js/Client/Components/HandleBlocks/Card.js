@@ -1,5 +1,6 @@
 import React from "react";
 import classNames from "classnames";
+import { Link } from "react-router-dom";
 import { Title } from "bloomer";
 import styled from "styled-components";
 import darken from "@bit/styled-components.polished.color.darken";
@@ -33,10 +34,7 @@ const Card = props => {
 				<p>{props.data.cardText}</p>
 				{props.data.cardLink.text.length > 0 && (
 					<ButtonContainer>
-						<Button
-							onClick={event => event.preventDefault()}
-							href={props.data.cardLink.href}
-						>
+						<Button to={props.data.cardLink.href}>
 							{props.data.cardLink.text}
 						</Button>
 					</ButtonContainer>
@@ -80,7 +78,7 @@ const ButtonContainer = styled.div`
 	justify-content: center;
 `;
 
-const Button = styled.a`
+const Button = styled(Link)`
 	display: inline-block;
 	padding: 0.75em 1em;
 	font-size: 0.75rem;

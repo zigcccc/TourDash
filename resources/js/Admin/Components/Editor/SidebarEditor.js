@@ -108,6 +108,9 @@ SidebarEditor.propTypes = {
 
 const SiderbarPlaceholder = styled.div`
 	position: relative;
+	@media screen and (max-width: 768px) {
+		padding-top: 30px;
+	}
 `;
 
 const SidebarEditorContainer = styled.div`

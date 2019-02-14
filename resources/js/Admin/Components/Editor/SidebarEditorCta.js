@@ -38,12 +38,16 @@ SidebarEditorCta.defaultProps = {
 	text: "SHRANI"
 };
 
-const SavePage = styled.button`
+const SavePage = styled.a`
 	border: none;
 	outline: none;
 	position: fixed;
+	appearance: none;
 	bottom: 0;
-	z-index: 10;
+	z-index: 9999;
+	display: flex;
+	justify-content: center;
+	align-items: center;
 	right: 0;
 	width: 300px;
 	background-color: ${props => props.theme.mainColor};

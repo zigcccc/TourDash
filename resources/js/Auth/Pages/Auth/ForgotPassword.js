@@ -92,12 +92,12 @@ class ForgotPassword extends Component {
 				<AuthNavbar>
 					<Logo.Primary width={210} height={authNavbarHeight} />
 					<a href="/">
-						back to tourdash.app
+						nazaj na zigakrasovec.com
 						<FontAwesomeIcon icon="chevron-right" />
 					</a>
 				</AuthNavbar>
 				<AuthFormContainer>
-					<MainHeading>Forgot Password</MainHeading>
+					<MainHeading>Pozabljeno geslo</MainHeading>
 					<AuthForm>
 						<AuthInputField
 							hasError={this.state.email.hasError}

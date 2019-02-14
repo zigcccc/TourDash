@@ -119,7 +119,9 @@ class AccommodationCard extends Component {
 							<small>€</small>
 						</Price>
 					</TitleContainer>
-					<p>{accommodation.description}</p>
+					<AccommodationDescription>
+						{accommodation.description}
+					</AccommodationDescription>
 					<Spacer />
 					<CardButton>
 						<MainCta
@@ -159,6 +161,10 @@ const CardContainer = styled.div`
 	}
 	@media screen and (max-width: 768px) {
 		height: auto;
+		&:not(.swiper-slide) {
+			max-width: 90%;
+			margin: 0 auto;
+		}
 	}
 `;
 
@@ -172,6 +178,16 @@ const CardContent = styled.div`
 	}
 `;
 
+const AccommodationDescription = styled.p`
+	@media screen and (max-width: 768px) {
+		text-overflow: ellipsis;
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+	}
+`;
+
 const ImageContainer = styled.div`
 	display: flex;
 	height: 300px;
@@ -181,6 +197,9 @@ const ImageContainer = styled.div`
 		object-fit: cover;
 		width: 100%;
 		height: 100%;
+	}
+	@media screen and (max-width: 768px) {
+		height: 175px;
 	}
 `;
 
@@ -258,6 +277,9 @@ const CardButton = styled.div`
 	justify-content: flex-end;
 	margin-top: 10px;
 	align-items: center;
+	@media screen and (max-width: 768px) {
+		justify-content: center;
+	}
 	a {
 		margin: 10px 0;
 		min-width: unset;

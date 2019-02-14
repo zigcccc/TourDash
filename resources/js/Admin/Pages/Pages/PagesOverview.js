@@ -369,6 +369,9 @@ const EditButton = styled(ActionButton)`
 		background-color: ${props => props.theme.mainColor};
 		border-color: ${props => props.theme.mainColor};
 	}
+	@media screen and (max-width: 768px) {
+		display: none;
+	}
 `;
 
 const mapStateToProps = state => ({

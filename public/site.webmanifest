@@ -1,6 +1,6 @@
 {
-    "name": "",
-    "short_name": "",
+    "name": "TourDash - Turistično naravnan sistem za urejanje vsebin",
+    "short_name": "TourDash",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",

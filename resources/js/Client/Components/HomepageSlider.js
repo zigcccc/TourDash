@@ -89,6 +89,9 @@ const Cta = styled(InvertedCtaBase)`
 		background-color: ${props => props.theme.light};
 		color: ${props => props.theme.dark};
 	}
+	@media screen and (max-width: 768px) {
+		width: 90%;
+	}
 `;
 
 export default HomepageSlider;

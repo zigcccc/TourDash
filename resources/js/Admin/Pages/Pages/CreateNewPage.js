@@ -338,14 +338,14 @@ class CreateNewPage extends Component {
 								loading={this.state.stateLoading}
 							/>
 							{this.state.pageId && (
-								<Dropdown
+								<StatusDropdown
 									current={status}
+									className={classNames({ open: actionbarExpanded })}
 									handleClick={this.setPageStatus}
 									possibilities={{ published: "objavljeno", hidden: "skrito" }}
 									icon="chevron-down"
 									loading={this.state.stateLoading}
 									color={status === "published" ? "success" : "danger"}
-									style={{ marginLeft: 10 }}
 								/>
 							)}
 						</EditorActionBar>
@@ -465,6 +465,9 @@ const EditorContainer = styled.div`
 			text-align: center;
 		}
 	}
+	@media screen and (max-width: 768px) {
+		margin-bottom: 125px;
+	}
 `;
 
 const PageTitle = styled.input`
@@ -529,6 +532,20 @@ const PageTypeDropdown = styled(Dropdown)`
 		&.open {
 			opacity: 1;
 			visibility: visible;
+		}
+	}
+`;
+
+const StatusDropdown = styled(Dropdown)`
+	margin-left: 10px;
+	@media screen and (max-width: 768px) {
+		visibility: hidden;
+		opacity: 0;
+		&.open {
+			opacity: 1;
+			visibility: visible;
+			margin-left: 0px;
+			margin-top: 10px;
 		}
 	}
 `;

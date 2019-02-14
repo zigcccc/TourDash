@@ -477,6 +477,12 @@ const BookmarkButton = styled.div`
 	&.saved {
 		background-color: ${props => props.theme.mainColor};
 	}
+	@media screen and (max-width: 768px) {
+		top: 300px;
+		width: 75%;
+		text-align: center;
+		justify-content: center;
+	}
 `;
 
 const Card = styled.div`
